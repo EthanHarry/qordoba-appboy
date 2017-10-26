@@ -3,6 +3,7 @@ import React from 'react';
 import IFrame from 'react-iframe';
 import $ from 'jquery';
 import styles from './main.css';
+import LanguageDropdown from './LanguageDropdown.js';
 
 
 //TODO
@@ -11,6 +12,13 @@ import styles from './main.css';
   //Fix config import and usage
   //Webpack config
   //Loading spinner while w8ing for init
+
+
+
+//NEXT
+  //1. API call to Qordoba to see if asset exists
+    //Lookup and save in Qordoba by TYPE and by ID (we'll get fancy and add name later)
+  //2. conditional rendering of iFrame, "send to Qordoba" button, or "Translation in progress" string
 
 class App extends React.Component {
   constructor(props) {
@@ -23,8 +31,7 @@ class App extends React.Component {
       qProjectId: '5843',
       qProjectLanguages: {}
     }
-
-    // this.getAndRenderLanguages = this.getAndRenderLanguages.bind(this);
+    this.getQLanguages = this.getQLanguages.bind(this);
   }
 
   async componentDidMount() {
@@ -53,15 +60,7 @@ class App extends React.Component {
   render() {
     return (
       <div id='q-app-container' className='flex flex-column flex-full-width-height'>
-        <select id='language-dropdown'>
-          {Object.keys(this.state.qProjectLanguages).map((locale) => {
-            return ( 
-              <option className="language-dropdown-option" key={locale} data-locale={locale} data-name={this.state.qProjectLanguages[locale].name} data-id={this.state.qProjectLanguages[locale].id}>
-                {this.state.qProjectLanguages[locale].name}
-              </option>
-            )
-          })}
-        </select>
+        <LanguageDropdown qProjectLanguages={this.state.qProjectLanguages} getQLanguages={this.getQLanguages}/>
         <div id="q-email-preview-holder" className="email-preview-holder flex flex-column flex-full-width-height">
           <IFrame
             url="https://www.hackreactor.com"

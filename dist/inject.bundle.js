@@ -32096,9 +32096,11 @@ module.exports = function (css) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_jquery___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_jquery__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__main_css__ = __webpack_require__(43);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__main_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__main_css__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__LanguageDropdown_js__ = __webpack_require__(45);
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 console.log('hi react app');
+
 
 
 
@@ -32111,6 +32113,12 @@ console.log('hi react app');
 //Webpack config
 //Loading spinner while w8ing for init
 
+
+//NEXT
+//1. API call to Qordoba to see if asset exists
+//Lookup and save in Qordoba by TYPE and by ID (we'll get fancy and add name later)
+//2. conditional rendering of iFrame, "send to Qordoba" button, or "Translation in progress" string
+
 class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
   constructor(props) {
     super(props);
@@ -32121,9 +32129,8 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
       qOrganizationId: '3168',
       qProjectId: '5843',
       qProjectLanguages: {}
-
-      // this.getAndRenderLanguages = this.getAndRenderLanguages.bind(this);
     };
+    this.getQLanguages = this.getQLanguages.bind(this);
   }
 
   componentDidMount() {
@@ -32161,17 +32168,7 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
       'div',
       { id: 'q-app-container', className: 'flex flex-column flex-full-width-height' },
-      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-        'select',
-        { id: 'language-dropdown' },
-        Object.keys(this.state.qProjectLanguages).map(locale => {
-          return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-            'option',
-            { className: 'language-dropdown-option', key: locale, 'data-locale': locale, 'data-name': this.state.qProjectLanguages[locale].name, 'data-id': this.state.qProjectLanguages[locale].id },
-            this.state.qProjectLanguages[locale].name
-          );
-        })
-      ),
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__LanguageDropdown_js__["a" /* default */], { qProjectLanguages: this.state.qProjectLanguages, getQLanguages: this.getQLanguages }),
       __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         'div',
         { id: 'q-email-preview-holder', className: 'email-preview-holder flex flex-column flex-full-width-height' },
@@ -32230,6 +32227,41 @@ exports.push([module.i, "/*#language-switcher {\n  color: red\n}*/", ""]);
 
 // exports
 
+
+/***/ }),
+/* 45 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+
+
+class LanguageDropdown extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
+  constructor(props) {
+    super(props);
+  }
+
+  componentDidMount() {
+    console.log(this.props);
+  }
+
+  render() {
+    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+      'select',
+      { id: 'language-dropdown' },
+      Object.keys(this.props.qProjectLanguages).map(locale => {
+        return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          'option',
+          { className: 'language-dropdown-option', key: locale, 'data-locale': locale, 'data-name': this.props.qProjectLanguages[locale].name, 'data-id': this.props.qProjectLanguages[locale].id },
+          this.props.qProjectLanguages[locale].name
+        );
+      })
+    );
+  }
+}
+
+/* harmony default export */ __webpack_exports__["a"] = (LanguageDropdown);
 
 /***/ })
 /******/ ]);

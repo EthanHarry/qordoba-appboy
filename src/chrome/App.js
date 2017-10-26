@@ -2,6 +2,8 @@ console.log('hi react app')
 import React from 'react';
 import IFrame from 'react-iframe';
 
+import styles from './main.css';
+
 //TODO
   //auth
   //Fix event listeners so that extension can fire multiple times without reload

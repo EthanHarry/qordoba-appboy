@@ -2,24 +2,15 @@
   "manifest_version": 2,
   "name": "Qordoba - Appboy",
   "version": "1.0",
-  // "default_locale": "en",
   "description": "Allows to easily send / receive content between Appboy and Qordoba",
-  // "page_action": {
-
-  // }
   "page_action": {
     "default_title": "Qordoba - Appboy",
     "default_icon": "./assets/logo.png"
     // "default_popup": "./popup.html"
   },
   "background": {
-    "scripts": ["domScript.bundle.js", "inject.bundle.js", "App.bundle.js"],
+    "scripts": ["domScript.bundle.js", "inject.bundle.js"],
     "persistent": false
   },
   "permissions": ["activeTab", "tabs"] //, "https://dashboard.appboy.com/*"
-  // "content_scripts": [{
-    // "matches": ["https://dashboard.appboy.com/engagement/templates_and_media/*"],
-    // "css": ["mystyles.css"],
-    // "js": ["domScript.bundle.js"]
-  // }]
 }

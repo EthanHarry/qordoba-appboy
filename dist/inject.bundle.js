@@ -21300,6 +21300,9 @@ console.log('hi react app');
 
 //TODO
 //auth
+//Fix event listeners so that extension can fire multiple times without reload
+//Fix config import and usage
+//Webpack config
 
 var App = function (_React$Component) {
   _inherits(App, _React$Component);

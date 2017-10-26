@@ -72,16 +72,19 @@
 
 
 var config = __webpack_require__(35);
+//For webpack compile
+// require('./inject.js');
 
 console.log('CONFIG', config);
+var backgroundPage = chrome.extension.getBackgroundPage();
+// window.open(backgroundPage);
+// backgroundPage.console.log(config)
 
-var currentTabId;
 
 //Chrome methods
 
 //Show Extension button if on correct page
 function checkForValidUrl(tabId, changeInfo, tab) {
-  currentTabId = tabId;
   if (tab.url.indexOf('https://dashboard.appboy.com') !== -1) {
     chrome.pageAction.show(tabId);
   }

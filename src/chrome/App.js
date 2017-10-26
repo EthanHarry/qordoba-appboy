@@ -4,6 +4,9 @@ import IFrame from 'react-iframe';
 
 //TODO
   //auth
+  //Fix event listeners so that extension can fire multiple times without reload
+  //Fix config import and usage
+  //Webpack config
 
 class App extends React.Component {
   constructor(props) {

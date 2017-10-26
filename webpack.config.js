@@ -7,7 +7,6 @@ const webpack = require('webpack')
 module.exports = {
   // Entry files for our popup and background pages
   entry: {
-    App: './src/chrome/App.js',
     inject: './src/chrome/inject.js',
     domScript: './src/chrome/domScript.js'
   },

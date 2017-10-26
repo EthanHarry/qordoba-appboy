@@ -3,7 +3,7 @@ console.log('hi inject script')
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import App from './App.js';
+import App from '../app/App.js';
 
 //TODO
   //Stop alert from firing every fucking time
@@ -76,7 +76,7 @@ var renderReactApp = () => {
   if (!appRendered) {
     console.log(previewContainer.children);
     appContainer = document.createElement('div');
-    appContainer.classList.add(['flex', 'flex-column', 'flex-full-width-height']);
+    appContainer.classList.add('flex', 'flex-column', 'flex-full-width-height');
     previewContainer.appendChild(appContainer);
     ReactDOM.render(<App/>, appContainer);
     appRendered = true;

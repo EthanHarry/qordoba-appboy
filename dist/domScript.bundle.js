@@ -60,18 +60,15 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 39);
+/******/ 	return __webpack_require__(__webpack_require__.s = 40);
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ 39:
+/***/ 40:
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
-var config = __webpack_require__(40);
+var config = __webpack_require__(41);
 //For webpack compile
 // require('./inject.js');
 
@@ -95,7 +92,7 @@ function checkForValidUrl(tabId, changeInfo, tab) {
 chrome.tabs.onUpdated.addListener(checkForValidUrl);
 
 // Inject App onto page
-chrome.pageAction.onClicked.addListener(function (tab) {
+chrome.pageAction.onClicked.addListener(tab => {
   chrome.tabs.executeScript({
     file: "inject.bundle.js"
   });
@@ -104,21 +101,17 @@ chrome.pageAction.onClicked.addListener(function (tab) {
 
 /***/ }),
 
-/***/ 40:
-/***/ (function(module, exports, __webpack_require__) {
+/***/ 41:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 var config = {
   // "activeSite": "https://dashboard.appboy.com"
   "activeSite": "https://www.google.com"
 };
 
-exports.default = config;
+/* harmony default export */ __webpack_exports__["default"] = (config);
 
 /***/ })
 

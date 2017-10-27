@@ -12,6 +12,9 @@ import LanguageDropdown from './LanguageDropdown.js';
   //Fix config import and usage
   //Webpack config
   //Loading spinner while w8ing for init
+  //Stop alert from firing every fucking time
+  //Set App header contents
+  //Determine where to put classes on React containers (we have 2 containers -- target and container in App)
 
 
 
@@ -29,14 +32,52 @@ class App extends React.Component {
       qAuthToken: 'b57c4072-6533-409c-b4b1-cdd9210c1802',
       qOrganizationId: '3168',
       qProjectId: '5843',
-      qProjectLanguages: {}
+      qProjectLanguages: {},
+      qProjectFiles: {},
+      abCurrentLanguageCode: '',
+      abCurrentLanguageName: '',
+      abCurrentType: '',
+      abCurrentId: '',
+      abCurrentTitle: ''
     }
     this.getQLanguages = this.getQLanguages.bind(this);
+    this.handleLanguageChange = this.handleLanguageChange.bind(this);
   }
 
+  //React UI
+
+  async componentDidUpdate() {
+    console.log('STATE', this.state)
+
+    if (this.state.abCurrentLanguageCode) {
+      await this.getQFiles();
+    }
+  }
+
+
   async componentDidMount() {
+    this.getCurrentAbTemplate();
     await this.getQLanguages();
   }
+
+
+  handleLanguageChange(e) {
+    console.log(e.target)
+    var dropdownMenu = e.target;
+    var selectedOption = dropdownMenu.querySelector(`[data-name="${e.target.value}"]`);
+    this.setState({abCurrentLanguageName: selectedOption.dataset.name, abCurrentLanguageCode: selectedOption.dataset.locale});
+  }
+
+
+  //Appboy Data
+
+  getCurrentAbTemplate() {
+    var urlPathArray = window.location.pathname.split('/');
+    var articleTitleSpan = document.querySelector('span.editable-heading');
+    this.setState({abCurrentType: urlPathArray[urlPathArray.length - 2], abCurrentId: urlPathArray[urlPathArray.length - 1], abCurrentTitle: articleTitleSpan.innerHTML})
+  }
+
+  //QORDOBA API CALLS
 
   async getQLanguages() {
     var reqHeader = {
@@ -57,10 +98,38 @@ class App extends React.Component {
     }
   }
 
+  async getQFiles() {
+    var reqHeader = {
+      'X-AUTH-TOKEN': this.state.qAuthToken,
+      'Content-Type': 'application/json'
+    };
+    var qordobaLanguageId = this.state.qProjectLanguages[this.state.abCurrentLanguageCode].id;
+    console.log('qprojId', qordobaLanguageId)
+    var qordobaResponse = await $.ajax({
+      type: 'POST',
+      url: `https://app.qordoba.com/api/projects/${this.state.qProjectId}/languages/${qordobaLanguageId}/page_settings/search`,
+      headers: reqHeader,
+      data: JSON.stringify({})
+    })
+    console.log('QORDOBA RESPONSE', qordobaResponse)
+    var allQFilesObj = Object.assign({}, this.state.qProjectFiles);
+    for (var i = 0; i < qordobaResponse.length; i++) {
+      var qordobaFileObj = {};
+      qordobaFileObj.completed = qordobaResponse[i].completed;
+      qordobaFileObj.enabled = qordobaResponse[i].enabled;
+      qordobaFileObj.createdAt = qordobaResponse[i].created_at;
+      qordobaFileObj.updatedAt = qordobaResponse[i].update;
+      qordobaFileObj.qArticleId = qordobaResponse[i].page_id;
+      allQFilesObj[qordobaResponse[i].url] = qordobaFileObj;
+    }
+  }
+
+
+
   render() {
     return (
       <div id='q-app-container' className='flex flex-column flex-full-width-height'>
-        <LanguageDropdown qProjectLanguages={this.state.qProjectLanguages} getQLanguages={this.getQLanguages}/>
+        <LanguageDropdown handleLanguageChange={this.handleLanguageChange} qProjectLanguages={this.state.qProjectLanguages} getQLanguages={this.getQLanguages}/>
         <div id="q-email-preview-holder" className="email-preview-holder flex flex-column flex-full-width-height">
           <IFrame
             url="https://www.hackreactor.com"

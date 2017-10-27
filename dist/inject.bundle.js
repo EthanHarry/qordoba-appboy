@@ -997,18 +997,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_dom__ = __webpack_require__(19);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react_dom__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_App_js__ = __webpack_require__(42);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_App_js__ = __webpack_require__(32);
 console.log('hi inject script');
 
 
 
 
 
-
-//TODO
-//Stop alert from firing every fucking time
-//Set App header contents
-//Determine where to put classes on React containers (we have 2 containers -- target and container in App)
 
 //Global variables
 var appPanelTab;
@@ -21263,7 +21258,178 @@ module.exports = function() {
 
 
 /***/ }),
-/* 32 */,
+/* 32 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_iframe__ = __webpack_require__(33);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_iframe___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react_iframe__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_jquery__ = __webpack_require__(34);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_jquery___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_jquery__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__main_css__ = __webpack_require__(35);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__main_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__main_css__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__LanguageDropdown_js__ = __webpack_require__(40);
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+console.log('hi react app');
+
+
+
+
+
+
+//TODO
+//auth
+//Fix event listeners so that extension can fire multiple times without reload
+//Fix config import and usage
+//Webpack config
+//Loading spinner while w8ing for init
+//Stop alert from firing every fucking time
+//Set App header contents
+//Determine where to put classes on React containers (we have 2 containers -- target and container in App)
+
+
+//NEXT
+//1. API call to Qordoba to see if asset exists
+//Lookup and save in Qordoba by TYPE and by ID (we'll get fancy and add name later)
+//2. conditional rendering of iFrame, "send to Qordoba" button, or "Translation in progress" string
+
+class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
+  constructor(props) {
+    super(props);
+
+    //Need to actually render from auth
+    this.state = {
+      qAuthToken: 'b57c4072-6533-409c-b4b1-cdd9210c1802',
+      qOrganizationId: '3168',
+      qProjectId: '5843',
+      qProjectLanguages: {},
+      qProjectFiles: {},
+      abCurrentLanguageCode: '',
+      abCurrentLanguageName: '',
+      abCurrentType: '',
+      abCurrentId: '',
+      abCurrentTitle: ''
+    };
+    this.getQLanguages = this.getQLanguages.bind(this);
+    this.handleLanguageChange = this.handleLanguageChange.bind(this);
+  }
+
+  //React UI
+
+  componentDidUpdate() {
+    var _this = this;
+
+    return _asyncToGenerator(function* () {
+      console.log('STATE', _this.state);
+
+      if (_this.state.abCurrentLanguageCode) {
+        yield _this.getQFiles();
+      }
+    })();
+  }
+
+  componentDidMount() {
+    var _this2 = this;
+
+    return _asyncToGenerator(function* () {
+      _this2.getCurrentAbTemplate();
+      yield _this2.getQLanguages();
+    })();
+  }
+
+  handleLanguageChange(e) {
+    console.log(e.target);
+    var dropdownMenu = e.target;
+    var selectedOption = dropdownMenu.querySelector(`[data-name="${e.target.value}"]`);
+    this.setState({ abCurrentLanguageName: selectedOption.dataset.name, abCurrentLanguageCode: selectedOption.dataset.locale });
+  }
+
+  //Appboy Data
+
+  getCurrentAbTemplate() {
+    var urlPathArray = window.location.pathname.split('/');
+    var articleTitleSpan = document.querySelector('span.editable-heading');
+    this.setState({ abCurrentType: urlPathArray[urlPathArray.length - 2], abCurrentId: urlPathArray[urlPathArray.length - 1], abCurrentTitle: articleTitleSpan.innerHTML });
+  }
+
+  //QORDOBA API CALLS
+
+  getQLanguages() {
+    var _this3 = this;
+
+    return _asyncToGenerator(function* () {
+      var reqHeader = {
+        'X-AUTH-TOKEN': _this3.state.qAuthToken,
+        'Content-Type': 'application/json'
+      };
+      var projectDetailCall = yield __WEBPACK_IMPORTED_MODULE_2_jquery___default.a.ajax({
+        type: 'GET',
+        url: `https://app.qordoba.com/api/organizations/${_this3.state.qOrganizationId}/projects?limit=1&offset=0&limit_to_projects=${_this3.state.qProjectId}`,
+        headers: reqHeader
+      });
+      var qProjectLanguages = projectDetailCall.projects[0].target_languages;
+
+      for (var i = 0; i < qProjectLanguages.length; i++) {
+        var qLangs = Object.assign({}, _this3.state.qProjectLanguages);
+        qLangs[qProjectLanguages[i].code] = { id: qProjectLanguages[i].id, name: qProjectLanguages[i].name };
+        _this3.setState({ qProjectLanguages: qLangs });
+      }
+    })();
+  }
+
+  getQFiles() {
+    var _this4 = this;
+
+    return _asyncToGenerator(function* () {
+      var reqHeader = {
+        'X-AUTH-TOKEN': _this4.state.qAuthToken,
+        'Content-Type': 'application/json'
+      };
+      var qordobaLanguageId = _this4.state.qProjectLanguages[_this4.state.abCurrentLanguageCode].id;
+      console.log('qprojId', qordobaLanguageId);
+      var qordobaResponse = yield __WEBPACK_IMPORTED_MODULE_2_jquery___default.a.ajax({
+        type: 'POST',
+        url: `https://app.qordoba.com/api/projects/${_this4.state.qProjectId}/languages/${qordobaLanguageId}/page_settings/search`,
+        headers: reqHeader,
+        data: JSON.stringify({})
+      });
+      console.log('QORDOBA RESPONSE', qordobaResponse);
+      var allQFilesObj = Object.assign({}, _this4.state.qProjectFiles);
+      for (var i = 0; i < qordobaResponse.length; i++) {
+        var qordobaFileObj = {};
+        qordobaFileObj.completed = qordobaResponse[i].completed;
+        qordobaFileObj.enabled = qordobaResponse[i].enabled;
+        qordobaFileObj.createdAt = qordobaResponse[i].created_at;
+        qordobaFileObj.updatedAt = qordobaResponse[i].update;
+        qordobaFileObj.qArticleId = qordobaResponse[i].page_id;
+        allQFilesObj[qordobaResponse[i].url] = qordobaFileObj;
+      }
+    })();
+  }
+
+  render() {
+    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+      'div',
+      { id: 'q-app-container', className: 'flex flex-column flex-full-width-height' },
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__LanguageDropdown_js__["a" /* default */], { handleLanguageChange: this.handleLanguageChange, qProjectLanguages: this.state.qProjectLanguages, getQLanguages: this.getQLanguages }),
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        'div',
+        { id: 'q-email-preview-holder', className: 'email-preview-holder flex flex-column flex-full-width-height' },
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_react_iframe___default.a, {
+          url: 'https://www.hackreactor.com',
+          className: 'email-preview flex-full-width-height'
+        })
+      )
+    );
+  }
+}
+
+/* harmony default export */ __webpack_exports__["a"] = (App);
+
+/***/ }),
 /* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -31531,8 +31697,51 @@ return jQuery;
 
 
 /***/ }),
-/* 35 */,
-/* 36 */,
+/* 35 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(36);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// Prepare cssTransformation
+var transform;
+
+var options = {"hmr":true}
+options.transform = transform
+// add the styles to the DOM
+var update = __webpack_require__(38)(content, options);
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../node_modules/css-loader/index.js!./main.css", function() {
+			var newContent = require("!!../../node_modules/css-loader/index.js!./main.css");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 36 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(37)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, "/*#language-switcher {\n  color: red\n}*/", ""]);
+
+// exports
+
+
+/***/ }),
 /* 37 */
 /***/ (function(module, exports) {
 
@@ -32082,154 +32291,7 @@ module.exports = function (css) {
 
 
 /***/ }),
-/* 40 */,
-/* 41 */,
-/* 42 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_iframe__ = __webpack_require__(33);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_iframe___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react_iframe__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_jquery__ = __webpack_require__(34);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_jquery___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_jquery__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__main_css__ = __webpack_require__(43);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__main_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__main_css__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__LanguageDropdown_js__ = __webpack_require__(45);
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
-
-console.log('hi react app');
-
-
-
-
-
-
-//TODO
-//auth
-//Fix event listeners so that extension can fire multiple times without reload
-//Fix config import and usage
-//Webpack config
-//Loading spinner while w8ing for init
-
-
-//NEXT
-//1. API call to Qordoba to see if asset exists
-//Lookup and save in Qordoba by TYPE and by ID (we'll get fancy and add name later)
-//2. conditional rendering of iFrame, "send to Qordoba" button, or "Translation in progress" string
-
-class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
-  constructor(props) {
-    super(props);
-
-    //Need to actually render from auth
-    this.state = {
-      qAuthToken: 'b57c4072-6533-409c-b4b1-cdd9210c1802',
-      qOrganizationId: '3168',
-      qProjectId: '5843',
-      qProjectLanguages: {}
-    };
-    this.getQLanguages = this.getQLanguages.bind(this);
-  }
-
-  componentDidMount() {
-    var _this = this;
-
-    return _asyncToGenerator(function* () {
-      yield _this.getQLanguages();
-    })();
-  }
-
-  getQLanguages() {
-    var _this2 = this;
-
-    return _asyncToGenerator(function* () {
-      var reqHeader = {
-        'X-AUTH-TOKEN': _this2.state.qAuthToken,
-        'Content-Type': 'application/json'
-      };
-      var projectDetailCall = yield __WEBPACK_IMPORTED_MODULE_2_jquery___default.a.ajax({
-        type: 'GET',
-        url: `https://app.qordoba.com/api/organizations/${_this2.state.qOrganizationId}/projects?limit=1&offset=0&limit_to_projects=${_this2.state.qProjectId}`,
-        headers: reqHeader
-      });
-      var qProjectLanguages = projectDetailCall.projects[0].target_languages;
-
-      for (var i = 0; i < qProjectLanguages.length; i++) {
-        var qLangs = Object.assign({}, _this2.state.qProjectLanguages);
-        qLangs[qProjectLanguages[i].code] = { id: qProjectLanguages[i].id, name: qProjectLanguages[i].name };
-        _this2.setState({ qProjectLanguages: qLangs });
-      }
-    })();
-  }
-
-  render() {
-    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-      'div',
-      { id: 'q-app-container', className: 'flex flex-column flex-full-width-height' },
-      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__LanguageDropdown_js__["a" /* default */], { qProjectLanguages: this.state.qProjectLanguages, getQLanguages: this.getQLanguages }),
-      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-        'div',
-        { id: 'q-email-preview-holder', className: 'email-preview-holder flex flex-column flex-full-width-height' },
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_react_iframe___default.a, {
-          url: 'https://www.hackreactor.com',
-          className: 'email-preview flex-full-width-height'
-        })
-      )
-    );
-  }
-}
-
-/* harmony default export */ __webpack_exports__["a"] = (App);
-
-/***/ }),
-/* 43 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(44);
-if(typeof content === 'string') content = [[module.i, content, '']];
-// Prepare cssTransformation
-var transform;
-
-var options = {"hmr":true}
-options.transform = transform
-// add the styles to the DOM
-var update = __webpack_require__(38)(content, options);
-if(content.locals) module.exports = content.locals;
-// Hot Module Replacement
-if(false) {
-	// When the styles change, update the <style> tags
-	if(!content.locals) {
-		module.hot.accept("!!../../node_modules/css-loader/index.js!./main.css", function() {
-			var newContent = require("!!../../node_modules/css-loader/index.js!./main.css");
-			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-			update(newContent);
-		});
-	}
-	// When the module is disposed, remove the <style> tags
-	module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 44 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(37)(undefined);
-// imports
-
-
-// module
-exports.push([module.i, "/*#language-switcher {\n  color: red\n}*/", ""]);
-
-// exports
-
-
-/***/ }),
-/* 45 */
+/* 40 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -32249,7 +32311,12 @@ class LanguageDropdown extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Com
   render() {
     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
       'select',
-      { id: 'language-dropdown' },
+      { onChange: this.props.handleLanguageChange, id: 'language-dropdown' },
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        'option',
+        { selected: true, disabled: true },
+        'Select a language'
+      ),
       Object.keys(this.props.qProjectLanguages).map(locale => {
         return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
           'option',

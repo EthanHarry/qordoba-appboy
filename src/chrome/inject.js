@@ -5,10 +5,7 @@ import ReactDOM from 'react-dom';
 
 import App from '../app/App.js';
 
-//TODO
-  //Stop alert from firing every fucking time
-  //Set App header contents
-  //Determine where to put classes on React containers (we have 2 containers -- target and container in App)
+
 
 //Global variables
 var appPanelTab;

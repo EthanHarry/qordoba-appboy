@@ -1021,7 +1021,7 @@ var appContainer;
 // Create click target in control panel to launch our app
 var createControlPanelTab = () => {
   appPanelTab = document.createElement('div');
-  appPanelTab.innerHTML = 'App';
+  appPanelTab.innerHTML = 'Qordoba';
   appPanelTab.classList.add('control');
   appPanelTab.addEventListener('click', e => {
     //Manage tab UI state

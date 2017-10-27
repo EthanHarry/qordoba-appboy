@@ -21307,6 +21307,7 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
       qProjectId: '5843',
       qProjectLanguages: {},
       qProjectFiles: {},
+      qTranslationStatus: '',
       abCurrentLanguageCode: '',
       abCurrentLanguageName: '',
       abCurrentType: '',
@@ -21344,7 +21345,27 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
       var dropdownMenu = e.target;
       var selectedOption = dropdownMenu.querySelector(`[data-name="${e.target.value}"]`);
       yield _this3.setState({ abCurrentLanguageName: selectedOption.dataset.name, abCurrentLanguageCode: selectedOption.dataset.locale });
-      yield _this3.getQFiles();
+      if (Object.keys(_this3.state.qProjectFiles).length === 0) {
+        yield _this3.getQFiles();
+      }
+      //TODO this is assuming we send up articles to Qordoba with type and ID NOT name
+      var qFileTitle = `${_this3.abCurrentType}-${_this3.abCurrentTitle}`;
+      if (_this3.state.qProjectFiles[qFileTitle]) {
+        //Template DOES exist in Qordoba
+        //API call to Qordoba fetch locale/article-specific detail
+        //If completed
+        _this3.setState({ qTranslationStatus: 'completed' });
+        //render preview
+        //else if enabled
+        _this3.setState({ qTranslationStatus: 'enabled' });
+        //Show enabled status
+      } else {
+        //Template DOESNT exist in Qordoba
+        //Show doesnt exist status
+        _this3.setState({ qTranslationStatus: 'none' });
+      }
+      //In all cases, render button to send update contents back to qordoba
+      //TODO maybe check if the file has actually changed before we make this available?
     })();
   }
 
@@ -21412,19 +21433,32 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
   }
 
   render() {
-    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-      'div',
-      { id: 'q-app-container', className: 'flex flex-column flex-full-width-height' },
-      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__LanguageDropdown_js__["a" /* default */], { handleLanguageChange: this.handleLanguageChange, qProjectLanguages: this.state.qProjectLanguages, getQLanguages: this.getQLanguages }),
-      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+    if (this.state.qTranslationStatus === 'none') {
+      //Render blurb explaining that resource not in Q
+      //Render button to send
+    } else if (this.state.qTranslationStatus === 'enabled') {
+      //Show enabled status 
+      //Render button to send
+    } else if (this.state.qTranslationStatus === 'completed') {
+      //Render preview
+      //Render button to send
+    } else {
+      //Render a short blurb about how to get started
+      //Render button to send
+      return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         'div',
-        { id: 'q-email-preview-holder', className: 'email-preview-holder flex flex-column flex-full-width-height' },
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_react_iframe___default.a, {
-          url: 'https://www.hackreactor.com',
-          className: 'email-preview flex-full-width-height'
-        })
-      )
-    );
+        { id: 'q-app-container', className: 'flex flex-column flex-full-width-height' },
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__LanguageDropdown_js__["a" /* default */], { handleLanguageChange: this.handleLanguageChange, qProjectLanguages: this.state.qProjectLanguages, getQLanguages: this.getQLanguages }),
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          'div',
+          { id: 'q-email-preview-holder', className: 'email-preview-holder flex flex-column flex-full-width-height' },
+          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_react_iframe___default.a, {
+            url: 'https://www.hackreactor.com',
+            className: 'email-preview flex-full-width-height'
+          })
+        )
+      );
+    }
   }
 }
 

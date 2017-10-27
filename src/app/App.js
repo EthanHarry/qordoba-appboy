@@ -34,6 +34,7 @@ class App extends React.Component {
       qProjectId: '5843',
       qProjectLanguages: {},
       qProjectFiles: {},
+      qTranslationStatus: '',
       abCurrentLanguageCode: '',
       abCurrentLanguageName: '',
       abCurrentType: '',
@@ -62,7 +63,28 @@ class App extends React.Component {
     var dropdownMenu = e.target;
     var selectedOption = dropdownMenu.querySelector(`[data-name="${e.target.value}"]`);
     await this.setState({abCurrentLanguageName: selectedOption.dataset.name, abCurrentLanguageCode: selectedOption.dataset.locale});
-    await this.getQFiles();
+    if (Object.keys(this.state.qProjectFiles).length === 0) {
+      await this.getQFiles();
+    }
+    //TODO this is assuming we send up articles to Qordoba with type and ID NOT name
+    var qFileTitle = `${this.abCurrentType}-${this.abCurrentTitle}`;
+    if (this.state.qProjectFiles[qFileTitle]) {
+      //Template DOES exist in Qordoba
+      //API call to Qordoba fetch locale/article-specific detail
+      //If completed
+        this.setState({qTranslationStatus: 'completed'})
+        //render preview
+      //else if enabled
+        this.setState({qTranslationStatus: 'enabled'})
+        //Show enabled status
+    }
+    else {
+      //Template DOESNT exist in Qordoba
+      //Show doesnt exist status
+      this.setState({qTranslationStatus: 'none'})
+    }
+    //In all cases, render button to send update contents back to qordoba
+      //TODO maybe check if the file has actually changed before we make this available?
   }
 
 
@@ -124,17 +146,33 @@ class App extends React.Component {
 
 
   render() {
-    return (
-      <div id='q-app-container' className='flex flex-column flex-full-width-height'>
-        <LanguageDropdown handleLanguageChange={this.handleLanguageChange} qProjectLanguages={this.state.qProjectLanguages} getQLanguages={this.getQLanguages}/>
-        <div id="q-email-preview-holder" className="email-preview-holder flex flex-column flex-full-width-height">
-          <IFrame
-            url="https://www.hackreactor.com"
-            className="email-preview flex-full-width-height"
-          />
+    if (this.state.qTranslationStatus === 'none') {
+      //Render blurb explaining that resource not in Q
+      //Render button to send
+    }
+    else if (this.state.qTranslationStatus === 'enabled') {
+      //Show enabled status 
+      //Render button to send
+    }
+    else if (this.state.qTranslationStatus === 'completed') {
+      //Render preview
+      //Render button to send
+    }
+    else {
+      //Render a short blurb about how to get started
+      //Render button to send
+      return (
+        <div id='q-app-container' className='flex flex-column flex-full-width-height'>
+          <LanguageDropdown handleLanguageChange={this.handleLanguageChange} qProjectLanguages={this.state.qProjectLanguages} getQLanguages={this.getQLanguages}/>
+          <div id="q-email-preview-holder" className="email-preview-holder flex flex-column flex-full-width-height">
+            <IFrame
+              url="https://www.hackreactor.com"
+              className="email-preview flex-full-width-height"
+            />
+          </div>
         </div>
-      </div>
-    )
+      )
+    }
   }
 }
 

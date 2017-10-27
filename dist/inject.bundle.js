@@ -21324,10 +21324,6 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 
     return _asyncToGenerator(function* () {
       console.log('STATE', _this.state);
-
-      if (_this.state.abCurrentLanguageCode) {
-        yield _this.getQFiles();
-      }
     })();
   }
 
@@ -21341,10 +21337,15 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
   }
 
   handleLanguageChange(e) {
-    console.log(e.target);
-    var dropdownMenu = e.target;
-    var selectedOption = dropdownMenu.querySelector(`[data-name="${e.target.value}"]`);
-    this.setState({ abCurrentLanguageName: selectedOption.dataset.name, abCurrentLanguageCode: selectedOption.dataset.locale });
+    var _this3 = this;
+
+    return _asyncToGenerator(function* () {
+      console.log(e.target);
+      var dropdownMenu = e.target;
+      var selectedOption = dropdownMenu.querySelector(`[data-name="${e.target.value}"]`);
+      yield _this3.setState({ abCurrentLanguageName: selectedOption.dataset.name, abCurrentLanguageCode: selectedOption.dataset.locale });
+      yield _this3.getQFiles();
+    })();
   }
 
   //Appboy Data
@@ -21358,29 +21359,6 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
   //QORDOBA API CALLS
 
   getQLanguages() {
-    var _this3 = this;
-
-    return _asyncToGenerator(function* () {
-      var reqHeader = {
-        'X-AUTH-TOKEN': _this3.state.qAuthToken,
-        'Content-Type': 'application/json'
-      };
-      var projectDetailCall = yield __WEBPACK_IMPORTED_MODULE_2_jquery___default.a.ajax({
-        type: 'GET',
-        url: `https://app.qordoba.com/api/organizations/${_this3.state.qOrganizationId}/projects?limit=1&offset=0&limit_to_projects=${_this3.state.qProjectId}`,
-        headers: reqHeader
-      });
-      var qProjectLanguages = projectDetailCall.projects[0].target_languages;
-
-      for (var i = 0; i < qProjectLanguages.length; i++) {
-        var qLangs = Object.assign({}, _this3.state.qProjectLanguages);
-        qLangs[qProjectLanguages[i].code] = { id: qProjectLanguages[i].id, name: qProjectLanguages[i].name };
-        _this3.setState({ qProjectLanguages: qLangs });
-      }
-    })();
-  }
-
-  getQFiles() {
     var _this4 = this;
 
     return _asyncToGenerator(function* () {
@@ -21388,25 +21366,48 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
         'X-AUTH-TOKEN': _this4.state.qAuthToken,
         'Content-Type': 'application/json'
       };
-      var qordobaLanguageId = _this4.state.qProjectLanguages[_this4.state.abCurrentLanguageCode].id;
+      var projectDetailCall = yield __WEBPACK_IMPORTED_MODULE_2_jquery___default.a.ajax({
+        type: 'GET',
+        url: `https://app.qordoba.com/api/organizations/${_this4.state.qOrganizationId}/projects?limit=1&offset=0&limit_to_projects=${_this4.state.qProjectId}`,
+        headers: reqHeader
+      });
+      var qProjectLanguages = projectDetailCall.projects[0].target_languages;
+      for (var i = 0; i < qProjectLanguages.length; i++) {
+        var qLangs = Object.assign({}, _this4.state.qProjectLanguages);
+        qLangs[qProjectLanguages[i].code] = { id: qProjectLanguages[i].id, name: qProjectLanguages[i].name };
+        _this4.setState({ qProjectLanguages: qLangs });
+      }
+    })();
+  }
+
+  getQFiles() {
+    var _this5 = this;
+
+    return _asyncToGenerator(function* () {
+      var reqHeader = {
+        'X-AUTH-TOKEN': _this5.state.qAuthToken,
+        'Content-Type': 'application/json'
+      };
+      var qordobaLanguageId = _this5.state.qProjectLanguages[_this5.state.abCurrentLanguageCode].id;
       console.log('qprojId', qordobaLanguageId);
       var qordobaResponse = yield __WEBPACK_IMPORTED_MODULE_2_jquery___default.a.ajax({
         type: 'POST',
-        url: `https://app.qordoba.com/api/projects/${_this4.state.qProjectId}/languages/${qordobaLanguageId}/page_settings/search`,
+        url: `https://app.qordoba.com/api/projects/${_this5.state.qProjectId}/languages/${qordobaLanguageId}/page_settings/search`,
         headers: reqHeader,
         data: JSON.stringify({})
       });
-      console.log('QORDOBA RESPONSE', qordobaResponse);
-      var allQFilesObj = Object.assign({}, _this4.state.qProjectFiles);
-      for (var i = 0; i < qordobaResponse.length; i++) {
+      var qordobaFiles = qordobaResponse.pages;
+      var allQFilesObj = Object.assign({}, _this5.state.qProjectFiles);
+      for (var i = 0; i < qordobaFiles.length; i++) {
         var qordobaFileObj = {};
-        qordobaFileObj.completed = qordobaResponse[i].completed;
-        qordobaFileObj.enabled = qordobaResponse[i].enabled;
-        qordobaFileObj.createdAt = qordobaResponse[i].created_at;
-        qordobaFileObj.updatedAt = qordobaResponse[i].update;
-        qordobaFileObj.qArticleId = qordobaResponse[i].page_id;
-        allQFilesObj[qordobaResponse[i].url] = qordobaFileObj;
+        qordobaFileObj.completed = qordobaFiles[i].completed;
+        qordobaFileObj.enabled = qordobaFiles[i].enabled;
+        qordobaFileObj.createdAt = qordobaFiles[i].created_at;
+        qordobaFileObj.updatedAt = qordobaFiles[i].update;
+        qordobaFileObj.qArticleId = qordobaFiles[i].page_id;
+        allQFilesObj[qordobaFiles[i].url] = qordobaFileObj;
       }
+      _this5.setState({ qProjectFiles: allQFilesObj });
     })();
   }
 

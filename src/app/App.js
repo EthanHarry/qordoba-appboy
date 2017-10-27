@@ -48,10 +48,6 @@ class App extends React.Component {
 
   async componentDidUpdate() {
     console.log('STATE', this.state)
-
-    if (this.state.abCurrentLanguageCode) {
-      await this.getQFiles();
-    }
   }
 
 
@@ -61,11 +57,12 @@ class App extends React.Component {
   }
 
 
-  handleLanguageChange(e) {
+  async handleLanguageChange(e) {
     console.log(e.target)
     var dropdownMenu = e.target;
     var selectedOption = dropdownMenu.querySelector(`[data-name="${e.target.value}"]`);
-    this.setState({abCurrentLanguageName: selectedOption.dataset.name, abCurrentLanguageCode: selectedOption.dataset.locale});
+    await this.setState({abCurrentLanguageName: selectedOption.dataset.name, abCurrentLanguageCode: selectedOption.dataset.locale});
+    await this.getQFiles();
   }
 
 
@@ -90,7 +87,6 @@ class App extends React.Component {
       headers: reqHeader
     })
     var qProjectLanguages = projectDetailCall.projects[0].target_languages;
-
     for (var i = 0; i < qProjectLanguages.length; i++) {
       var qLangs = Object.assign({}, this.state.qProjectLanguages);
       qLangs[qProjectLanguages[i].code] = {id: qProjectLanguages[i].id, name: qProjectLanguages[i].name}
@@ -111,17 +107,18 @@ class App extends React.Component {
       headers: reqHeader,
       data: JSON.stringify({})
     })
-    console.log('QORDOBA RESPONSE', qordobaResponse)
+    var qordobaFiles = qordobaResponse.pages;
     var allQFilesObj = Object.assign({}, this.state.qProjectFiles);
-    for (var i = 0; i < qordobaResponse.length; i++) {
+    for (var i = 0; i < qordobaFiles.length; i++) {
       var qordobaFileObj = {};
-      qordobaFileObj.completed = qordobaResponse[i].completed;
-      qordobaFileObj.enabled = qordobaResponse[i].enabled;
-      qordobaFileObj.createdAt = qordobaResponse[i].created_at;
-      qordobaFileObj.updatedAt = qordobaResponse[i].update;
-      qordobaFileObj.qArticleId = qordobaResponse[i].page_id;
-      allQFilesObj[qordobaResponse[i].url] = qordobaFileObj;
+      qordobaFileObj.completed = qordobaFiles[i].completed;
+      qordobaFileObj.enabled = qordobaFiles[i].enabled;
+      qordobaFileObj.createdAt = qordobaFiles[i].created_at;
+      qordobaFileObj.updatedAt = qordobaFiles[i].update;
+      qordobaFileObj.qArticleId = qordobaFiles[i].page_id;
+      allQFilesObj[qordobaFiles[i].url] = qordobaFileObj;
     }
+    this.setState({qProjectFiles: allQFilesObj})
   }
 
 

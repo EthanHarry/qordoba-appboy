@@ -1,3 +1,13 @@
 /*#language-switcher {
   color: red
 }*/
+
+#q-language-dropdown {
+  border-bottom: 1px solid #d0d0d0;
+  padding-left: 0px;
+}
+
+.q-app-container {
+  align-self: left;
+  padding: 20px
+}

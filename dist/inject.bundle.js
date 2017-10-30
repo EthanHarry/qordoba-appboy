@@ -8619,6 +8619,7 @@ var appPanelTab;
 var outerContainer = document.querySelector('.panel.preview-panel');
 var controlPanel = outerContainer.querySelector('div.controls.left-controls');
 var previewContainer = outerContainer.querySelector('.panel-body');
+var header = outerContainer.querySelector('div.panel-header.padded-header');
 var appRendered = false;
 var appContainer;
 
@@ -8642,6 +8643,7 @@ var handleOtherTabClicks = () => {
   for (var i = 0; i < controlPanel.children.length; i++) {
     if (controlPanel.children[i] !== appPanelTab) {
       controlPanel.children[i].addEventListener('click', e => {
+        header.style.display = 'block';
         e.target.classList.add('active');
         appPanelTab.classList.remove('active');
         //Make other tab content visible again
@@ -8662,7 +8664,7 @@ var handleOtherTabClicks = () => {
 
 var renderReactApp = () => {
   //Set header contents
-
+  header.style.display = 'none';
 
   //Clear other tab content
   for (var i = 0; i < previewContainer.children.length; i++) {
@@ -8677,11 +8679,11 @@ var renderReactApp = () => {
   if (!appRendered) {
     console.log(previewContainer.children);
     appContainer = document.createElement('div');
-    appContainer.classList.add('flex', 'flex-column', 'flex-full-width-height');
     previewContainer.appendChild(appContainer);
     __WEBPACK_IMPORTED_MODULE_1_react_dom___default.a.render(__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__app_App_js__["a" /* default */], null), appContainer);
     appRendered = true;
   }
+  appContainer.classList.add('q-app-container', 'flex', 'flex-column', 'flex-full-width-height');
   appContainer.style.display = 'flex';
 };
 
@@ -28880,13 +28882,15 @@ module.exports = function() {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__main_css__ = __webpack_require__(86);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__main_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__main_css__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__LanguageDropdown_js__ = __webpack_require__(91);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_jszip__ = __webpack_require__(92);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_jszip___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_jszip__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_jszip_utils__ = __webpack_require__(144);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_jszip_utils___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_jszip_utils__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__TranslationPreview_js__ = __webpack_require__(147);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_jszip__ = __webpack_require__(92);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_jszip___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_jszip__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_jszip_utils__ = __webpack_require__(144);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_jszip_utils___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_jszip_utils__);
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 console.log('hi react app');
+
 
 
 
@@ -28918,7 +28922,7 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 
     //Need to actually render from auth
     this.state = {
-      qAuthToken: 'b57c4072-6533-409c-b4b1-cdd9210c1802',
+      qAuthToken: '024abe2e-168f-4f19-840c-d8ed3c65bb07',
       qOrganizationId: '3168',
       qProjectId: '5843',
       qProjectLanguages: {},
@@ -28930,7 +28934,8 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
       abId: '',
       abTitle: '',
       abSourceContent: '',
-      abTargetContent: ''
+      abTargetContent: '',
+      abTranslationStatuses: {}
     };
     this.qGetLanguages = this.qGetLanguages.bind(this);
     this.handleLanguageChange = this.handleLanguageChange.bind(this);
@@ -28966,9 +28971,7 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
       var dropdownMenu = e.target;
       var selectedOption = dropdownMenu.querySelector(`[data-name="${e.target.value}"]`);
       yield _this3.setState({ abLanguageName: selectedOption.dataset.name, abLanguageCode: selectedOption.dataset.locale });
-      if (Object.keys(_this3.state.qProjectFiles).length === 0) {
-        yield _this3.qGetFiles();
-      }
+      yield _this3.qGetFiles();
       //TODO this is assuming we send up articles to Qordoba with type and ID NOT name
       var qFileTitle = `${_this3.state.abType}-${_this3.state.abId}`;
       console.log('QFILETITLE', qFileTitle);
@@ -28990,7 +28993,6 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
         yield _this3.setState({ qTranslationStatus: 'none' });
         console.log('setting state to untranslated');
       }
-      //In all cases, render button to send update contents back to qordoba
       //TODO maybe check if the file has actually changed before we make this available?
     })();
   }
@@ -29006,15 +29008,11 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
     //TODO need to confirm that this ALWAYS grabs the right content
     var iFramesArray = document.querySelectorAll('iframe');
     for (var i = 0; i < iFramesArray.length; i++) {
-      if (iFramesArray[i].classList.length === 0) {
+      if (iFramesArray[i].classList.length !== 0 && iFramesArray[i].id !== 'q-preview-iframe') {
         console.log('FOUND TEMPLATE CONTENT!!!');
         this.setState({ abSourceContent: iFramesArray[i].contentWindow.document.body.outerHTML }); //TODO need to make sure we parse out non-body tags
       }
     }
-  }
-
-  abPublishPreview() {
-    return _asyncToGenerator(function* () {})();
   }
 
   //QORDOBA API CALLS
@@ -29150,8 +29148,8 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
       });
       console.log('RESPONSE COMP FILE', completeZipFile);
 
-      var newZip = new __WEBPACK_IMPORTED_MODULE_5_jszip___default.a();
-      __WEBPACK_IMPORTED_MODULE_6_jszip_utils___default.a.getBinaryContent(`https://app.qordoba.com/api/file/download?token=${completeZipFile.token}&filename=${encodeURIComponent(completeZipFile.filename)}`, (() => {
+      var newZip = new __WEBPACK_IMPORTED_MODULE_6_jszip___default.a();
+      __WEBPACK_IMPORTED_MODULE_7_jszip_utils___default.a.getBinaryContent(`https://app.qordoba.com/api/file/download?token=${completeZipFile.token}&filename=${encodeURIComponent(completeZipFile.filename)}`, (() => {
         var _ref = _asyncToGenerator(function* (err, data) {
 
           console.log('first data', data);
@@ -29187,14 +29185,15 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
       return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         'div',
         { className: 'q-translation-status-container' },
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__LanguageDropdown_js__["a" /* default */], { handleLanguageChange: this.handleLanguageChange, qProjectLanguages: this.state.qProjectLanguages, qGetLanguages: this.qGetLanguages }),
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-          'div',
-          { className: 'q-status-text' },
-          'This template is not yet in Qordoba. Please click the button below to start translating!'
+          'p',
+          { className: 'helptext' },
+          'This template is not yet in Qordoba. Please click the button below to start translating! '
         ),
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
           'button',
-          { onClick: this.qFileUpload, type: 'submit', id: 'q-upload-button' },
+          { className: 'btn img-btn pull-left', onClick: this.qFileUpload, type: 'submit', id: 'q-upload-button' },
           ' Upload to Qordoba '
         )
       );
@@ -29205,38 +29204,24 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
       return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         'div',
         { className: 'q-translation-status-container' },
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__LanguageDropdown_js__["a" /* default */], { handleLanguageChange: this.handleLanguageChange, qProjectLanguages: this.state.qProjectLanguages, qGetLanguages: this.qGetLanguages }),
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-          'div',
-          { className: 'q-status-text' },
+          'p',
+          { className: 'helptext' },
           'This template is currently being translated in Qordoba. If the original template content has changed, please click the button below to re-upload to Qordoba.'
         ),
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
           'button',
-          { onClick: this.qFileUpload, type: 'submit', id: 'q-upload-button' },
-          ' Re-upload to Qordoba '
+          { className: 'btn img-btn pull-left', onClick: this.qFileUpload, type: 'submit', id: 'q-upload-button' },
+          ' Re-upload changed template to Qordoba '
         )
       );
     } else if (this.state.qTranslationStatus === 'completed') {
-      //Render preview
-      //Render button to send
       return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         'div',
-        { id: 'q-app-container', className: 'flex flex-column flex-full-width-height' },
+        { className: 'q-translation-status-container flex flex-column flex-full-width-height' },
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__LanguageDropdown_js__["a" /* default */], { handleLanguageChange: this.handleLanguageChange, qProjectLanguages: this.state.qProjectLanguages, qGetLanguages: this.qGetLanguages }),
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-          'div',
-          { id: 'q-email-preview-holder', className: 'email-preview-holder flex flex-column flex-full-width-height' },
-          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('iframe', {
-            srcDoc: this.state.abTargetContent,
-            className: 'email-preview flex-full-width-height',
-            id: 'q-preview-iframe'
-          })
-        ),
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-          'button',
-          { onClick: this.qFileUpload, type: 'submit', id: 'q-upload-button' },
-          ' Re-upload to Qordoba '
-        )
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__TranslationPreview_js__["a" /* default */], { abTranslationStatuses: this.state.abTranslationStatuses, qFileUpload: this.qFileUpload, abTargetContent: this.state.abTargetContent, handleLanguageChange: this.handleLanguageChange, qProjectLanguages: this.state.qProjectLanguages, qGetLanguages: this.qGetLanguages })
       );
     } else {
       //TODO
@@ -29244,16 +29229,12 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
       //Render button to send
       return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         'div',
-        { id: 'q-app-container', className: 'flex flex-column flex-full-width-height' },
+        { className: 'q-translation-status-container' },
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__LanguageDropdown_js__["a" /* default */], { handleLanguageChange: this.handleLanguageChange, qProjectLanguages: this.state.qProjectLanguages, qGetLanguages: this.qGetLanguages }),
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-          'div',
-          { id: 'q-email-preview-holder', className: 'email-preview-holder flex flex-column flex-full-width-height' },
-          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_react_iframe___default.a, {
-            url: 'https://www.hackreactor.com',
-            className: 'email-preview flex-full-width-height',
-            id: 'q-preview-iframe'
-          })
+          'p',
+          { className: 'helptext' },
+          ' Please select a language from the dropdown menu above to get started with Qordoba!'
         )
       );
     }
@@ -39569,7 +39550,7 @@ exports = module.exports = __webpack_require__(88)(undefined);
 
 
 // module
-exports.push([module.i, "/*#language-switcher {\n  color: red\n}*/", ""]);
+exports.push([module.i, "/*#language-switcher {\n  color: red\n}*/\n\n#q-language-dropdown {\n  border-bottom: 1px solid #d0d0d0;\n  padding-left: 0px;\n}\n\n.q-app-container {\n  align-self: left;\n  padding: 20px\n}", ""]);
 
 // exports
 
@@ -40138,25 +40119,29 @@ class LanguageDropdown extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Com
   }
 
   componentDidMount() {
-    console.log(this.props);
+    console.log('DROPDOWNMENU PROPS', this.props);
   }
 
   render() {
     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-      'select',
-      { onChange: this.props.handleLanguageChange, id: 'q-language-dropdown' },
+      'div',
+      { id: 'q-language-dropdown', className: 'panel-header padded-header' },
       __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-        'option',
-        { selected: true, disabled: true },
-        'Select a language'
-      ),
-      Object.keys(this.props.qProjectLanguages).map(locale => {
-        return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        'select',
+        { onChange: this.props.handleLanguageChange },
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
           'option',
-          { className: 'q-language-dropdown-option', key: locale, 'data-locale': locale, 'data-name': this.props.qProjectLanguages[locale].name, 'data-id': this.props.qProjectLanguages[locale].id },
-          this.props.qProjectLanguages[locale].name
-        );
-      })
+          { selected: true, disabled: true },
+          'Select a language'
+        ),
+        Object.keys(this.props.qProjectLanguages).map(locale => {
+          return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            'option',
+            { className: 'q-language-dropdown-option', key: locale, 'data-locale': locale, 'data-name': this.props.qProjectLanguages[locale].name, 'data-id': this.props.qProjectLanguages[locale].id },
+            this.props.qProjectLanguages[locale].name
+          );
+        })
+      )
     );
   }
 }
@@ -50209,6 +50194,70 @@ module.exports = JSZipUtils;
 // enforcing Stuk's coding style
 // vim: set shiftwidth=4 softtabstop=4:
 
+
+/***/ }),
+/* 145 */,
+/* 146 */,
+/* 147 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+
+
+class TranslationPreview extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
+  constructor(props) {
+    super(props);
+    this.state = { abTargetCompleteHtml: '' };
+  }
+
+  abCopyTargetContent() {
+    var textArea = document.querySelector('textarea.q-translated-textarea');
+    console.log('textarea', textArea);
+    textArea.select();
+    try {
+      var successful = document.execCommand('copy');
+      var msg = successful ? 'successful' : 'unsuccessful';
+      console.log('Copying text command was ' + msg);
+    } catch (err) {
+      console.log('Oops, unable to copy');
+    }
+  }
+
+  render() {
+    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+      'div',
+      { className: 'q-translation-status-container flex flex-column flex-full-width-height' },
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        'div',
+        { id: 'q-email-preview-holder', className: 'email-preview-holder flex flex-column flex-full-width-height' },
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('iframe', {
+          srcDoc: this.props.abTargetContent,
+          className: 'email-preview flex-full-width-height',
+          id: 'q-preview-iframe'
+        })
+      ),
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        'div',
+        null,
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          'button',
+          { className: 'btn img-btn pull-left', onClick: this.abCopyTargetContent, type: 'submit', id: 'q-copy-button' },
+          ' Copy translation to clipboard '
+        ),
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          'button',
+          { className: 'btn img-btn pull-left', onClick: this.props.qFileUpload, type: 'submit', id: 'q-upload-button' },
+          ' Re-upload changed template to Qordoba '
+        )
+      ),
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('textarea', { className: 'q-translated-textarea', value: this.props.abTargetContent })
+    );
+  }
+}
+
+/* harmony default export */ __webpack_exports__["a"] = (TranslationPreview);
 
 /***/ })
 /******/ ]);

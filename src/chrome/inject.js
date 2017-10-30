@@ -12,6 +12,7 @@ var appPanelTab;
 var outerContainer = document.querySelector('.panel.preview-panel');
 var controlPanel = outerContainer.querySelector('div.controls.left-controls');
 var previewContainer = outerContainer.querySelector('.panel-body');
+var header = outerContainer.querySelector('div.panel-header.padded-header');
 var appRendered = false;
 var appContainer;
 
@@ -37,6 +38,7 @@ var handleOtherTabClicks = () => {
   for (var i = 0; i < controlPanel.children.length; i++) {
     if (controlPanel.children[i] !== appPanelTab) {
       controlPanel.children[i].addEventListener('click', (e) => {
+        header.style.display = 'block';
         e.target.classList.add('active');
         appPanelTab.classList.remove('active');
         //Make other tab content visible again
@@ -58,7 +60,7 @@ var handleOtherTabClicks = () => {
 
 var renderReactApp = () => {
   //Set header contents
-  
+  header.style.display = 'none';
 
   //Clear other tab content
   for (var i = 0; i < previewContainer.children.length; i++) {
@@ -73,11 +75,11 @@ var renderReactApp = () => {
   if (!appRendered) {
     console.log(previewContainer.children);
     appContainer = document.createElement('div');
-    appContainer.classList.add('flex', 'flex-column', 'flex-full-width-height');
     previewContainer.appendChild(appContainer);
     ReactDOM.render(<App/>, appContainer);
     appRendered = true;
   }
+  appContainer.classList.add('q-app-container', 'flex', 'flex-column', 'flex-full-width-height');
   appContainer.style.display = 'flex';
 }
 

@@ -4,6 +4,7 @@ import IFrame from 'react-iframe';
 import $ from 'jquery';
 import styles from './main.css';
 import LanguageDropdown from './LanguageDropdown.js';
+import TranslationPreview from './TranslationPreview.js';
 import JSZip from 'jszip';
 import JSZipUtils from 'jszip-utils';
 
@@ -32,7 +33,7 @@ class App extends React.Component {
 
     //Need to actually render from auth
     this.state = {
-      qAuthToken: 'b57c4072-6533-409c-b4b1-cdd9210c1802',
+      qAuthToken: '024abe2e-168f-4f19-840c-d8ed3c65bb07',
       qOrganizationId: '3168',
       qProjectId: '5843',
       qProjectLanguages: {},
@@ -44,7 +45,8 @@ class App extends React.Component {
       abId: '',
       abTitle: '',
       abSourceContent: '',
-      abTargetContent: ''
+      abTargetContent: '',
+      abTranslationStatuses: {}
     }
     this.qGetLanguages = this.qGetLanguages.bind(this);
     this.handleLanguageChange = this.handleLanguageChange.bind(this);
@@ -73,9 +75,7 @@ class App extends React.Component {
     var dropdownMenu = e.target;
     var selectedOption = dropdownMenu.querySelector(`[data-name="${e.target.value}"]`);
     await this.setState({abLanguageName: selectedOption.dataset.name, abLanguageCode: selectedOption.dataset.locale});
-    if (Object.keys(this.state.qProjectFiles).length === 0) {
-      await this.qGetFiles();
-    }
+    await this.qGetFiles();
     //TODO this is assuming we send up articles to Qordoba with type and ID NOT name
     var qFileTitle = `${this.state.abType}-${this.state.abId}`;
     console.log('QFILETITLE', qFileTitle)
@@ -99,7 +99,6 @@ class App extends React.Component {
       await this.setState({qTranslationStatus: 'none'})
       console.log('setting state to untranslated')
     }
-    //In all cases, render button to send update contents back to qordoba
       //TODO maybe check if the file has actually changed before we make this available?
   }
 
@@ -119,19 +118,12 @@ class App extends React.Component {
     //TODO need to confirm that this ALWAYS grabs the right content
     var iFramesArray = document.querySelectorAll('iframe');
     for (var i = 0; i < iFramesArray.length; i++) {
-      if (iFramesArray[i].classList.length === 0) {
+      if (iFramesArray[i].classList.length !== 0 && iFramesArray[i].id !== 'q-preview-iframe') {
         console.log('FOUND TEMPLATE CONTENT!!!')
         this.setState({abSourceContent: iFramesArray[i].contentWindow.document.body.outerHTML}) //TODO need to make sure we parse out non-body tags
       }
     }
   }
-
-
-  async abPublishPreview() {
-      
-
-  }
-
 
 
 
@@ -289,10 +281,9 @@ class App extends React.Component {
       //Render button to send
       return (
         <div className='q-translation-status-container'>
-          <div className='q-status-text'>
-            This template is not yet in Qordoba. Please click the button below to start translating!
-          </div>
-          <button onClick={this.qFileUpload} type="submit" id='q-upload-button'> Upload to Qordoba </button>
+          <LanguageDropdown handleLanguageChange={this.handleLanguageChange} qProjectLanguages={this.state.qProjectLanguages} qGetLanguages={this.qGetLanguages}/>
+          <p className='helptext'>This template is not yet in Qordoba. Please click the button below to start translating! </p>
+          <button className='btn img-btn pull-left' onClick={this.qFileUpload} type="submit" id='q-upload-button'> Upload to Qordoba </button>
         </div>
       )
     }
@@ -302,27 +293,17 @@ class App extends React.Component {
 
       return (
         <div className='q-translation-status-container'>
-          <div className='q-status-text'>
-            This template is currently being translated in Qordoba. If the original template content has changed, please click the button below to re-upload to Qordoba.
-          </div>
-          <button onClick={this.qFileUpload} type="submit" id='q-upload-button'> Re-upload to Qordoba </button>
+          <LanguageDropdown handleLanguageChange={this.handleLanguageChange} qProjectLanguages={this.state.qProjectLanguages} qGetLanguages={this.qGetLanguages}/>
+          <p className='helptext'>This template is currently being translated in Qordoba. If the original template content has changed, please click the button below to re-upload to Qordoba.</p>
+          <button className='btn img-btn pull-left' onClick={this.qFileUpload} type="submit" id='q-upload-button'> Re-upload changed template to Qordoba </button>
         </div>
       )
     }
     else if (this.state.qTranslationStatus === 'completed') {
-      //Render preview
-      //Render button to send
       return (
-        <div id='q-app-container' className='flex flex-column flex-full-width-height'>
+        <div className='q-translation-status-container flex flex-column flex-full-width-height'>
           <LanguageDropdown handleLanguageChange={this.handleLanguageChange} qProjectLanguages={this.state.qProjectLanguages} qGetLanguages={this.qGetLanguages}/>
-          <div id="q-email-preview-holder" className="email-preview-holder flex flex-column flex-full-width-height">
-            <iframe
-              srcDoc={this.state.abTargetContent}
-              className="email-preview flex-full-width-height"
-              id="q-preview-iframe"
-            />
-          </div>
-          <button onClick={this.qFileUpload} type="submit" id='q-upload-button'> Re-upload to Qordoba </button>
+          <TranslationPreview abTranslationStatuses={this.state.abTranslationStatuses} qFileUpload={this.qFileUpload} abTargetContent={this.state.abTargetContent} handleLanguageChange={this.handleLanguageChange} qProjectLanguages={this.state.qProjectLanguages} qGetLanguages={this.qGetLanguages}/>
         </div>
       )
     }
@@ -331,15 +312,9 @@ class App extends React.Component {
       //Render a short blurb about how to get started
       //Render button to send
       return (
-        <div id='q-app-container' className='flex flex-column flex-full-width-height'>
+        <div className='q-translation-status-container'>
           <LanguageDropdown handleLanguageChange={this.handleLanguageChange} qProjectLanguages={this.state.qProjectLanguages} qGetLanguages={this.qGetLanguages}/>
-          <div id="q-email-preview-holder" className="email-preview-holder flex flex-column flex-full-width-height">
-            <IFrame
-              url="https://www.hackreactor.com"
-              className="email-preview flex-full-width-height"
-              id="q-preview-iframe"
-            />
-          </div>
+          <p className='helptext'> Please select a language from the dropdown menu above to get started with Qordoba!</p>
         </div>
       )
     }

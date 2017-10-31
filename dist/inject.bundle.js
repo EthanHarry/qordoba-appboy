@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 67);
+/******/ 	return __webpack_require__(__webpack_require__.s = 66);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -71,7 +71,7 @@
 
 
 var support = __webpack_require__(4);
-var base64 = __webpack_require__(46);
+var base64 = __webpack_require__(45);
 var nodejsUtils = __webpack_require__(19);
 var setImmediate = __webpack_require__(107);
 var external = __webpack_require__(15);
@@ -1089,7 +1089,7 @@ else {
 }
 
 try {
-    exports.nodestream = !!__webpack_require__(40).Readable;
+    exports.nodestream = !!__webpack_require__(39).Readable;
 } catch(e) {
     exports.nodestream = false;
 }
@@ -1322,7 +1322,7 @@ var util = __webpack_require__(14);
 util.inherits = __webpack_require__(12);
 /*</replacement>*/
 
-var Readable = __webpack_require__(41);
+var Readable = __webpack_require__(40);
 var Writable = __webpack_require__(27);
 
 util.inherits(Duplex, Readable);
@@ -1406,9 +1406,9 @@ function forEach(xs, f) {
 /* WEBPACK VAR INJECTION */(function(process) {
 
 if (process.env.NODE_ENV === 'production') {
-  module.exports = __webpack_require__(68);
+  module.exports = __webpack_require__(67);
 } else {
-  module.exports = __webpack_require__(69);
+  module.exports = __webpack_require__(68);
 }
 
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
@@ -1712,7 +1712,7 @@ exports.Utf8EncodeWorker = Utf8EncodeWorker;
 
 var base64 = __webpack_require__(94)
 var ieee754 = __webpack_require__(95)
-var isArray = __webpack_require__(39)
+var isArray = __webpack_require__(38)
 
 exports.Buffer = Buffer
 exports.SlowBuffer = SlowBuffer
@@ -4417,12 +4417,12 @@ function isUndefined(arg) {
 /* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(41);
+exports = module.exports = __webpack_require__(40);
 exports.Stream = exports;
 exports.Readable = exports;
 exports.Writable = __webpack_require__(27);
 exports.Duplex = __webpack_require__(7);
-exports.Transform = __webpack_require__(45);
+exports.Transform = __webpack_require__(44);
 exports.PassThrough = __webpack_require__(102);
 
 
@@ -4576,7 +4576,7 @@ var internalUtil = {
 /*</replacement>*/
 
 /*<replacement>*/
-var Stream = __webpack_require__(42);
+var Stream = __webpack_require__(41);
 /*</replacement>*/
 
 /*<replacement>*/
@@ -4590,7 +4590,7 @@ function _isUint8Array(obj) {
 }
 /*</replacement>*/
 
-var destroyImpl = __webpack_require__(43);
+var destroyImpl = __webpack_require__(42);
 
 util.inherits(Writable, Stream);
 
@@ -5178,7 +5178,7 @@ module.exports = function(it){
 /***/ (function(module, exports, __webpack_require__) {
 
 // Thank's IE8 for his funny defineProperty
-module.exports = !__webpack_require__(49)(function(){
+module.exports = !__webpack_require__(48)(function(){
   return Object.defineProperty({}, 'a', {get: function(){ return 7; }}).a != 7;
 });
 
@@ -5190,10 +5190,10 @@ module.exports = !__webpack_require__(49)(function(){
 
 
 var external = __webpack_require__(15);
-var DataWorker = __webpack_require__(53);
-var DataLengthProbe = __webpack_require__(54);
-var Crc32Probe = __webpack_require__(55);
-var DataLengthProbe = __webpack_require__(54);
+var DataWorker = __webpack_require__(52);
+var DataLengthProbe = __webpack_require__(53);
+var Crc32Probe = __webpack_require__(54);
+var DataLengthProbe = __webpack_require__(53);
 
 /**
  * Represent a compressed object, with everything needed to decompress it.
@@ -5555,7 +5555,7 @@ module.exports = shallowEqual;
  * 
  */
 
-var isTextNode = __webpack_require__(72);
+var isTextNode = __webpack_require__(71);
 
 /*eslint-disable no-bitwise */
 
@@ -5656,41 +5656,6 @@ module.exports = getActiveElement;
 
 /***/ }),
 /* 38 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/* WEBPACK VAR INJECTION */(function(process) {/**
- * Copyright (c) 2013-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-
-if (process.env.NODE_ENV !== 'production') {
-  var REACT_ELEMENT_TYPE = (typeof Symbol === 'function' &&
-    Symbol.for &&
-    Symbol.for('react.element')) ||
-    0xeac7;
-
-  var isValidElement = function(object) {
-    return typeof object === 'object' &&
-      object !== null &&
-      object.$$typeof === REACT_ELEMENT_TYPE;
-  };
-
-  // By explicitly using `prop-types` you are opting into new development behavior.
-  // http://fb.me/prop-types-in-prod
-  var throwOnDirectAccess = true;
-  module.exports = __webpack_require__(81)(isValidElement, throwOnDirectAccess);
-} else {
-  // By explicitly using `prop-types` you are opting into new production behavior.
-  // http://fb.me/prop-types-in-prod
-  module.exports = __webpack_require__(82)();
-}
-
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
-
-/***/ }),
-/* 39 */
 /***/ (function(module, exports) {
 
 var toString = {}.toString;
@@ -5701,7 +5666,7 @@ module.exports = Array.isArray || function (arr) {
 
 
 /***/ }),
-/* 40 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -5716,7 +5681,7 @@ module.exports = __webpack_require__(96);
 
 
 /***/ }),
-/* 41 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5751,7 +5716,7 @@ var processNextTick = __webpack_require__(18);
 module.exports = Readable;
 
 /*<replacement>*/
-var isArray = __webpack_require__(39);
+var isArray = __webpack_require__(38);
 /*</replacement>*/
 
 /*<replacement>*/
@@ -5769,7 +5734,7 @@ var EElistenerCount = function (emitter, type) {
 /*</replacement>*/
 
 /*<replacement>*/
-var Stream = __webpack_require__(42);
+var Stream = __webpack_require__(41);
 /*</replacement>*/
 
 // TODO(bmeurer): Change this back to const once hole checks are
@@ -5801,7 +5766,7 @@ if (debugUtil && debugUtil.debuglog) {
 /*</replacement>*/
 
 var BufferList = __webpack_require__(98);
-var destroyImpl = __webpack_require__(43);
+var destroyImpl = __webpack_require__(42);
 var StringDecoder;
 
 util.inherits(Readable, Stream);
@@ -5884,7 +5849,7 @@ function ReadableState(options, stream) {
   this.decoder = null;
   this.encoding = null;
   if (options.encoding) {
-    if (!StringDecoder) StringDecoder = __webpack_require__(44).StringDecoder;
+    if (!StringDecoder) StringDecoder = __webpack_require__(43).StringDecoder;
     this.decoder = new StringDecoder(options.encoding);
     this.encoding = options.encoding;
   }
@@ -6040,7 +6005,7 @@ Readable.prototype.isPaused = function () {
 
 // backwards compatibility.
 Readable.prototype.setEncoding = function (enc) {
-  if (!StringDecoder) StringDecoder = __webpack_require__(44).StringDecoder;
+  if (!StringDecoder) StringDecoder = __webpack_require__(43).StringDecoder;
   this._readableState.decoder = new StringDecoder(enc);
   this._readableState.encoding = enc;
   return this;
@@ -6730,14 +6695,14 @@ function indexOf(xs, x) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(11), __webpack_require__(1)))
 
 /***/ }),
-/* 42 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(24).EventEmitter;
 
 
 /***/ }),
-/* 43 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6815,7 +6780,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 44 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Copyright Joyent, Inc. and other Node contributors.
@@ -7042,7 +7007,7 @@ function base64DetectIncompleteChar(buffer) {
 
 
 /***/ }),
-/* 45 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7262,7 +7227,7 @@ function done(stream, er, data) {
 }
 
 /***/ }),
-/* 46 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7375,14 +7340,14 @@ exports.decode = function(input) {
 
 
 /***/ }),
-/* 47 */
+/* 46 */
 /***/ (function(module, exports) {
 
 var core = module.exports = {version: '2.3.0'};
 if(typeof __e == 'number')__e = core; // eslint-disable-line no-undef
 
 /***/ }),
-/* 48 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // optional / simple context binding
@@ -7407,7 +7372,7 @@ module.exports = function(fn, that, length){
 };
 
 /***/ }),
-/* 49 */
+/* 48 */
 /***/ (function(module, exports) {
 
 module.exports = function(exec){
@@ -7419,7 +7384,7 @@ module.exports = function(exec){
 };
 
 /***/ }),
-/* 50 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var isObject = __webpack_require__(28)
@@ -7431,7 +7396,7 @@ module.exports = function(it){
 };
 
 /***/ }),
-/* 51 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7440,7 +7405,7 @@ module.exports = function(it){
 var utils = __webpack_require__(0);
 var ConvertWorker = __webpack_require__(123);
 var GenericWorker = __webpack_require__(2);
-var base64 = __webpack_require__(46);
+var base64 = __webpack_require__(45);
 var support = __webpack_require__(4);
 var external = __webpack_require__(15);
 
@@ -7658,7 +7623,7 @@ module.exports = StreamHelper;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(10).Buffer))
 
 /***/ }),
-/* 52 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7676,7 +7641,7 @@ exports.dosPermissions = null;
 
 
 /***/ }),
-/* 53 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7799,7 +7764,7 @@ module.exports = DataWorker;
 
 
 /***/ }),
-/* 54 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7835,7 +7800,7 @@ module.exports = DataLengthProbe;
 
 
 /***/ }),
-/* 55 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7866,7 +7831,7 @@ module.exports = Crc32Probe;
 
 
 /***/ }),
-/* 56 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7887,7 +7852,7 @@ exports.DEFLATE = __webpack_require__(127);
 
 
 /***/ }),
-/* 57 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7945,7 +7910,7 @@ module.exports = adler32;
 
 
 /***/ }),
-/* 58 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8011,7 +7976,7 @@ module.exports = crc32;
 
 
 /***/ }),
-/* 59 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8203,7 +8168,7 @@ exports.utf8border = function (buf, max) {
 
 
 /***/ }),
-/* 60 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8257,7 +8222,7 @@ module.exports = ZStream;
 
 
 /***/ }),
-/* 61 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8332,7 +8297,7 @@ module.exports = {
 
 
 /***/ }),
-/* 62 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8346,7 +8311,7 @@ exports.DATA_DESCRIPTOR = "PK\x07\x08";
 
 
 /***/ }),
-/* 63 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8354,10 +8319,10 @@ exports.DATA_DESCRIPTOR = "PK\x07\x08";
 
 var utils = __webpack_require__(0);
 var support = __webpack_require__(4);
-var ArrayReader = __webpack_require__(64);
+var ArrayReader = __webpack_require__(63);
 var StringReader = __webpack_require__(141);
 var NodeBufferReader = __webpack_require__(142);
-var Uint8ArrayReader = __webpack_require__(66);
+var Uint8ArrayReader = __webpack_require__(65);
 
 /**
  * Create a reader adapted to the data.
@@ -8381,12 +8346,12 @@ module.exports = function (data) {
 
 
 /***/ }),
-/* 64 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var DataReader = __webpack_require__(65);
+var DataReader = __webpack_require__(64);
 var utils = __webpack_require__(0);
 
 function ArrayReader(data) {
@@ -8445,7 +8410,7 @@ module.exports = ArrayReader;
 
 
 /***/ }),
-/* 65 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8568,12 +8533,12 @@ module.exports = DataReader;
 
 
 /***/ }),
-/* 66 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var ArrayReader = __webpack_require__(64);
+var ArrayReader = __webpack_require__(63);
 var utils = __webpack_require__(0);
 
 function Uint8ArrayReader(data) {
@@ -8597,14 +8562,14 @@ module.exports = Uint8ArrayReader;
 
 
 /***/ }),
-/* 67 */
+/* 66 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_dom__ = __webpack_require__(70);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_dom__ = __webpack_require__(69);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react_dom__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_App_js__ = __webpack_require__(83);
 console.log('hi inject script');
@@ -8705,7 +8670,7 @@ var injectReactApp = () => {
 injectReactApp();
 
 /***/ }),
-/* 68 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8735,7 +8700,7 @@ module.exports={Children:{map:S.map,forEach:S.forEach,count:S.count,toArray:S.to
 
 
 /***/ }),
-/* 69 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10441,7 +10406,7 @@ module.exports = ReactEntry;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 70 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10479,15 +10444,15 @@ if (process.env.NODE_ENV === 'production') {
   // DCE check should happen before ReactDOM bundle executes so that
   // DevTools can report bad minification during injection.
   checkDCE();
-  module.exports = __webpack_require__(71);
+  module.exports = __webpack_require__(70);
 } else {
-  module.exports = __webpack_require__(74);
+  module.exports = __webpack_require__(73);
 }
 
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 71 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10750,7 +10715,7 @@ unstable_deferredUpdates:Xj.deferredUpdates,flushSync:Xj.flushSync,__SECRET_INTE
 
 
 /***/ }),
-/* 72 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10765,7 +10730,7 @@ unstable_deferredUpdates:Xj.deferredUpdates,flushSync:Xj.flushSync,__SECRET_INTE
  * @typechecks
  */
 
-var isNode = __webpack_require__(73);
+var isNode = __webpack_require__(72);
 
 /**
  * @param {*} object The object to check.
@@ -10778,7 +10743,7 @@ function isTextNode(object) {
 module.exports = isTextNode;
 
 /***/ }),
-/* 73 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10806,7 +10771,7 @@ function isNode(object) {
 module.exports = isNode;
 
 /***/ }),
-/* 74 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10832,11 +10797,11 @@ var ExecutionEnvironment = __webpack_require__(23);
 var _assign = __webpack_require__(13);
 var EventListener = __webpack_require__(33);
 var require$$0 = __webpack_require__(17);
-var hyphenateStyleName = __webpack_require__(75);
+var hyphenateStyleName = __webpack_require__(74);
 var emptyFunction = __webpack_require__(3);
-var camelizeStyleName = __webpack_require__(77);
-var performanceNow = __webpack_require__(79);
-var propTypes = __webpack_require__(38);
+var camelizeStyleName = __webpack_require__(76);
+var performanceNow = __webpack_require__(78);
+var propTypes = __webpack_require__(80);
 var emptyObject = __webpack_require__(16);
 var checkPropTypes = __webpack_require__(21);
 var shallowEqual = __webpack_require__(34);
@@ -28035,7 +28000,7 @@ module.exports = ReactDOMFiberEntry;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 75 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28050,7 +28015,7 @@ module.exports = ReactDOMFiberEntry;
 
 
 
-var hyphenate = __webpack_require__(76);
+var hyphenate = __webpack_require__(75);
 
 var msPattern = /^ms-/;
 
@@ -28077,7 +28042,7 @@ function hyphenateStyleName(string) {
 module.exports = hyphenateStyleName;
 
 /***/ }),
-/* 76 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28113,7 +28078,7 @@ function hyphenate(string) {
 module.exports = hyphenate;
 
 /***/ }),
-/* 77 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28128,7 +28093,7 @@ module.exports = hyphenate;
 
 
 
-var camelize = __webpack_require__(78);
+var camelize = __webpack_require__(77);
 
 var msPattern = /^-ms-/;
 
@@ -28156,7 +28121,7 @@ function camelizeStyleName(string) {
 module.exports = camelizeStyleName;
 
 /***/ }),
-/* 78 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28191,7 +28156,7 @@ function camelize(string) {
 module.exports = camelize;
 
 /***/ }),
-/* 79 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28206,7 +28171,7 @@ module.exports = camelize;
  * @typechecks
  */
 
-var performance = __webpack_require__(80);
+var performance = __webpack_require__(79);
 
 var performanceNow;
 
@@ -28228,7 +28193,7 @@ if (performance.now) {
 module.exports = performanceNow;
 
 /***/ }),
-/* 80 */
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28252,6 +28217,41 @@ if (ExecutionEnvironment.canUseDOM) {
 }
 
 module.exports = performance || {};
+
+/***/ }),
+/* 80 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(process) {/**
+ * Copyright (c) 2013-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+if (process.env.NODE_ENV !== 'production') {
+  var REACT_ELEMENT_TYPE = (typeof Symbol === 'function' &&
+    Symbol.for &&
+    Symbol.for('react.element')) ||
+    0xeac7;
+
+  var isValidElement = function(object) {
+    return typeof object === 'object' &&
+      object !== null &&
+      object.$$typeof === REACT_ELEMENT_TYPE;
+  };
+
+  // By explicitly using `prop-types` you are opting into new development behavior.
+  // http://fb.me/prop-types-in-prod
+  var throwOnDirectAccess = true;
+  module.exports = __webpack_require__(81)(isValidElement, throwOnDirectAccess);
+} else {
+  // By explicitly using `prop-types` you are opting into new production behavior.
+  // http://fb.me/prop-types-in-prod
+  module.exports = __webpack_require__(82)();
+}
+
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
 /* 81 */
@@ -28875,22 +28875,19 @@ module.exports = function() {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_iframe__ = __webpack_require__(84);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_iframe___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react_iframe__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_jquery__ = __webpack_require__(85);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_jquery___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_jquery__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__main_css__ = __webpack_require__(86);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__main_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__main_css__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__LanguageDropdown_js__ = __webpack_require__(91);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__TranslationPreview_js__ = __webpack_require__(147);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_jszip__ = __webpack_require__(92);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_jszip___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_jszip__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_jszip_utils__ = __webpack_require__(144);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_jszip_utils___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_jszip_utils__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_jquery__ = __webpack_require__(84);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_jquery___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_jquery__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__main_css__ = __webpack_require__(85);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__main_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__main_css__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__LanguageDropdown_js__ = __webpack_require__(90);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__TranslationPreview_js__ = __webpack_require__(91);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_jszip__ = __webpack_require__(92);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_jszip___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_jszip__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_jszip_utils__ = __webpack_require__(144);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_jszip_utils___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_jszip_utils__);
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 console.log('hi react app');
-
 
 
 
@@ -28905,7 +28902,7 @@ console.log('hi react app');
 //Fix config import and usage
 //Webpack config
 //Loading spinner while w8ing for init
-//Stop alert from firing every fucking time
+//Stop alert from firing every time
 //Set App header contents
 //Determine where to put classes on React containers (we have 2 containers -- target and container in App)
 //Get rid of iframe react Component dependency -- doesnt take srcdoc only url
@@ -28926,7 +28923,8 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
       qOrganizationId: '3168',
       qProjectId: '5843',
       qProjectLanguages: {},
-      qProjectFiles: {},
+      qProjectLocaleFiles: {},
+      qProjectAllFiles: {},
       qTranslationStatus: '',
       abLanguageCode: '',
       abLanguageName: '',
@@ -28934,15 +28932,18 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
       abId: '',
       abTitle: '',
       abSourceContent: '',
-      abTargetContent: '',
+      abLocaleTargetContent: '',
+      abAllTargetContent: {},
       abTranslationStatuses: {},
       abContentToPublish: {},
-      sourceLocale: 'en-us' //need to actually set
+      sourceLocale: 'en-us', //need to actually set,
+      jsonReqHeader: {}
     };
     this.qGetLanguages = this.qGetLanguages.bind(this);
     this.handleLanguageChange = this.handleLanguageChange.bind(this);
     this.qFileUpload = this.qFileUpload.bind(this);
-    this.qGetTranslation = this.qGetTranslation.bind(this);
+    this.qGetOneTranslation = this.qGetOneTranslation.bind(this);
+    this.handleDownloadAllClick = this.handleDownloadAllClick.bind(this);
   }
 
   //React Data
@@ -28963,6 +28964,7 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
     var _this2 = this;
 
     return _asyncToGenerator(function* () {
+      yield _this2.setState({ jsonReqHeader: { 'X-AUTH-TOKEN': _this2.state.qAuthToken, 'Content-Type': 'application/json' } });
       yield _this2.qGetLanguages();
     })();
   }
@@ -28975,24 +28977,16 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
       var selectedOption = dropdownMenu.querySelector(`[data-name="${e.target.value}"]`);
       yield _this3.setState({ abLanguageName: selectedOption.dataset.name, abLanguageCode: selectedOption.dataset.locale });
       //TODO this is assuming we send up articles to Qordoba with type and ID NOT name
-      yield _this3.qGetFiles();
+      yield _this3.qGetSelectedFiles();
       var qFileTitle = `${_this3.state.abType}-${_this3.state.abId}`;
-      console.log('QFILETITLE', qFileTitle);
-      if (_this3.state.qProjectFiles[qFileTitle]) {
-        //Template DOES exist in Qordoba
-        //API call to Qordoba fetch locale/article-specific detail
-        //If completed
-        if (_this3.state.qProjectFiles[qFileTitle].completed) {
-          //render preview
-          yield _this3.qGetTranslation('1');
-          _this3.setState({ qTranslationStatus: 'completed' });
+      if (_this3.state.qProjectLocaleFiles[qFileTitle]) {
+        if (_this3.state.qProjectLocaleFiles[qFileTitle].completed) {
+          yield _this3.qGetOneTranslation();
+          yield _this3.setState({ qTranslationStatus: 'completed' });
         } else {
-          //Show enabled status
-          _this3.setState({ qTranslationStatus: 'enabled' });
+          yield _this3.setState({ qTranslationStatus: 'enabled' });
         }
       } else {
-        //Template DOESNT exist in Qordoba
-        //Show doesnt exist status'
         yield _this3.setState({ qTranslationStatus: 'none' });
         console.log('setting state to untranslated');
       }
@@ -29000,64 +28994,82 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
     })();
   }
 
-  //Appboy Data
-  abGetTemplate() {
-    var urlPathArray = window.location.pathname.split('/');
-    var articleTitleSpan = document.querySelector('span.editable-heading');
-    this.setState({ abType: urlPathArray[urlPathArray.length - 2], abId: urlPathArray[urlPathArray.length - 1], abTitle: articleTitleSpan.innerHTML });
-  }
-
-  abGetTemplateContent() {
-    //TODO need to confirm that this ALWAYS grabs the right content
-    var iFramesArray = document.querySelectorAll('iframe');
-    for (var i = 0; i < iFramesArray.length; i++) {
-      if (iFramesArray[i].classList.length !== 0 && iFramesArray[i].id !== 'q-preview-iframe') {
-        console.log('FOUND TEMPLATE CONTENT!!!');
-        this.setState({ abSourceContent: iFramesArray[i].contentWindow.document.body.outerHTML }); //TODO need to make sure we parse out non-body tags
-      }
-    }
-  }
-
-  //QORDOBA API CALLS
-  qGetLanguages() {
+  handleDownloadAllClick(e) {
     var _this4 = this;
 
     return _asyncToGenerator(function* () {
-      var reqHeader = {
-        'X-AUTH-TOKEN': _this4.state.qAuthToken,
-        'Content-Type': 'application/json'
-      };
-      var projectDetailCall = yield __WEBPACK_IMPORTED_MODULE_2_jquery___default.a.ajax({
-        type: 'GET',
-        url: `https://app.qordoba.com/api/organizations/${_this4.state.qOrganizationId}/projects?limit=1&offset=0&limit_to_projects=${_this4.state.qProjectId}`,
-        headers: reqHeader
-      });
-      var qProjectLanguages = projectDetailCall.projects[0].target_languages;
-      for (var i = 0; i < qProjectLanguages.length; i++) {
-        var qLangs = Object.assign({}, _this4.state.qProjectLanguages);
-        qLangs[qProjectLanguages[i].code] = { id: qProjectLanguages[i].id, name: qProjectLanguages[i].name };
-        _this4.setState({ qProjectLanguages: qLangs });
+      yield _this4.qGetAllFiles();
+      yield _this4.qGetAllTranslations();
+      yield _this4.abPublishAllTranslations();
+    })();
+  }
+
+  //Appboy Data
+  abGetTemplate() {
+    var _this5 = this;
+
+    return _asyncToGenerator(function* () {
+      var urlPathArray = window.location.pathname.split('/');
+      var articleTitleSpan = document.querySelector('span.editable-heading');
+      yield _this5.setState({ abType: urlPathArray[urlPathArray.length - 2], abId: urlPathArray[urlPathArray.length - 1], abTitle: articleTitleSpan.innerHTML });
+    })();
+  }
+
+  abGetTemplateContent() {
+    var _this6 = this;
+
+    return _asyncToGenerator(function* () {
+      //TODO need to confirm that this ALWAYS grabs the right content
+      var iFramesArray = document.querySelectorAll('iframe');
+      for (var i = 0; i < iFramesArray.length; i++) {
+        if (iFramesArray[i].classList.length !== 0 && iFramesArray[i].id !== 'q-preview-iframe') {
+          console.log('FOUND TEMPLATE CONTENT!!!');
+          yield _this6.setState({ abSourceContent: iFramesArray[i].contentWindow.document.body.outerHTML }); //TODO need to make sure we parse out non-body tags
+        }
       }
     })();
   }
 
-  qGetFiles() {
-    var _this5 = this;
+  abPublishAllTranslations() {
+    return _asyncToGenerator(function* () {})();
+  }
+  // var textEditor = document.querySelector('div.ace_content');
+  // var textLayer = textEditor.querySelector('.ace_text-layer');
+  // textLayer.remove();
+
+
+  //QORDOBA API CALLS
+  qGetLanguages() {
+    var _this7 = this;
 
     return _asyncToGenerator(function* () {
-      var reqHeader = {
-        'X-AUTH-TOKEN': _this5.state.qAuthToken,
-        'Content-Type': 'application/json'
-      };
-      var qordobaLanguageId = _this5.state.qProjectLanguages[_this5.state.abLanguageCode].id;
-      var qordobaResponse = yield __WEBPACK_IMPORTED_MODULE_2_jquery___default.a.ajax({
+      var projectDetailCall = yield __WEBPACK_IMPORTED_MODULE_1_jquery___default.a.ajax({
+        type: 'GET',
+        url: `https://app.qordoba.com/api/organizations/${_this7.state.qOrganizationId}/projects?limit=1&offset=0&limit_to_projects=${_this7.state.qProjectId}`,
+        headers: _this7.state.jsonReqHeader
+      });
+      var qProjectLanguages = projectDetailCall.projects[0].target_languages;
+      for (var i = 0; i < qProjectLanguages.length; i++) {
+        var qLangs = Object.assign({}, _this7.state.qProjectLanguages);
+        qLangs[qProjectLanguages[i].code] = { id: qProjectLanguages[i].id, name: qProjectLanguages[i].name };
+        yield _this7.setState({ qProjectLanguages: qLangs });
+      }
+    })();
+  }
+
+  qGetSelectedFiles() {
+    var _this8 = this;
+
+    return _asyncToGenerator(function* () {
+      var qordobaLanguageId = _this8.state.qProjectLanguages[_this8.state.abLanguageCode].id;
+      var qordobaResponse = yield __WEBPACK_IMPORTED_MODULE_1_jquery___default.a.ajax({
         type: 'POST',
-        url: `https://app.qordoba.com/api/projects/${_this5.state.qProjectId}/languages/${qordobaLanguageId}/page_settings/search`,
-        headers: reqHeader,
+        url: `https://app.qordoba.com/api/projects/${_this8.state.qProjectId}/languages/${qordobaLanguageId}/page_settings/search`,
+        headers: _this8.state.jsonReqHeader,
         data: JSON.stringify({})
       });
       var qordobaFiles = qordobaResponse.pages;
-      var allQFilesObj = Object.assign({}, _this5.state.qProjectFiles);
+      var allQFilesObj = Object.assign({}, _this8.state.qProjectLocaleFiles);
       for (var i = 0; i < qordobaFiles.length; i++) {
         var qordobaFileObj = {};
         var fileNameNoHtml = qordobaFiles[i].url.replace('.html', '');
@@ -29068,27 +29080,52 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
         qordobaFileObj.qArticleId = qordobaFiles[i].page_id;
         allQFilesObj[fileNameNoHtml] = qordobaFileObj;
       }
-      _this5.setState({ qProjectFiles: allQFilesObj });
+      yield _this8.setState({ qProjectLocaleFiles: allQFilesObj });
+    })();
+  }
+
+  qGetAllFiles() {
+    var _this9 = this;
+
+    return _asyncToGenerator(function* () {
+      console.log('GETTING ALL FILES');
+      var allQFilesObj = Object.assign({}, _this9.state.qProjectAllFiles);
+      for (var key in _this9.state.qProjectLanguages) {
+        var qordobaResponse = yield __WEBPACK_IMPORTED_MODULE_1_jquery___default.a.ajax({
+          type: 'POST',
+          url: `https://app.qordoba.com/api/projects/${_this9.state.qProjectId}/languages/${_this9.state.qProjectLanguages[key].id}/page_settings/search`,
+          headers: _this9.state.jsonReqHeader,
+          data: JSON.stringify({})
+        });
+        console.log('QORDOBA RESPONSE GETTING ALL FILES', qordobaResponse);
+        var qordobaFiles = qordobaResponse.pages;
+        allQFilesObj[key] = {};
+        for (var i = 0; i < qordobaFiles.length; i++) {
+          var qordobaFileObj = {};
+          var fileNameNoHtml = qordobaFiles[i].url.replace('.html', '');
+          qordobaFileObj.completed = qordobaFiles[i].completed;
+          qordobaFileObj.enabled = qordobaFiles[i].enabled;
+          qordobaFileObj.createdAt = qordobaFiles[i].created_at;
+          qordobaFileObj.updatedAt = qordobaFiles[i].update;
+          qordobaFileObj.qArticleId = qordobaFiles[i].page_id;
+          allQFilesObj[key][fileNameNoHtml] = qordobaFileObj;
+        }
+      }
+      yield _this9.setState({ qProjectAllFiles: allQFilesObj });
     })();
   }
 
   qFileUpload() {
-    var _this6 = this;
+    var _this10 = this;
 
     return _asyncToGenerator(function* () {
       console.log('uploading file');
-      var reqHeader = {
-        'X-AUTH-TOKEN': _this6.state.qAuthToken
-      };
-
-      var fileToUpload = new File([_this6.state.abSourceContent], `${_this6.state.abType}-${_this6.state.abId}`, {
+      var fileToUpload = new File([_this10.state.abSourceContent], `${_this10.state.abType}-${_this10.state.abId}`, {
         type: "text/html"
       });
-
       console.log('FILE TO UPLOAD', fileToUpload);
-
       var fd = new FormData();
-      fd.append('project_id', _this6.state.qProjectId);
+      fd.append('project_id', _this10.state.qProjectId);
       fd.append('file_names', `[]`);
       fd.append('file', fileToUpload);
 
@@ -29097,15 +29134,15 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
         contentType: false,
         processData: false,
         data: fd,
-        headers: reqHeader
+        headers: { 'X-AUTH-TOKEN': _this10.state.qAuthToken }
       };
 
-      qordobaSendFilesRequest.url = `https://app.qordoba.com/api/organizations/${_this6.state.qOrganizationId}/upload/uploadFile_anyType?content_type_code=stringsHtml&projectId=${_this6.state.qProjectId}`;
-      var qordobaSendFilesResponse = yield __WEBPACK_IMPORTED_MODULE_2_jquery___default.a.ajax(qordobaSendFilesRequest);
+      qordobaSendFilesRequest.url = `https://app.qordoba.com/api/organizations/${_this10.state.qOrganizationId}/upload/uploadFile_anyType?content_type_code=stringsHtml&projectId=${_this10.state.qProjectId}`;
+      var qordobaSendFilesResponse = yield __WEBPACK_IMPORTED_MODULE_1_jquery___default.a.ajax(qordobaSendFilesRequest);
       console.log('ORIGINAL RESPONSE', qordobaSendFilesResponse);
-      var responseToFilesUploaded = yield __WEBPACK_IMPORTED_MODULE_2_jquery___default.a.ajax({
+      var responseToFilesUploaded = yield __WEBPACK_IMPORTED_MODULE_1_jquery___default.a.ajax({
         type: 'POST',
-        url: `https://app.qordoba.com/api/projects/${_this6.state.qProjectId}/append_files`,
+        url: `https://app.qordoba.com/api/projects/${_this10.state.qProjectId}/append_files`,
         data: JSON.stringify([{
           content_type_codes: [{ name: "Html String", content_type_code: "stringsHtml", extensions: ["html"] }],
           file_name: `${qordobaSendFilesResponse.file_name}.html`,
@@ -29113,90 +29150,121 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
           source_columns: [],
           version_tag: ""
         }]),
-        headers: {
-          'X-AUTH-TOKEN': _this6.state.qAuthToken,
-          'Content-Type': 'application/json'
-        }
+        headers: _this10.state.jsonReqHeader
       });
 
       console.log('RESPONSE AFTER APPEND', responseToFilesUploaded);
     })();
   }
 
-  qGetTranslation(downloadOneFile) {
-    var _this7 = this;
+  qGetAllTranslations() {
+    var _this11 = this;
 
     return _asyncToGenerator(function* () {
-      console.log('BOOL', downloadOneFile);
-      var reqHeader = {
-        'X-AUTH-TOKEN': _this7.state.qAuthToken,
-        'Content-Type': 'application/json;charset=UTF-8'
-      };
-
       var pageIdArray = [];
-      for (var key in _this7.state.qProjectFiles) {
-        pageIdArray.push(_this7.state.qProjectFiles[key].qArticleId);
+      var languageIdArray = [];
+      var anyLanguage = Object.keys(_this11.state.qProjectAllFiles)[0];
+
+      for (var key in _this11.state.qProjectAllFiles[anyLanguage]) {
+        pageIdArray.push(_this11.state.qProjectAllFiles[anyLanguage][key].qArticleId);
       }
-
-      pageIdArray.push(865798); //TODO NEED TO FIX 
-
-      var sampleLang = Object.keys(_this7.state.qProjectLanguages)[1];
-
-      var completeZipFile = yield __WEBPACK_IMPORTED_MODULE_2_jquery___default.a.ajax({
+      for (var key in _this11.state.qProjectLanguages) {
+        languageIdArray.push(_this11.state.qProjectLanguages[key].id);
+      }
+      var completeZipFile = yield __WEBPACK_IMPORTED_MODULE_1_jquery___default.a.ajax({
         type: 'POST',
-        url: `https://app.qordoba.com/api/projects/${_this7.state.qProjectId}/export_files_bulk`,
+        url: `https://app.qordoba.com/api/projects/${_this11.state.qProjectId}/export_files_bulk`,
         data: JSON.stringify({
           bilingual: false,
           compress_columns: false,
-          language_ids: [_this7.state.qProjectLanguages[sampleLang].id],
+          language_ids: languageIdArray,
           original_format: false,
           page_ids: pageIdArray
         }),
-        headers: reqHeader
+        headers: _this11.state.jsonReqHeader
       });
-      console.log('RESPONSE COMP FILE', completeZipFile);
 
-      var newZip = new __WEBPACK_IMPORTED_MODULE_6_jszip___default.a();
-      __WEBPACK_IMPORTED_MODULE_7_jszip_utils___default.a.getBinaryContent(`https://app.qordoba.com/api/file/download?token=${completeZipFile.token}&filename=${encodeURIComponent(completeZipFile.filename)}`, (() => {
+      console.log('COMPLETED ZIP !!!!!!PICK UP HERE!!!!!PICK UP HERE!!!!!!!!!!!!!!!!!!!!!PICK UP HERE!!!!!!!!!!!!!!!!!!!!!PICK UP HERE!!!!!!!!!!!!!!!!!!!!!PICK UP HERE!!!!!!!!!!!!!!!!!!!!!PICK UP HERE!!!!!!!!!!!!!!!!!!!!!PICK UP HERE!!!!!!!!!!!!!!!!!!!!!PICK UP HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!PICK UP HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!PICK UP HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!PICK UP HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!PICK UP HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!', completeZipFile);
+      var newZip = new __WEBPACK_IMPORTED_MODULE_5_jszip___default.a();
+      __WEBPACK_IMPORTED_MODULE_6_jszip_utils___default.a.getBinaryContent(`https://app.qordoba.com/api/file/download?token=${completeZipFile.token}&filename=${encodeURIComponent(completeZipFile.filename)}`, (() => {
         var _ref = _asyncToGenerator(function* (err, data) {
 
-          console.log('first data', data);
           var completedZipDataObj = yield newZip.loadAsync(data);
           var completedZipData = completedZipDataObj.files;
 
           var abToBePublished = {};
 
           for (var key in completedZipData) {
-            if (downloadOneFile === 'one') {
-              if (key.includes(`${_this7.state.abLanguageCode}`)) {
-                var myRegexp = /.*\/([a-z,_]*-[a-z,0-9]*)-.*.html/g;
-                var regexMatches = myRegexp.exec(key);
-                var templateName = regexMatches[1];
-                if (templateName === `${_this7.state.abType}-${_this7.state.abId}`) {
-                  var finalizedZipData = yield completedZipData[key].async('text');
-                  _this7.setState({ abTargetContent: finalizedZipData });
-                  break; //TODO FIX SO I DONT CALL SETSTATE TWICE HERE -- ONCE FOR .COMPLETED AND ONCE FOR ZIP DATA
-                }
+            var locale = key.split('/')[0];
+            if (!key.includes(_this11.state.sourceLocale)) {
+              console.log('found file to include', key);
+              var myRegexp = /.*\/([a-z,_]*-[a-z,0-9]*)-.*.html/g;
+              var regexMatches = myRegexp.exec(key);
+              var templateName = regexMatches[1];
+              if (templateName === `${_this11.state.abType}-${_this11.state.abId}`) {
+                var finalizedZipData = yield completedZipData[key].async('text');
+                abToBePublished[locale] = finalizedZipData;
+                //TODO FIX SO I DONT CALL SETSTATE TWICE HERE -- ONCE FOR .COMPLETED AND ONCE FOR ZIP DATA
               }
-            } else {
-              var locale = key.split('/')[0];
-              console.log('LOCALE FOUND FROM KEY', locale);
-              if (!key.includes(`${_this7.statesourceLocale}`)) {
-                var myRegexp = /.*\/([a-z,_]*-[a-z,0-9]*)-.*.html/g;
-                var regexMatches = myRegexp.exec(key);
-                var templateName = regexMatches[1];
-                if (templateName === `${_this7.state.abType}-${_this7.state.abId}`) {
-                  var finalizedZipData = yield completedZipData[key].async('text');
-                  _this7.setState({ abTargetContent: finalizedZipData });
-                  //TODO FIX SO I DONT CALL SETSTATE TWICE HERE -- ONCE FOR .COMPLETED AND ONCE FOR ZIP DATA
-                }
+            }
+          }
+          yield _this11.setState({ abAllTargetContent: abToBePublished });
+        });
+
+        return function (_x, _x2) {
+          return _ref.apply(this, arguments);
+        };
+      })());
+    })();
+  }
+
+  qGetOneTranslation() {
+    var _this12 = this;
+
+    return _asyncToGenerator(function* () {
+      var pageIdArray = [];
+      for (var key in _this12.state.qProjectLocaleFiles) {
+        pageIdArray.push(_this12.state.qProjectLocaleFiles[key].qArticleId);
+      }
+
+      var completeZipFile = yield __WEBPACK_IMPORTED_MODULE_1_jquery___default.a.ajax({
+        type: 'POST',
+        url: `https://app.qordoba.com/api/projects/${_this12.state.qProjectId}/export_files_bulk`,
+        data: JSON.stringify({
+          bilingual: false,
+          compress_columns: false,
+          language_ids: [_this12.state.qProjectLanguages[_this12.state.abLanguageCode].id],
+          original_format: false,
+          page_ids: pageIdArray
+        }),
+        headers: _this12.state.jsonReqHeader
+      });
+      console.log('RESPONSE COMP FILE', completeZipFile);
+
+      var newZip = new __WEBPACK_IMPORTED_MODULE_5_jszip___default.a();
+      __WEBPACK_IMPORTED_MODULE_6_jszip_utils___default.a.getBinaryContent(`https://app.qordoba.com/api/file/download?token=${completeZipFile.token}&filename=${encodeURIComponent(completeZipFile.filename)}`, (() => {
+        var _ref2 = _asyncToGenerator(function* (err, data) {
+
+          console.log('first data', data);
+          var completedZipDataObj = yield newZip.loadAsync(data);
+          var completedZipData = completedZipDataObj.files;
+
+          for (var key in completedZipData) {
+            if (key.includes(_this12.state.abLanguageCode)) {
+              var myRegexp = /.*\/([a-z,_]*-[a-z,0-9]*)-.*.html/g;
+              var regexMatches = myRegexp.exec(key);
+              var templateName = regexMatches[1];
+              if (templateName === `${_this12.state.abType}-${_this12.state.abId}`) {
+                var finalizedZipData = yield completedZipData[key].async('text');
+                yield _this12.setState({ abLocaleTargetContent: finalizedZipData });
+                break; //TODO FIX SO I DONT CALL SETSTATE TWICE HERE -- ONCE FOR .COMPLETED AND ONCE FOR ZIP DATA
               }
             }
           }
         });
 
-        return function (_x, _x2) {
-          return _ref.apply(this, arguments);
+        return function (_x3, _x4) {
+          return _ref2.apply(this, arguments);
         };
       })());
     })();
@@ -29210,7 +29278,7 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
       return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         'div',
         { className: 'q-translation-status-container' },
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__LanguageDropdown_js__["a" /* default */], { handleLanguageChange: this.handleLanguageChange, qProjectLanguages: this.state.qProjectLanguages, qGetLanguages: this.qGetLanguages }),
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__LanguageDropdown_js__["a" /* default */], { handleLanguageChange: this.handleLanguageChange, qProjectLanguages: this.state.qProjectLanguages, qGetLanguages: this.qGetLanguages }),
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
           'p',
           { className: 'helptext' },
@@ -29229,7 +29297,7 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
       return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         'div',
         { className: 'q-translation-status-container' },
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__LanguageDropdown_js__["a" /* default */], { handleLanguageChange: this.handleLanguageChange, qProjectLanguages: this.state.qProjectLanguages, qGetLanguages: this.qGetLanguages }),
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__LanguageDropdown_js__["a" /* default */], { handleLanguageChange: this.handleLanguageChange, qProjectLanguages: this.state.qProjectLanguages, qGetLanguages: this.qGetLanguages }),
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
           'p',
           { className: 'helptext' },
@@ -29245,8 +29313,8 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
       return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         'div',
         { className: 'q-translation-status-container flex flex-column flex-full-width-height' },
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__LanguageDropdown_js__["a" /* default */], { handleLanguageChange: this.handleLanguageChange, qProjectLanguages: this.state.qProjectLanguages, qGetLanguages: this.qGetLanguages }),
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__TranslationPreview_js__["a" /* default */], { abTranslationStatuses: this.state.abTranslationStatuses, qFileUpload: this.qFileUpload, abTargetContent: this.state.abTargetContent, handleLanguageChange: this.handleLanguageChange, qProjectLanguages: this.state.qProjectLanguages, qGetLanguages: this.qGetLanguages })
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__LanguageDropdown_js__["a" /* default */], { handleLanguageChange: this.handleLanguageChange, qProjectLanguages: this.state.qProjectLanguages, qGetLanguages: this.qGetLanguages }),
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__TranslationPreview_js__["a" /* default */], { abTranslationStatuses: this.state.abTranslationStatuses, qFileUpload: this.qFileUpload, abLocaleTargetContent: this.state.abLocaleTargetContent, handleLanguageChange: this.handleLanguageChange, qProjectLanguages: this.state.qProjectLanguages, qGetLanguages: this.qGetLanguages })
       );
     } else {
       //TODO
@@ -29257,10 +29325,10 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
         { className: 'q-translation-status-container' },
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
           'button',
-          { onClick: this.qGetTranslation, className: 'btn img-btn pull-left q-download-all' },
+          { onClick: this.handleDownloadAllClick, className: 'btn img-btn pull-left q-download-all' },
           'Download and publish all completed translations'
         ),
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__LanguageDropdown_js__["a" /* default */], { handleLanguageChange: this.handleLanguageChange, qProjectLanguages: this.state.qProjectLanguages, qGetLanguages: this.qGetLanguages }),
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__LanguageDropdown_js__["a" /* default */], { handleLanguageChange: this.handleLanguageChange, qProjectLanguages: this.state.qProjectLanguages, qGetLanguages: this.qGetLanguages }),
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
           'p',
           { className: 'helptext' },
@@ -29275,13 +29343,6 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 
 /***/ }),
 /* 84 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(exports,"__esModule",{value:true});var _createClass=function(){function defineProperties(target,props){for(var i=0;i<props.length;i++){var descriptor=props[i];descriptor.enumerable=descriptor.enumerable||false;descriptor.configurable=true;if("value"in descriptor)descriptor.writable=true;Object.defineProperty(target,descriptor.key,descriptor)}}return function(Constructor,protoProps,staticProps){if(protoProps)defineProperties(Constructor.prototype,protoProps);if(staticProps)defineProperties(Constructor,staticProps);return Constructor}}();var _react=__webpack_require__(8);var _react2=_interopRequireDefault(_react);var _propTypes=__webpack_require__(38);var _propTypes2=_interopRequireDefault(_propTypes);function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj}}function _classCallCheck(instance,Constructor){if(!(instance instanceof Constructor)){throw new TypeError("Cannot call a class as a function")}}function _possibleConstructorReturn(self,call){if(!self){throw new ReferenceError("this hasn't been initialised - super() hasn't been called")}return call&&(typeof call==="object"||typeof call==="function")?call:self}function _inherits(subClass,superClass){if(typeof superClass!=="function"&&superClass!==null){throw new TypeError("Super expression must either be null or a function, not "+typeof superClass)}subClass.prototype=Object.create(superClass&&superClass.prototype,{constructor:{value:subClass,enumerable:false,writable:true,configurable:true}});if(superClass)Object.setPrototypeOf?Object.setPrototypeOf(subClass,superClass):subClass.__proto__=superClass}var Iframe=function(_PureComponent){_inherits(Iframe,_PureComponent);function Iframe(){_classCallCheck(this,Iframe);return _possibleConstructorReturn(this,(Iframe.__proto__||Object.getPrototypeOf(Iframe)).apply(this,arguments))}_createClass(Iframe,[{key:"render",value:function render(){return _react2.default.createElement("iframe",{frameBorder:"0",src:this.props.url,target:"_parent",allowFullScreen:this.props.allowFullScreen||false,style:Object.assign({},{position:this.props.position||"absolute",display:this.props.display||"block",height:this.props.height||"100%",width:this.props.width||"100%"},this.props.styles||{}),height:this.props.height||"100%",width:this.props.width||"100%"})}}]);return Iframe}(_react.PureComponent);Iframe.propTypes={url:_propTypes2.default.string.isRequired,width:_propTypes2.default.string,position:_propTypes2.default.string,display:_propTypes2.default.string,height:_propTypes2.default.string,styles:_propTypes2.default.object,allowFullScreen:_propTypes2.default.bool};exports.default=Iframe;
-
-/***/ }),
-/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -39541,13 +39602,13 @@ return jQuery;
 
 
 /***/ }),
-/* 86 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(87);
+var content = __webpack_require__(86);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -39555,7 +39616,7 @@ var transform;
 var options = {"hmr":true}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(89)(content, options);
+var update = __webpack_require__(88)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -39572,10 +39633,10 @@ if(false) {
 }
 
 /***/ }),
-/* 87 */
+/* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(88)(undefined);
+exports = module.exports = __webpack_require__(87)(undefined);
 // imports
 
 
@@ -39586,7 +39647,7 @@ exports.push([module.i, "/*#language-switcher {\n  color: red\n}*/\n\n#q-languag
 
 
 /***/ }),
-/* 88 */
+/* 87 */
 /***/ (function(module, exports) {
 
 /*
@@ -39668,7 +39729,7 @@ function toComment(sourceMap) {
 
 
 /***/ }),
-/* 89 */
+/* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -39724,7 +39785,7 @@ var singleton = null;
 var	singletonCounter = 0;
 var	stylesInsertedAtTop = [];
 
-var	fixUrls = __webpack_require__(90);
+var	fixUrls = __webpack_require__(89);
 
 module.exports = function(list, options) {
 	if (typeof DEBUG !== "undefined" && DEBUG) {
@@ -40040,7 +40101,7 @@ function updateLink (link, options, obj) {
 
 
 /***/ }),
-/* 90 */
+/* 89 */
 /***/ (function(module, exports) {
 
 
@@ -40135,7 +40196,7 @@ module.exports = function (css) {
 
 
 /***/ }),
-/* 91 */
+/* 90 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -40177,6 +40238,68 @@ class LanguageDropdown extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Com
 }
 
 /* harmony default export */ __webpack_exports__["a"] = (LanguageDropdown);
+
+/***/ }),
+/* 91 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+
+
+class TranslationPreview extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
+  constructor(props) {
+    super(props);
+    this.state = { abTargetCompleteHtml: '' };
+  }
+
+  abCopyTargetContent() {
+    var textArea = document.querySelector('textarea.q-translated-textarea');
+    console.log('textarea', textArea);
+    textArea.select();
+    try {
+      var successful = document.execCommand('copy');
+      var msg = successful ? 'successful' : 'unsuccessful';
+      console.log('Copying text command was ' + msg);
+    } catch (err) {
+      console.log('Oops, unable to copy');
+    }
+  }
+
+  render() {
+    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+      'div',
+      { className: 'q-translation-status-container flex flex-column flex-full-width-height' },
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        'div',
+        { id: 'q-email-preview-holder', className: 'email-preview-holder flex flex-column flex-full-width-height' },
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('iframe', {
+          srcDoc: this.props.abTargetContent,
+          className: 'email-preview flex-full-width-height',
+          id: 'q-preview-iframe'
+        })
+      ),
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        'div',
+        null,
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          'button',
+          { className: 'btn img-btn pull-left', onClick: this.abCopyTargetContent, type: 'submit', id: 'q-copy-button' },
+          ' Copy translation to clipboard '
+        ),
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          'button',
+          { className: 'btn img-btn pull-left', onClick: this.props.qFileUpload, type: 'submit', id: 'q-upload-button' },
+          ' Re-upload changed template to Qordoba '
+        )
+      ),
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('textarea', { className: 'q-translated-textarea', value: this.props.abTargetContent })
+    );
+  }
+}
+
+/* harmony default export */ __webpack_exports__["a"] = (TranslationPreview);
 
 /***/ }),
 /* 92 */
@@ -40223,7 +40346,7 @@ function JSZip() {
 JSZip.prototype = __webpack_require__(93);
 JSZip.prototype.loadAsync = __webpack_require__(139);
 JSZip.support = __webpack_require__(4);
-JSZip.defaults = __webpack_require__(52);
+JSZip.defaults = __webpack_require__(51);
 
 // TODO find a better way to handle this version,
 // a require('package.json').version doesn't work with webpack, see #327
@@ -40246,8 +40369,8 @@ module.exports = JSZip;
 var utf8 = __webpack_require__(9);
 var utils = __webpack_require__(0);
 var GenericWorker = __webpack_require__(2);
-var StreamHelper = __webpack_require__(51);
-var defaults = __webpack_require__(52);
+var StreamHelper = __webpack_require__(50);
+var defaults = __webpack_require__(51);
 var CompressedObject = __webpack_require__(30);
 var ZipObject = __webpack_require__(125);
 var generate = __webpack_require__(126);
@@ -41423,7 +41546,7 @@ function config (name) {
 
 module.exports = PassThrough;
 
-var Transform = __webpack_require__(45);
+var Transform = __webpack_require__(44);
 
 /*<replacement>*/
 var util = __webpack_require__(14);
@@ -41475,7 +41598,7 @@ module.exports = __webpack_require__(25).PassThrough
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(108);
-module.exports = __webpack_require__(47).setImmediate;
+module.exports = __webpack_require__(46).setImmediate;
 
 /***/ }),
 /* 108 */
@@ -41493,8 +41616,8 @@ $export($export.G + $export.B, {
 /***/ (function(module, exports, __webpack_require__) {
 
 var global    = __webpack_require__(20)
-  , core      = __webpack_require__(47)
-  , ctx       = __webpack_require__(48)
+  , core      = __webpack_require__(46)
+  , ctx       = __webpack_require__(47)
   , hide      = __webpack_require__(111)
   , PROTOTYPE = 'prototype';
 
@@ -41611,8 +41734,8 @@ module.exports = function(it){
 /* 114 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = !__webpack_require__(29) && !__webpack_require__(49)(function(){
-  return Object.defineProperty(__webpack_require__(50)('div'), 'a', {get: function(){ return 7; }}).a != 7;
+module.exports = !__webpack_require__(29) && !__webpack_require__(48)(function(){
+  return Object.defineProperty(__webpack_require__(49)('div'), 'a', {get: function(){ return 7; }}).a != 7;
 });
 
 /***/ }),
@@ -41649,10 +41772,10 @@ module.exports = function(bitmap, value){
 /* 117 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var ctx                = __webpack_require__(48)
+var ctx                = __webpack_require__(47)
   , invoke             = __webpack_require__(118)
   , html               = __webpack_require__(119)
-  , cel                = __webpack_require__(50)
+  , cel                = __webpack_require__(49)
   , global             = __webpack_require__(20)
   , process            = global.process
   , setTask            = global.setImmediate
@@ -42139,7 +42262,7 @@ module.exports = ConvertWorker;
 "use strict";
 
 
-var Readable = __webpack_require__(40).Readable;
+var Readable = __webpack_require__(39).Readable;
 
 var utils = __webpack_require__(0);
 utils.inherits(NodejsStreamOutputAdapter, Readable);
@@ -42188,8 +42311,8 @@ module.exports = NodejsStreamOutputAdapter;
 "use strict";
 
 
-var StreamHelper = __webpack_require__(51);
-var DataWorker = __webpack_require__(53);
+var StreamHelper = __webpack_require__(50);
+var DataWorker = __webpack_require__(52);
 var utf8 = __webpack_require__(9);
 var CompressedObject = __webpack_require__(30);
 var GenericWorker = __webpack_require__(2);
@@ -42319,7 +42442,7 @@ module.exports = ZipObject;
 "use strict";
 
 
-var compressions = __webpack_require__(56);
+var compressions = __webpack_require__(55);
 var ZipFileWorker = __webpack_require__(137);
 
 /**
@@ -42480,7 +42603,7 @@ var assign    = __webpack_require__(5).assign;
 
 var deflate   = __webpack_require__(129);
 var inflate   = __webpack_require__(132);
-var constants = __webpack_require__(61);
+var constants = __webpack_require__(60);
 
 var pako = {};
 
@@ -42499,9 +42622,9 @@ module.exports = pako;
 
 var zlib_deflate = __webpack_require__(130);
 var utils        = __webpack_require__(5);
-var strings      = __webpack_require__(59);
+var strings      = __webpack_require__(58);
 var msg          = __webpack_require__(32);
-var ZStream      = __webpack_require__(60);
+var ZStream      = __webpack_require__(59);
 
 var toString = Object.prototype.toString;
 
@@ -42924,8 +43047,8 @@ exports.gzip = gzip;
 
 var utils   = __webpack_require__(5);
 var trees   = __webpack_require__(131);
-var adler32 = __webpack_require__(57);
-var crc32   = __webpack_require__(58);
+var adler32 = __webpack_require__(56);
+var crc32   = __webpack_require__(57);
 var msg     = __webpack_require__(32);
 
 /* Public constants ==========================================================*/
@@ -46014,10 +46137,10 @@ exports._tr_align = _tr_align;
 
 var zlib_inflate = __webpack_require__(133);
 var utils        = __webpack_require__(5);
-var strings      = __webpack_require__(59);
-var c            = __webpack_require__(61);
+var strings      = __webpack_require__(58);
+var c            = __webpack_require__(60);
 var msg          = __webpack_require__(32);
-var ZStream      = __webpack_require__(60);
+var ZStream      = __webpack_require__(59);
 var GZheader     = __webpack_require__(136);
 
 var toString = Object.prototype.toString;
@@ -46456,8 +46579,8 @@ exports.ungzip  = inflate;
 // 3. This notice may not be removed or altered from any source distribution.
 
 var utils         = __webpack_require__(5);
-var adler32       = __webpack_require__(57);
-var crc32         = __webpack_require__(58);
+var adler32       = __webpack_require__(56);
+var crc32         = __webpack_require__(57);
 var inflate_fast  = __webpack_require__(134);
 var inflate_table = __webpack_require__(135);
 
@@ -48770,7 +48893,7 @@ var utils = __webpack_require__(0);
 var GenericWorker = __webpack_require__(2);
 var utf8 = __webpack_require__(9);
 var crc32 = __webpack_require__(31);
-var signature = __webpack_require__(62);
+var signature = __webpack_require__(61);
 
 /**
  * Transform an integer into a string in hexadecimal.
@@ -49398,7 +49521,7 @@ var external = __webpack_require__(15);
 var utf8 = __webpack_require__(9);
 var utils = __webpack_require__(0);
 var ZipEntries = __webpack_require__(140);
-var Crc32Probe = __webpack_require__(55);
+var Crc32Probe = __webpack_require__(54);
 var nodejsUtils = __webpack_require__(19);
 
 /**
@@ -49482,9 +49605,9 @@ module.exports = function(data, options) {
 
 "use strict";
 
-var readerFor = __webpack_require__(63);
+var readerFor = __webpack_require__(62);
 var utils = __webpack_require__(0);
-var sig = __webpack_require__(62);
+var sig = __webpack_require__(61);
 var ZipEntry = __webpack_require__(143);
 var utf8 = __webpack_require__(9);
 var support = __webpack_require__(4);
@@ -49751,7 +49874,7 @@ module.exports = ZipEntries;
 
 "use strict";
 
-var DataReader = __webpack_require__(65);
+var DataReader = __webpack_require__(64);
 var utils = __webpack_require__(0);
 
 function StringReader(data) {
@@ -49796,7 +49919,7 @@ module.exports = StringReader;
 
 "use strict";
 
-var Uint8ArrayReader = __webpack_require__(66);
+var Uint8ArrayReader = __webpack_require__(65);
 var utils = __webpack_require__(0);
 
 function NodeBufferReader(data) {
@@ -49822,12 +49945,12 @@ module.exports = NodeBufferReader;
 
 "use strict";
 
-var readerFor = __webpack_require__(63);
+var readerFor = __webpack_require__(62);
 var utils = __webpack_require__(0);
 var CompressedObject = __webpack_require__(30);
 var crc32fn = __webpack_require__(31);
 var utf8 = __webpack_require__(9);
-var compressions = __webpack_require__(56);
+var compressions = __webpack_require__(55);
 var support = __webpack_require__(4);
 
 var MADE_BY_DOS = 0x00;
@@ -50224,70 +50347,6 @@ module.exports = JSZipUtils;
 // enforcing Stuk's coding style
 // vim: set shiftwidth=4 softtabstop=4:
 
-
-/***/ }),
-/* 145 */,
-/* 146 */,
-/* 147 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-
-
-class TranslationPreview extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
-  constructor(props) {
-    super(props);
-    this.state = { abTargetCompleteHtml: '' };
-  }
-
-  abCopyTargetContent() {
-    var textArea = document.querySelector('textarea.q-translated-textarea');
-    console.log('textarea', textArea);
-    textArea.select();
-    try {
-      var successful = document.execCommand('copy');
-      var msg = successful ? 'successful' : 'unsuccessful';
-      console.log('Copying text command was ' + msg);
-    } catch (err) {
-      console.log('Oops, unable to copy');
-    }
-  }
-
-  render() {
-    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-      'div',
-      { className: 'q-translation-status-container flex flex-column flex-full-width-height' },
-      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-        'div',
-        { id: 'q-email-preview-holder', className: 'email-preview-holder flex flex-column flex-full-width-height' },
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('iframe', {
-          srcDoc: this.props.abTargetContent,
-          className: 'email-preview flex-full-width-height',
-          id: 'q-preview-iframe'
-        })
-      ),
-      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-        'div',
-        null,
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-          'button',
-          { className: 'btn img-btn pull-left', onClick: this.abCopyTargetContent, type: 'submit', id: 'q-copy-button' },
-          ' Copy translation to clipboard '
-        ),
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-          'button',
-          { className: 'btn img-btn pull-left', onClick: this.props.qFileUpload, type: 'submit', id: 'q-upload-button' },
-          ' Re-upload changed template to Qordoba '
-        )
-      ),
-      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('textarea', { className: 'q-translated-textarea', value: this.props.abTargetContent })
-    );
-  }
-}
-
-/* harmony default export */ __webpack_exports__["a"] = (TranslationPreview);
 
 /***/ })
 /******/ ]);

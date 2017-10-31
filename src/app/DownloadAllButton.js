@@ -11,18 +11,25 @@ class DownloadAllButton extends React.Component {
 
   render() {
     return (
-      <div className='container'>
+      <div>
         <button type='button' className='btn img-btn pull-left q-download-all' onClick={this.props.handleDownloadAllClick}>Download and publish all completed translations</button>
-        {
-          this.props.downloadAllModalOpen &&
-          <Dialog
-          title="Dialog Title"
-          onClose={this.props.handleDownloadAllClose}
-          >
-          <h1>Dialog Content</h1>
-          <p>More Content. Anything goes here</p>
-          </Dialog>
-        }
+        <div className='container'>
+          {
+            this.props.downloadAllModalOpen &&
+            <Dialog
+            title="Dialog Title"
+            modal={true}
+            onClose={this.props.handleDownloadAllClose}
+            buttons={
+            [
+              {text: "Close",onClick: () => this.props.handleDownloadAllClose()}
+            ]
+            }>
+            <h1>Dialog Content</h1>
+            <p>More Content. Anything goes here</p>
+            </Dialog>
+          }
+        </div>
       </div>
     );
   }

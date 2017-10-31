@@ -43920,27 +43920,32 @@ class DownloadAllButton extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Co
   render() {
     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
       'div',
-      { className: 'container' },
+      null,
       __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         'button',
         { type: 'button', className: 'btn img-btn pull-left q-download-all', onClick: this.props.handleDownloadAllClick },
         'Download and publish all completed translations'
       ),
-      this.props.downloadAllModalOpen && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-        __WEBPACK_IMPORTED_MODULE_1_react_dialog___default.a,
-        {
-          title: 'Dialog Title',
-          onClose: this.props.handleDownloadAllClose
-        },
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-          'h1',
-          null,
-          'Dialog Content'
-        ),
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-          'p',
-          null,
-          'More Content. Anything goes here'
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        'div',
+        { className: 'container' },
+        this.props.downloadAllModalOpen && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          __WEBPACK_IMPORTED_MODULE_1_react_dialog___default.a,
+          {
+            title: 'Dialog Title',
+            modal: true,
+            onClose: this.props.handleDownloadAllClose,
+            buttons: [{ text: "Close", onClick: () => this.props.handleDownloadAllClose() }] },
+          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            'h1',
+            null,
+            'Dialog Content'
+          ),
+          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            'p',
+            null,
+            'More Content. Anything goes here'
+          )
         )
       )
     );
@@ -44192,7 +44197,8 @@ Dialog.defaultProps = {
     allowMaximize: false,
     onClose: null,
     buttons: null,
-    position: { x: -250, y: -150 }
+    // position: { x: -250, y: -150 }
+    position: {x: 0, y: 0}
 };
 
 exports.default = Dialog;

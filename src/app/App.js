@@ -46,11 +46,14 @@ class App extends React.Component {
       abTitle: '',
       abSourceContent: '',
       abTargetContent: '',
-      abTranslationStatuses: {}
+      abTranslationStatuses: {},
+      abContentToPublish: {},
+      sourceLocale: 'en-us' //need to actually set
     }
     this.qGetLanguages = this.qGetLanguages.bind(this);
     this.handleLanguageChange = this.handleLanguageChange.bind(this);
     this.qFileUpload = this.qFileUpload.bind(this);
+    this.qGetTranslation = this.qGetTranslation.bind(this);
   }
 
 
@@ -62,12 +65,12 @@ class App extends React.Component {
 
   componentWillMount() {
     this.abGetTemplateContent();
+    this.abGetTemplate();
   }
 
 
   async componentDidMount() {
     await this.qGetLanguages();
-    this.abGetTemplate();
   }
 
 
@@ -75,8 +78,8 @@ class App extends React.Component {
     var dropdownMenu = e.target;
     var selectedOption = dropdownMenu.querySelector(`[data-name="${e.target.value}"]`);
     await this.setState({abLanguageName: selectedOption.dataset.name, abLanguageCode: selectedOption.dataset.locale});
-    await this.qGetFiles();
     //TODO this is assuming we send up articles to Qordoba with type and ID NOT name
+    await this.qGetFiles();
     var qFileTitle = `${this.state.abType}-${this.state.abId}`;
     console.log('QFILETITLE', qFileTitle)
     if (this.state.qProjectFiles[qFileTitle]) {
@@ -85,7 +88,7 @@ class App extends React.Component {
       //If completed
       if (this.state.qProjectFiles[qFileTitle].completed) {
         //render preview
-        await this.qGetTranslation();
+        await this.qGetTranslation('1');
         this.setState({qTranslationStatus: 'completed'})
       }
       else {
@@ -224,7 +227,8 @@ class App extends React.Component {
   }
 
 
-  async qGetTranslation() {
+  async qGetTranslation(downloadOneFile) {
+    console.log('BOOL', downloadOneFile)
     var reqHeader = {
       'X-AUTH-TOKEN': this.state.qAuthToken,
       'Content-Type': 'application/json;charset=UTF-8'
@@ -235,13 +239,17 @@ class App extends React.Component {
       pageIdArray.push(this.state.qProjectFiles[key].qArticleId);
     }
 
+    pageIdArray.push(865798); //TODO NEED TO FIX 
+
+    var sampleLang = Object.keys(this.state.qProjectLanguages)[1];
+
     var completeZipFile = await $.ajax({
       type: 'POST',
       url: `https://app.qordoba.com/api/projects/${this.state.qProjectId}/export_files_bulk`,
       data: JSON.stringify({
         bilingual: false,
         compress_columns: false,
-        language_ids: [this.state.qProjectLanguages[this.state.abLanguageCode].id],
+        language_ids: [this.state.qProjectLanguages[sampleLang].id],
         original_format: false,
         page_ids: pageIdArray
       }),
@@ -256,15 +264,33 @@ class App extends React.Component {
       var completedZipDataObj = await newZip.loadAsync(data);
       var completedZipData = completedZipDataObj.files;
 
+      var abToBePublished = {};
+
       for (var key in completedZipData) {
-        if (key.includes(`${this.state.abLanguageCode}`)) {
-          var myRegexp = /.*\/([a-z,_]*-[a-z,0-9]*)-.*.html/g;
-          var regexMatches = myRegexp.exec(key);
-          var templateName = regexMatches[1];
-          if (templateName === `${this.state.abType}-${this.state.abId}`) {
-            var finalizedZipData = await completedZipData[key].async('text');
-            this.setState({abTargetContent: finalizedZipData});
-            break; //TODO FIX SO I DONT CALL SETSTATE TWICE HERE -- ONCE FOR .COMPLETED AND ONCE FOR ZIP DATA
+        if (downloadOneFile === 'one') {
+          if (key.includes(`${this.state.abLanguageCode}`)) {
+            var myRegexp = /.*\/([a-z,_]*-[a-z,0-9]*)-.*.html/g;
+            var regexMatches = myRegexp.exec(key);
+            var templateName = regexMatches[1];
+            if (templateName === `${this.state.abType}-${this.state.abId}`) {
+              var finalizedZipData = await completedZipData[key].async('text');
+              this.setState({abTargetContent: finalizedZipData});
+              break; //TODO FIX SO I DONT CALL SETSTATE TWICE HERE -- ONCE FOR .COMPLETED AND ONCE FOR ZIP DATA
+            }
+          }
+        }
+        else {
+          var locale = key.split('/')[0];
+          console.log('LOCALE FOUND FROM KEY', locale)
+          if (!key.includes(`${this.statesourceLocale}`)) {
+            var myRegexp = /.*\/([a-z,_]*-[a-z,0-9]*)-.*.html/g;
+            var regexMatches = myRegexp.exec(key);
+            var templateName = regexMatches[1];
+            if (templateName === `${this.state.abType}-${this.state.abId}`) {
+              var finalizedZipData = await completedZipData[key].async('text');
+              this.setState({abTargetContent: finalizedZipData});
+            //TODO FIX SO I DONT CALL SETSTATE TWICE HERE -- ONCE FOR .COMPLETED AND ONCE FOR ZIP DATA
+            }
           }
         }
       }
@@ -313,6 +339,7 @@ class App extends React.Component {
       //Render button to send
       return (
         <div className='q-translation-status-container'>
+          <button onClick={this.qGetTranslation} className='btn img-btn pull-left q-download-all'>Download and publish all completed translations</button>
           <LanguageDropdown handleLanguageChange={this.handleLanguageChange} qProjectLanguages={this.state.qProjectLanguages} qGetLanguages={this.qGetLanguages}/>
           <p className='helptext'> Please select a language from the dropdown menu above to get started with Qordoba!</p>
         </div>

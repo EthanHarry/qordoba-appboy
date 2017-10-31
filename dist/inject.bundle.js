@@ -28935,11 +28935,14 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
       abTitle: '',
       abSourceContent: '',
       abTargetContent: '',
-      abTranslationStatuses: {}
+      abTranslationStatuses: {},
+      abContentToPublish: {},
+      sourceLocale: 'en-us' //need to actually set
     };
     this.qGetLanguages = this.qGetLanguages.bind(this);
     this.handleLanguageChange = this.handleLanguageChange.bind(this);
     this.qFileUpload = this.qFileUpload.bind(this);
+    this.qGetTranslation = this.qGetTranslation.bind(this);
   }
 
   //React Data
@@ -28953,6 +28956,7 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 
   componentWillMount() {
     this.abGetTemplateContent();
+    this.abGetTemplate();
   }
 
   componentDidMount() {
@@ -28960,7 +28964,6 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 
     return _asyncToGenerator(function* () {
       yield _this2.qGetLanguages();
-      _this2.abGetTemplate();
     })();
   }
 
@@ -28971,8 +28974,8 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
       var dropdownMenu = e.target;
       var selectedOption = dropdownMenu.querySelector(`[data-name="${e.target.value}"]`);
       yield _this3.setState({ abLanguageName: selectedOption.dataset.name, abLanguageCode: selectedOption.dataset.locale });
-      yield _this3.qGetFiles();
       //TODO this is assuming we send up articles to Qordoba with type and ID NOT name
+      yield _this3.qGetFiles();
       var qFileTitle = `${_this3.state.abType}-${_this3.state.abId}`;
       console.log('QFILETITLE', qFileTitle);
       if (_this3.state.qProjectFiles[qFileTitle]) {
@@ -28981,7 +28984,7 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
         //If completed
         if (_this3.state.qProjectFiles[qFileTitle].completed) {
           //render preview
-          yield _this3.qGetTranslation();
+          yield _this3.qGetTranslation('1');
           _this3.setState({ qTranslationStatus: 'completed' });
         } else {
           //Show enabled status
@@ -29120,10 +29123,11 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
     })();
   }
 
-  qGetTranslation() {
+  qGetTranslation(downloadOneFile) {
     var _this7 = this;
 
     return _asyncToGenerator(function* () {
+      console.log('BOOL', downloadOneFile);
       var reqHeader = {
         'X-AUTH-TOKEN': _this7.state.qAuthToken,
         'Content-Type': 'application/json;charset=UTF-8'
@@ -29134,13 +29138,17 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
         pageIdArray.push(_this7.state.qProjectFiles[key].qArticleId);
       }
 
+      pageIdArray.push(865798); //TODO NEED TO FIX 
+
+      var sampleLang = Object.keys(_this7.state.qProjectLanguages)[1];
+
       var completeZipFile = yield __WEBPACK_IMPORTED_MODULE_2_jquery___default.a.ajax({
         type: 'POST',
         url: `https://app.qordoba.com/api/projects/${_this7.state.qProjectId}/export_files_bulk`,
         data: JSON.stringify({
           bilingual: false,
           compress_columns: false,
-          language_ids: [_this7.state.qProjectLanguages[_this7.state.abLanguageCode].id],
+          language_ids: [_this7.state.qProjectLanguages[sampleLang].id],
           original_format: false,
           page_ids: pageIdArray
         }),
@@ -29156,15 +29164,32 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
           var completedZipDataObj = yield newZip.loadAsync(data);
           var completedZipData = completedZipDataObj.files;
 
+          var abToBePublished = {};
+
           for (var key in completedZipData) {
-            if (key.includes(`${_this7.state.abLanguageCode}`)) {
-              var myRegexp = /.*\/([a-z,_]*-[a-z,0-9]*)-.*.html/g;
-              var regexMatches = myRegexp.exec(key);
-              var templateName = regexMatches[1];
-              if (templateName === `${_this7.state.abType}-${_this7.state.abId}`) {
-                var finalizedZipData = yield completedZipData[key].async('text');
-                _this7.setState({ abTargetContent: finalizedZipData });
-                break; //TODO FIX SO I DONT CALL SETSTATE TWICE HERE -- ONCE FOR .COMPLETED AND ONCE FOR ZIP DATA
+            if (downloadOneFile === 'one') {
+              if (key.includes(`${_this7.state.abLanguageCode}`)) {
+                var myRegexp = /.*\/([a-z,_]*-[a-z,0-9]*)-.*.html/g;
+                var regexMatches = myRegexp.exec(key);
+                var templateName = regexMatches[1];
+                if (templateName === `${_this7.state.abType}-${_this7.state.abId}`) {
+                  var finalizedZipData = yield completedZipData[key].async('text');
+                  _this7.setState({ abTargetContent: finalizedZipData });
+                  break; //TODO FIX SO I DONT CALL SETSTATE TWICE HERE -- ONCE FOR .COMPLETED AND ONCE FOR ZIP DATA
+                }
+              }
+            } else {
+              var locale = key.split('/')[0];
+              console.log('LOCALE FOUND FROM KEY', locale);
+              if (!key.includes(`${_this7.statesourceLocale}`)) {
+                var myRegexp = /.*\/([a-z,_]*-[a-z,0-9]*)-.*.html/g;
+                var regexMatches = myRegexp.exec(key);
+                var templateName = regexMatches[1];
+                if (templateName === `${_this7.state.abType}-${_this7.state.abId}`) {
+                  var finalizedZipData = yield completedZipData[key].async('text');
+                  _this7.setState({ abTargetContent: finalizedZipData });
+                  //TODO FIX SO I DONT CALL SETSTATE TWICE HERE -- ONCE FOR .COMPLETED AND ONCE FOR ZIP DATA
+                }
               }
             }
           }
@@ -29230,6 +29255,11 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
       return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         'div',
         { className: 'q-translation-status-container' },
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          'button',
+          { onClick: this.qGetTranslation, className: 'btn img-btn pull-left q-download-all' },
+          'Download and publish all completed translations'
+        ),
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__LanguageDropdown_js__["a" /* default */], { handleLanguageChange: this.handleLanguageChange, qProjectLanguages: this.state.qProjectLanguages, qGetLanguages: this.qGetLanguages }),
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
           'p',
@@ -39550,7 +39580,7 @@ exports = module.exports = __webpack_require__(88)(undefined);
 
 
 // module
-exports.push([module.i, "/*#language-switcher {\n  color: red\n}*/\n\n#q-language-dropdown {\n  border-bottom: 1px solid #d0d0d0;\n  padding-left: 0px;\n}\n\n.q-app-container {\n  align-self: left;\n  padding: 20px\n}", ""]);
+exports.push([module.i, "/*#language-switcher {\n  color: red\n}*/\n\n#q-language-dropdown {\n  border-bottom: 1px solid #d0d0d0;\n  padding-left: 0px;\n}\n\n.q-app-container {\n  align-self: left;\n  padding: 20px\n}\n\nbutton.q-download-all {\n  display: block\n}", ""]);
 
 // exports
 

@@ -11,3 +11,7 @@
   align-self: left;
   padding: 20px
 }
+
+button.q-download-all {
+  display: block
+}

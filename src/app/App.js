@@ -4,6 +4,7 @@ import $ from 'jquery';
 import styles from './main.css';
 import LanguageDropdown from './LanguageDropdown.js';
 import TranslationPreview from './TranslationPreview.js';
+import DownloadAllButton from './DownloadAllButton.js';
 import JSZip from 'jszip';
 import JSZipUtils from 'jszip-utils';
 
@@ -50,13 +51,15 @@ class App extends React.Component {
       abTranslationStatuses: {},
       abContentToPublish: {},
       sourceLocale: 'en-us', //need to actually set,
-      jsonReqHeader: {}
+      jsonReqHeader: {},
+      downloadAllModalOpen: false
     }
     this.qGetLanguages = this.qGetLanguages.bind(this);
     this.handleLanguageChange = this.handleLanguageChange.bind(this);
     this.qFileUpload = this.qFileUpload.bind(this);
     this.qGetOneTranslation = this.qGetOneTranslation.bind(this);
     this.handleDownloadAllClick = this.handleDownloadAllClick.bind(this);
+    this.handleDownloadAllClose = this.handleDownloadAllClose.bind(this);
   }
 
 
@@ -102,13 +105,16 @@ class App extends React.Component {
   }
 
   async handleDownloadAllClick(e) {
+    this.setState({ downloadAllModalOpen: true })
     await this.qGetAllFiles();
     await this.qGetAllTranslations();
     await this.abPublishAllTranslations();
   }
 
 
-
+  async handleDownloadAllClose() {
+    this.setState({ downloadAllModalOpen: false })
+  }
 
 
   //Appboy Data
@@ -386,7 +392,7 @@ class App extends React.Component {
       //Render button to send
       return (
         <div className='q-translation-status-container'>
-          <button onClick={this.handleDownloadAllClick} className='btn img-btn pull-left q-download-all'>Download and publish all completed translations</button>
+          <DownloadAllButton downloadAllModalOpen={this.state.downloadAllModalOpen} handleDownloadAllClick={this.handleDownloadAllClick} handleDownloadAllClose={this.handleDownloadAllClose} />
           <LanguageDropdown handleLanguageChange={this.handleLanguageChange} qProjectLanguages={this.state.qProjectLanguages} qGetLanguages={this.qGetLanguages}/>
           <p className='helptext'> Please select a language from the dropdown menu above to get started with Qordoba!</p>
         </div>

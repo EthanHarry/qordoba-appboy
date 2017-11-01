@@ -32633,6 +32633,7 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 
     return _asyncToGenerator(function* () {
       var iFramesArray = document.querySelectorAll('iframe');
+      console.log('iFramesArray', iFramesArray);
       for (var i = 0; i < iFramesArray.length; i++) {
         if (iFramesArray[i].classList.length !== 0 && iFramesArray[i].id !== 'q-preview-iframe') {
           var iframeHtml = iFramesArray[i].contentWindow.document.documentElement;
@@ -32640,7 +32641,7 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
           var sourceTag = iframeHtml.querySelector('#q-source-tag');
           console.log('SOURCTAG', sourceTag);
           if (!sourceTag) {
-            yield _this7.setState({ abSourceContent: iFramesArray[i].contentWindow.document.documentElement.outerHTML });
+            yield _this7.setState({ abSourceContent: iframeHtml.outerHTML });
           } else {
             console.log('sourceTagNEXTSIBLING', sourceTag.nextElementSibling);
           }
@@ -43977,15 +43978,15 @@ class DownloadAllButton extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Co
     for (var key in nextProps.abAllTargetContent) {
       var locale = key.slice(0, 2);
       if (!ifUsed) {
-        html += `<p class='q-locale-tag'>{% if $\{language} == '${locale}' %}</p>\n`;
+        html += `{% if $\{language} == '${locale}' %}\n`;
         ifUsed = true;
       } else {
-        html += `<p class='q-locale-tag'>{% elsif $\{language} == '${locale}' %}</p>\n`;
+        html += `{% elsif $\{language} == '${locale}' %}\n`;
       }
       html += nextProps.abAllTargetContent[key];
       html += '\n';
     }
-    html += `<p class='q-locale-tag' id='q-source-tag'>{% else %}</p>\n${nextProps.abSourceContent}\n{% endif %}`;
+    html += `{% else %}\n${nextProps.abSourceContent}\n{% endif %}`;
     this.setState({ templateHtml: html });
   }
 

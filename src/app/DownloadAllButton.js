@@ -24,16 +24,16 @@ class DownloadAllButton extends React.Component {
     for (var key in nextProps.abAllTargetContent) {
       var locale = key.slice(0,2);
       if (!ifUsed) {
-        html += `<p class='q-locale-tag'>{% if $\{language} == '${locale}' %}</p>\n`
+        html += `{% if $\{language} == '${locale}' %}\n`
         ifUsed = true;
       }
       else {
-        html += `<p class='q-locale-tag'>{% elsif $\{language} == '${locale}' %}</p>\n`
+        html += `{% elsif $\{language} == '${locale}' %}\n`
       }
       html += nextProps.abAllTargetContent[key];
       html += '\n';
     }
-    html += `<p class='q-locale-tag' id='q-source-tag'>{% else %}</p>\n${nextProps.abSourceContent}\n{% endif %}`
+    html += `{% else %}\n${nextProps.abSourceContent}\n{% endif %}`
     this.setState({templateHtml:html})
   }
 

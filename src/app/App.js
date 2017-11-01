@@ -139,6 +139,7 @@ class App extends React.Component {
   //TODO come back here and fix setting of source content when tags already exist!!!!
   async abGetTemplateContent() {
     var iFramesArray = document.querySelectorAll('iframe');
+    console.log('iFramesArray', iFramesArray)
     for (var i = 0; i < iFramesArray.length; i++) {
       if (iFramesArray[i].classList.length !== 0 && iFramesArray[i].id !== 'q-preview-iframe') {
         var iframeHtml = iFramesArray[i].contentWindow.document.documentElement;
@@ -146,7 +147,7 @@ class App extends React.Component {
         var sourceTag = iframeHtml.querySelector('#q-source-tag');
         console.log('SOURCTAG', sourceTag)
         if (!sourceTag) {
-          await this.setState({abSourceContent: iFramesArray[i].contentWindow.document.documentElement.outerHTML}) 
+          await this.setState({abSourceContent: iframeHtml.outerHTML}) 
         }
         else {
           console.log('sourceTagNEXTSIBLING', sourceTag.nextElementSibling)

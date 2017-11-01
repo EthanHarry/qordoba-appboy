@@ -32498,9 +32498,8 @@ console.log('hi react app');
 
 
 //NEXT
-//1. API call to Qordoba to see if asset exists
-//Lookup and save in Qordoba by TYPE and by ID (we'll get fancy and add name later)
-//2. conditional rendering of iFrame, "send to Qordoba" button, or "Translation in progress" string
+//1. Fix how we identify abSourceContent -- after translating, we cant just grab the text content
+//2. MUST -- fix how we ID files -- id is query param
 
 class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
   constructor(props) {
@@ -32508,7 +32507,7 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 
     //Need to actually render from auth
     this.state = {
-      qAuthToken: '024abe2e-168f-4f19-840c-d8ed3c65bb07',
+      qAuthToken: '74872eed-b0a6-4053-a83a-19170fd4ae90',
       qOrganizationId: '3168',
       qProjectId: '5843',
       qProjectLanguages: {},
@@ -32570,6 +32569,7 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
       //TODO this is assuming we send up articles to Qordoba with type and ID NOT name
       yield _this3.qGetSelectedFiles();
       var qFileTitle = `${_this3.state.abType}-${_this3.state.abId}`;
+      console.log('HELP ME FIND STATE!!!!', _this3.state);
       if (_this3.state.qProjectLocaleFiles[qFileTitle]) {
         if (_this3.state.qProjectLocaleFiles[qFileTitle].completed) {
           yield _this3.qGetOneTranslation();
@@ -32589,10 +32589,10 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
     var _this4 = this;
 
     return _asyncToGenerator(function* () {
-      _this4.setState({ downloadAllModalOpen: true });
       yield _this4.qGetAllFiles();
       yield _this4.qGetAllTranslations();
       yield _this4.abPublishAllTranslations();
+      _this4.setState({ downloadAllModalOpen: true });
     })();
   }
 
@@ -32615,16 +32615,35 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
     })();
   }
 
+  //TODO come back here and fix setting of source content when tags already exist!!!!
+  //TODO come back here and fix setting of source content when tags already exist!!!!
+  //TODO come back here and fix setting of source content when tags already exist!!!!
+  //TODO come back here and fix setting of source content when tags already exist!!!!
+  //TODO come back here and fix setting of source content when tags already exist!!!!
+  //TODO come back here and fix setting of source content when tags already exist!!!!
+  //TODO come back here and fix setting of source content when tags already exist!!!!
+  //TODO come back here and fix setting of source content when tags already exist!!!!
+  //TODO come back here and fix setting of source content when tags already exist!!!!
+  //TODO come back here and fix setting of source content when tags already exist!!!!
+  //TODO come back here and fix setting of source content when tags already exist!!!!
+  //TODO come back here and fix setting of source content when tags already exist!!!!
+  //TODO come back here and fix setting of source content when tags already exist!!!!
   abGetTemplateContent() {
     var _this7 = this;
 
     return _asyncToGenerator(function* () {
-      //TODO need to confirm that this ALWAYS grabs the right content
       var iFramesArray = document.querySelectorAll('iframe');
       for (var i = 0; i < iFramesArray.length; i++) {
         if (iFramesArray[i].classList.length !== 0 && iFramesArray[i].id !== 'q-preview-iframe') {
-          console.log('FOUND TEMPLATE CONTENT!!!');
-          yield _this7.setState({ abSourceContent: iFramesArray[i].contentWindow.document.body.outerHTML }); //TODO need to make sure we parse out non-body tags
+          var iframeHtml = iFramesArray[i].contentWindow.document.documentElement;
+          console.log('IFRMAEHTML', iframeHtml);
+          var sourceTag = iframeHtml.querySelector('#q-source-tag');
+          console.log('SOURCTAG', sourceTag);
+          if (!sourceTag) {
+            yield _this7.setState({ abSourceContent: iFramesArray[i].contentWindow.document.documentElement.outerHTML });
+          } else {
+            console.log('sourceTagNEXTSIBLING', sourceTag.nextElementSibling);
+          }
         }
       }
     })();
@@ -32661,26 +32680,32 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
     var _this9 = this;
 
     return _asyncToGenerator(function* () {
-      var qordobaLanguageId = _this9.state.qProjectLanguages[_this9.state.abLanguageCode].id;
-      var qordobaResponse = yield __WEBPACK_IMPORTED_MODULE_1_jquery___default.a.ajax({
-        type: 'POST',
-        url: `https://app.qordoba.com/api/projects/${_this9.state.qProjectId}/languages/${qordobaLanguageId}/page_settings/search`,
-        headers: _this9.state.jsonReqHeader,
-        data: JSON.stringify({})
-      });
-      var qordobaFiles = qordobaResponse.pages;
-      var allQFilesObj = Object.assign({}, _this9.state.qProjectLocaleFiles);
-      for (var i = 0; i < qordobaFiles.length; i++) {
-        var qordobaFileObj = {};
-        var fileNameNoHtml = qordobaFiles[i].url.replace('.html', '');
-        qordobaFileObj.completed = qordobaFiles[i].completed;
-        qordobaFileObj.enabled = qordobaFiles[i].enabled;
-        qordobaFileObj.createdAt = qordobaFiles[i].created_at;
-        qordobaFileObj.updatedAt = qordobaFiles[i].update;
-        qordobaFileObj.qArticleId = qordobaFiles[i].page_id;
-        allQFilesObj[fileNameNoHtml] = qordobaFileObj;
+      if (Object.keys(_this9.state.qProjectAllFiles).length > 0 && _this9.state.qProjectAllFiles[_this9.state.abLanguageCode][`${_this9.state.abType}-${_this9.state.abId}`]) {
+        var qProjectFiles = _this9.state.qProjectAllFiles[_this9.state.abLanguageCode];
+        console.log('NOT FETCHING PROJECT FILES CUZ i already got em', qProjectFiles);
+        yield _this9.setState({ qProjectLocaleFiles: qProjectFiles });
+      } else {
+        var qordobaLanguageId = _this9.state.qProjectLanguages[_this9.state.abLanguageCode].id;
+        var qordobaResponse = yield __WEBPACK_IMPORTED_MODULE_1_jquery___default.a.ajax({
+          type: 'POST',
+          url: `https://app.qordoba.com/api/projects/${_this9.state.qProjectId}/languages/${qordobaLanguageId}/page_settings/search`,
+          headers: _this9.state.jsonReqHeader,
+          data: JSON.stringify({})
+        });
+        var qordobaFiles = qordobaResponse.pages;
+        var allQFilesObj = Object.assign({}, _this9.state.qProjectLocaleFiles);
+        for (var i = 0; i < qordobaFiles.length; i++) {
+          var qordobaFileObj = {};
+          var fileNameNoHtml = qordobaFiles[i].url.replace('.html', '');
+          qordobaFileObj.completed = qordobaFiles[i].completed;
+          qordobaFileObj.enabled = qordobaFiles[i].enabled;
+          qordobaFileObj.createdAt = qordobaFiles[i].created_at;
+          qordobaFileObj.updatedAt = qordobaFiles[i].update;
+          qordobaFileObj.qArticleId = qordobaFiles[i].page_id;
+          allQFilesObj[fileNameNoHtml] = qordobaFileObj;
+        }
+        yield _this9.setState({ qProjectLocaleFiles: allQFilesObj });
       }
-      yield _this9.setState({ qProjectLocaleFiles: allQFilesObj });
     })();
   }
 
@@ -32801,7 +32826,8 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
               var myRegexp = /.*\/([a-z,_]*-[a-z,0-9]*)-.*.html/g;
               var regexMatches = myRegexp.exec(key);
               var templateName = regexMatches[1];
-              if (templateName === `${_this12.state.abType}-${_this12.state.abId}`) {
+              console.log('CHECKING', _this12.state.qProjectAllFiles, locale);
+              if (templateName === `${_this12.state.abType}-${_this12.state.abId}` && _this12.state.qProjectAllFiles[locale][templateName].completed) {
                 var finalizedZipData = yield completedZipData[key].async('text');
                 abToBePublished[locale] = finalizedZipData;
                 //TODO FIX SO I DONT CALL SETSTATE TWICE HERE -- ONCE FOR .COMPLETED AND ONCE FOR ZIP DATA
@@ -32878,7 +32904,12 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
       return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         'div',
         { className: 'q-translation-status-container' },
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__LanguageDropdown_js__["a" /* default */], { handleLanguageChange: this.handleLanguageChange, qProjectLanguages: this.state.qProjectLanguages, qGetLanguages: this.qGetLanguages }),
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          'div',
+          { className: 'q-nav-bar' },
+          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__LanguageDropdown_js__["a" /* default */], { handleLanguageChange: this.handleLanguageChange, qProjectLanguages: this.state.qProjectLanguages, qGetLanguages: this.qGetLanguages }),
+          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__DownloadAllButton_js__["a" /* default */], { abSourceContent: this.state.abSourceContent, abAllTargetContent: this.state.abAllTargetContent, downloadAllModalOpen: this.state.downloadAllModalOpen, handleDownloadAllClick: this.handleDownloadAllClick, handleDownloadAllClose: this.handleDownloadAllClose })
+        ),
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
           'p',
           { className: 'helptext' },
@@ -32897,7 +32928,12 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
       return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         'div',
         { className: 'q-translation-status-container' },
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__LanguageDropdown_js__["a" /* default */], { handleLanguageChange: this.handleLanguageChange, qProjectLanguages: this.state.qProjectLanguages, qGetLanguages: this.qGetLanguages }),
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          'div',
+          { className: 'q-nav-bar' },
+          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__LanguageDropdown_js__["a" /* default */], { handleLanguageChange: this.handleLanguageChange, qProjectLanguages: this.state.qProjectLanguages, qGetLanguages: this.qGetLanguages }),
+          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__DownloadAllButton_js__["a" /* default */], { abSourceContent: this.state.abSourceContent, abAllTargetContent: this.state.abAllTargetContent, downloadAllModalOpen: this.state.downloadAllModalOpen, handleDownloadAllClick: this.handleDownloadAllClick, handleDownloadAllClose: this.handleDownloadAllClose })
+        ),
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
           'p',
           { className: 'helptext' },
@@ -32913,7 +32949,12 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
       return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         'div',
         { className: 'q-translation-status-container flex flex-column flex-full-width-height' },
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__LanguageDropdown_js__["a" /* default */], { handleLanguageChange: this.handleLanguageChange, qProjectLanguages: this.state.qProjectLanguages, qGetLanguages: this.qGetLanguages }),
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          'div',
+          { className: 'q-nav-bar' },
+          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__LanguageDropdown_js__["a" /* default */], { handleLanguageChange: this.handleLanguageChange, qProjectLanguages: this.state.qProjectLanguages, qGetLanguages: this.qGetLanguages }),
+          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__DownloadAllButton_js__["a" /* default */], { abSourceContent: this.state.abSourceContent, abAllTargetContent: this.state.abAllTargetContent, downloadAllModalOpen: this.state.downloadAllModalOpen, handleDownloadAllClick: this.handleDownloadAllClick, handleDownloadAllClose: this.handleDownloadAllClose })
+        ),
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__TranslationPreview_js__["a" /* default */], { abTranslationStatuses: this.state.abTranslationStatuses, qFileUpload: this.qFileUpload, abLocaleTargetContent: this.state.abLocaleTargetContent, handleLanguageChange: this.handleLanguageChange, qProjectLanguages: this.state.qProjectLanguages, qGetLanguages: this.qGetLanguages })
       );
     } else {
@@ -32923,8 +32964,12 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
       return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         'div',
         { className: 'q-translation-status-container' },
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__DownloadAllButton_js__["a" /* default */], { downloadAllModalOpen: this.state.downloadAllModalOpen, handleDownloadAllClick: this.handleDownloadAllClick, handleDownloadAllClose: this.handleDownloadAllClose }),
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__LanguageDropdown_js__["a" /* default */], { handleLanguageChange: this.handleLanguageChange, qProjectLanguages: this.state.qProjectLanguages, qGetLanguages: this.qGetLanguages }),
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          'div',
+          { className: 'q-nav-bar' },
+          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__LanguageDropdown_js__["a" /* default */], { handleLanguageChange: this.handleLanguageChange, qProjectLanguages: this.state.qProjectLanguages, qGetLanguages: this.qGetLanguages }),
+          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__DownloadAllButton_js__["a" /* default */], { abSourceContent: this.state.abSourceContent, abAllTargetContent: this.state.abAllTargetContent, downloadAllModalOpen: this.state.downloadAllModalOpen, handleDownloadAllClick: this.handleDownloadAllClick, handleDownloadAllClose: this.handleDownloadAllClose })
+        ),
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
           'p',
           { className: 'helptext' },
@@ -43237,7 +43282,7 @@ exports = module.exports = __webpack_require__(136)(undefined);
 
 
 // module
-exports.push([module.i, "/*#language-switcher {\n  color: red\n}*/\n\n#q-language-dropdown {\n  border-bottom: 1px solid #d0d0d0;\n  padding-left: 0px;\n}\n\n.q-app-container {\n  align-self: left;\n  padding: 20px\n}\n\nbutton.q-download-all {\n  display: block\n}\n\n.q-modal {\n    display: none; /* Hidden by default */\n    position: fixed; /* Stay in place */\n    z-index: 1; /* Sit on top */\n    left: 0;\n    top: 0;\n    width: 100%; /* Full width */\n    height: 100%; /* Full height */\n    overflow: auto; /* Enable scroll if needed */\n    background-color: rgb(0,0,0); /* Fallback color */\n    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */\n}", ""]);
+exports.push([module.i, "/*#language-switcher {\n  color: red\n}*/\n\n.q-app-container {\n  align-self: left;\n  padding: 20px\n}\n\nbutton.q-download-all {\n  display: block\n}\n\n.q-close-modal {\n  float: right;\n}\n\n.q-nav-bar {\n  display: flex;\n  border-bottom: 1px solid #d0d0d0;\n}\n\n#q-language-dropdown {\n  padding-right: 20px;\n  padding-left: 0px;\n}", ""]);
 
 // exports
 
@@ -43812,7 +43857,7 @@ class LanguageDropdown extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Com
   render() {
     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
       'div',
-      { id: 'q-language-dropdown', className: 'panel-header padded-header' },
+      { id: 'q-language-dropdown', className: 'q-nav-item' },
       __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         'select',
         { onChange: this.props.handleLanguageChange },
@@ -43871,7 +43916,7 @@ class TranslationPreview extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.C
         'div',
         { id: 'q-email-preview-holder', className: 'email-preview-holder flex flex-column flex-full-width-height' },
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('iframe', {
-          srcDoc: this.props.abTargetContent,
+          srcDoc: this.props.abLocaleTargetContent,
           className: 'email-preview flex-full-width-height',
           id: 'q-preview-iframe'
         })
@@ -43890,7 +43935,7 @@ class TranslationPreview extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.C
           ' Re-upload changed template to Qordoba '
         )
       ),
-      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('textarea', { className: 'q-translated-textarea', value: this.props.abTargetContent })
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('textarea', { className: 'q-translated-textarea', value: this.props.abLocaleTargetContent })
     );
   }
 }
@@ -43911,19 +43956,46 @@ class TranslationPreview extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.C
 class DownloadAllButton extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
   constructor(props) {
     super(props);
+    this.state = { templateHtml: '' };
   }
 
-  componentWillUpdate() {
-    console.log('UPDTATING DL ALL BUTTON!!!!', this.props);
+  componentWillReceiveProps(nextProps) {
+    if (Object.keys(nextProps.abAllTargetContent).length > 0) {
+      console.log('BUILDING TEMPLATE HTML', this.props.abAllTargetContent);
+      this.buildTemplateHtml(nextProps);
+    }
+  }
+
+  componentDidUpdate() {
+    console.log('UPDTATING DL ALL BUTTON!!!!', this.state);
+  }
+
+  buildTemplateHtml(nextProps) {
+    console.log('NEXT PROPS', nextProps);
+    var html = '';
+    var ifUsed = false;
+    for (var key in nextProps.abAllTargetContent) {
+      var locale = key.slice(0, 2);
+      if (!ifUsed) {
+        html += `<p class='q-locale-tag'>{% if $\{language} == '${locale}' %}</p>\n`;
+        ifUsed = true;
+      } else {
+        html += `<p class='q-locale-tag'>{% elsif $\{language} == '${locale}' %}</p>\n`;
+      }
+      html += nextProps.abAllTargetContent[key];
+      html += '\n';
+    }
+    html += `<p class='q-locale-tag' id='q-source-tag'>{% else %}</p>\n${nextProps.abSourceContent}\n{% endif %}`;
+    this.setState({ templateHtml: html });
   }
 
   render() {
     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
       'div',
-      null,
+      { className: 'q-nav-item' },
       __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         'button',
-        { type: 'button', className: 'btn img-btn pull-left q-download-all', onClick: this.props.handleDownloadAllClick },
+        { type: 'button', className: 'btn img-btn q-download-all', onClick: this.props.handleDownloadAllClick },
         'Download and publish all completed translations'
       ),
       __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -43933,9 +44005,9 @@ class DownloadAllButton extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Co
           __WEBPACK_IMPORTED_MODULE_1_react_dialog___default.a,
           {
             title: 'Dialog Title',
-            modal: true,
+            width: 700,
             onClose: this.props.handleDownloadAllClose,
-            buttons: [{ text: "Close", onClick: () => this.props.handleDownloadAllClose() }] },
+            buttons: [{ text: "Close", onClick: () => this.props.handleDownloadAllClose(), className: 'q-close-modal' }] },
           __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
             'h1',
             null,
@@ -43945,7 +44017,8 @@ class DownloadAllButton extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Co
             'p',
             null,
             'More Content. Anything goes here'
-          )
+          ),
+          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('textarea', { rows: 20, cols: 40, value: this.state.templateHtml })
         )
       )
     );

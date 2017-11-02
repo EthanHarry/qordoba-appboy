@@ -32611,7 +32611,7 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
     return _asyncToGenerator(function* () {
       var urlPathArray = window.location.pathname.split('/');
       var articleTitleSpan = document.querySelector('span.editable-heading');
-      yield _this6.setState({ abType: urlPathArray[urlPathArray.length - 2], abId: urlPathArray[urlPathArray.length - 1], abTitle: articleTitleSpan.innerHTML });
+      yield _this6.setState({ abType: urlPathArray[urlPathArray.length - 2], abId: window.location.search.split('=')[1], abTitle: articleTitleSpan.innerHTML });
     })();
   }
 
@@ -32637,7 +32637,7 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
       for (var i = 0; i < iFramesArray.length; i++) {
         if (iFramesArray[i].classList.length !== 0 && iFramesArray[i].id !== 'q-preview-iframe') {
           var iframeHtml = iFramesArray[i].contentWindow.document.documentElement;
-          console.log('IFRMAEHTML', iframeHtml);
+          console.log('IFRMAEHTML', iframeHtml.outerHTML);
           var sourceTag = iframeHtml.querySelector('#q-source-tag');
           console.log('SOURCTAG', sourceTag);
           if (!sourceTag) {
@@ -32909,6 +32909,11 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
           'div',
           { className: 'q-nav-bar' },
           __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__LanguageDropdown_js__["a" /* default */], { handleLanguageChange: this.handleLanguageChange, qProjectLanguages: this.state.qProjectLanguages, qGetLanguages: this.qGetLanguages }),
+          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            'div',
+            { className: 'q-nav-item', id: 'q-refresh' },
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { 'class': 'fa fa-refresh', 'aria-hidden': 'true' })
+          ),
           __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__DownloadAllButton_js__["a" /* default */], { abSourceContent: this.state.abSourceContent, abAllTargetContent: this.state.abAllTargetContent, downloadAllModalOpen: this.state.downloadAllModalOpen, handleDownloadAllClick: this.handleDownloadAllClick, handleDownloadAllClose: this.handleDownloadAllClose })
         ),
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -32933,6 +32938,11 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
           'div',
           { className: 'q-nav-bar' },
           __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__LanguageDropdown_js__["a" /* default */], { handleLanguageChange: this.handleLanguageChange, qProjectLanguages: this.state.qProjectLanguages, qGetLanguages: this.qGetLanguages }),
+          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            'div',
+            { className: 'q-nav-item', id: 'q-refresh' },
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { 'class': 'fa fa-refresh', 'aria-hidden': 'true' })
+          ),
           __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__DownloadAllButton_js__["a" /* default */], { abSourceContent: this.state.abSourceContent, abAllTargetContent: this.state.abAllTargetContent, downloadAllModalOpen: this.state.downloadAllModalOpen, handleDownloadAllClick: this.handleDownloadAllClick, handleDownloadAllClose: this.handleDownloadAllClose })
         ),
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -32974,7 +32984,12 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
           'p',
           { className: 'helptext' },
-          ' Please select a language from the dropdown menu above to get started with Qordoba!'
+          ' Please send a file to Qordoba or select a language from the dropdown menu above to get started with Qordoba!'
+        ),
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          'button',
+          { className: 'btn img-btn pull-left', onClick: this.qFileUpload, type: 'submit', id: 'q-upload-button' },
+          ' Upload to Qordoba '
         )
       );
     }

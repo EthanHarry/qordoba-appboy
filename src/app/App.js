@@ -121,7 +121,7 @@ class App extends React.Component {
   async abGetTemplate() {
     var urlPathArray = window.location.pathname.split('/');
     var articleTitleSpan = document.querySelector('span.editable-heading');
-    await this.setState({abType: urlPathArray[urlPathArray.length - 2], abId: urlPathArray[urlPathArray.length - 1], abTitle: articleTitleSpan.innerHTML})
+    await this.setState({abType: urlPathArray[urlPathArray.length - 2], abId: window.location.search.split('=')[1], abTitle: articleTitleSpan.innerHTML})
   }
 
   //TODO come back here and fix setting of source content when tags already exist!!!!
@@ -143,7 +143,7 @@ class App extends React.Component {
     for (var i = 0; i < iFramesArray.length; i++) {
       if (iFramesArray[i].classList.length !== 0 && iFramesArray[i].id !== 'q-preview-iframe') {
         var iframeHtml = iFramesArray[i].contentWindow.document.documentElement;
-        console.log('IFRMAEHTML', iframeHtml)
+        console.log('IFRMAEHTML', iframeHtml.outerHTML)
         var sourceTag = iframeHtml.querySelector('#q-source-tag');
         console.log('SOURCTAG', sourceTag)
         if (!sourceTag) {
@@ -390,6 +390,9 @@ class App extends React.Component {
         <div className='q-translation-status-container'>
           <div className="q-nav-bar">
             <LanguageDropdown handleLanguageChange={this.handleLanguageChange} qProjectLanguages={this.state.qProjectLanguages} qGetLanguages={this.qGetLanguages}/>
+            <div className='q-nav-item' id='q-refresh'>
+              <i class="fa fa-refresh" aria-hidden="true"></i>
+            </div>
             <DownloadAllButton abSourceContent={this.state.abSourceContent} abAllTargetContent={this.state.abAllTargetContent} downloadAllModalOpen={this.state.downloadAllModalOpen} handleDownloadAllClick={this.handleDownloadAllClick} handleDownloadAllClose={this.handleDownloadAllClose} />
           </div>
           <p className='helptext'>This template is not yet in Qordoba. Please click the button below to start translating! </p>
@@ -405,6 +408,9 @@ class App extends React.Component {
         <div className='q-translation-status-container'>
           <div className="q-nav-bar">
             <LanguageDropdown handleLanguageChange={this.handleLanguageChange} qProjectLanguages={this.state.qProjectLanguages} qGetLanguages={this.qGetLanguages}/>
+            <div className='q-nav-item' id='q-refresh'>
+              <i class="fa fa-refresh" aria-hidden="true"></i>
+            </div>
             <DownloadAllButton abSourceContent={this.state.abSourceContent} abAllTargetContent={this.state.abAllTargetContent} downloadAllModalOpen={this.state.downloadAllModalOpen} handleDownloadAllClick={this.handleDownloadAllClick} handleDownloadAllClose={this.handleDownloadAllClose} />
           </div>
           <p className='helptext'>This template is currently being translated in Qordoba. If the original template content has changed, please click the button below to re-upload to Qordoba.</p>
@@ -433,7 +439,8 @@ class App extends React.Component {
             <LanguageDropdown handleLanguageChange={this.handleLanguageChange} qProjectLanguages={this.state.qProjectLanguages} qGetLanguages={this.qGetLanguages}/>
             <DownloadAllButton abSourceContent={this.state.abSourceContent} abAllTargetContent={this.state.abAllTargetContent} downloadAllModalOpen={this.state.downloadAllModalOpen} handleDownloadAllClick={this.handleDownloadAllClick} handleDownloadAllClose={this.handleDownloadAllClose} />
           </div>
-          <p className='helptext'> Please select a language from the dropdown menu above to get started with Qordoba!</p>
+          <p className='helptext'> Please send a file to Qordoba or select a language from the dropdown menu above to get started with Qordoba!</p>
+          <button className='btn img-btn pull-left' onClick={this.qFileUpload} type="submit" id='q-upload-button'> Upload to Qordoba </button>
         </div>
       )
     }

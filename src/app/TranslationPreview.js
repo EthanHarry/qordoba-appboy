@@ -40,9 +40,14 @@ class TranslationPreview extends React.Component {
         </div>
       )
     }
+    else if (this.props.abLanguageCode) {
+      return (
+        <p className='helptext'>This translation has not yet been completed in Qordoba.</p>
+      )
+    }
     else {
       return (
-        <div></div>
+        <p>You have completed translations in Qordoba! Select a language in the dropdown to see a preview or download all above! </p>
       )
     }
   }

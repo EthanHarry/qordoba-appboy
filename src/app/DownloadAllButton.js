@@ -19,28 +19,28 @@ class DownloadAllButton extends React.Component {
 
   buildTemplateHtml(nextProps) {
     console.log('NEXT PROPS', nextProps)
-    var html = '';
+    var html = `<html>\n<head>\n${this.props.abHeadContent}\n</head>\n<body>\n`;
     var ifUsed = false;
     for (var key in nextProps.abAllTargetContent) {
       var locale = key.slice(0,2);
       if (!ifUsed) {
-        html += `{% if $\{language} == '${locale}' %}\n`
+        html += `{% if $\{language} == '${locale}' %}`
         ifUsed = true;
       }
       else {
-        html += `{% elsif $\{language} == '${locale}' %}\n`
+        html += `{% elsif $\{language} == '${locale}' %}`
       }
       html += nextProps.abAllTargetContent[key];
       html += '\n';
     }
-    html += `{% else %}\n${nextProps.abSourceContent}\n{% endif %}`
+    html += `{% else %}${nextProps.abSourceContent}{% endif %}\n</body></html>`
     this.setState({templateHtml:html})
   }
 
   render() {
     return (
       <div className='q-nav-item'>
-        <button type='button' className='btn img-btn q-download-all' onClick={this.props.handleDownloadAllClick}>Download and publish all completed translations</button>
+        <button disabled={!this.props.abFileTranslationsExist} type='button' className='btn img-btn q-download-all' onClick={this.props.handleDownloadAllClick}>Download and publish all completed translations</button>
         <div className='container'>
           {
             this.props.downloadAllModalOpen &&

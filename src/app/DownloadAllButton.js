@@ -66,7 +66,7 @@ class DownloadAllButton extends React.Component {
     console.log('IS MODAL OPEN?!?', this.props.downloadAllModalOpen)
     return (
       <div className='q-nav-item'>
-        <button disabled={this.props.disabled} type='button' className='btn q-download-all' onClick={this.props.handleDownloadAllClick}>Download and publish all completed translations</button>
+        <button disabled={this.props.disabled} type='button' className='btn q-download-all' onClick={this.props.handleDownloadAllClick}>Download / publish all completed translations</button>
         <Modal
           id='q-download-all-modal'
           isOpen={this.props.downloadAllModalOpen}
@@ -76,10 +76,8 @@ class DownloadAllButton extends React.Component {
           contentLabel="Modal"
           style={this.state.modalStyle}
         >
-          <div className='flex'>
-            <h1>Translated HTML</h1>
-            <CopyToClipboardButton handleModalClose={this.props.handleDownloadAllClose} textAreaQuery='#q-download-all-textarea' type="submit" className='q-copy-button' />
-          </div>
+          <h1>Translated HTML</h1>
+          <CopyToClipboardButton handleModalClose={this.props.handleDownloadAllClose} textAreaQuery='#q-download-all-textarea' type="submit" />
           <p className='helptext'> If you'd like to include all completed translations from Qordoba.<strong> click the "Copy to Clipboard" button </strong>and replace the contents of the template to the left with the new HTML.</p>
           <div className='q-download-all-textarea-container'>
             <TextArea disabled id='q-download-all-textarea' value={this.state.templateHtml} />

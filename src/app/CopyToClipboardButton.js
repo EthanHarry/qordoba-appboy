@@ -25,11 +25,9 @@ class CopyToClipboardButton extends React.Component {
     }
   }
 
-
-
   render() {
     return (
-      <button className='btn pull-left' onClick={this.abCopyTargetContent}>Copy HTML to Clipboard</button>
+      <button className='btn pull-left q-copy-button' onClick={this.abCopyTargetContent}>Copy HTML to Clipboard</button>
     )
   }
 }

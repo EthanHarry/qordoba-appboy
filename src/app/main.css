@@ -41,3 +41,7 @@ button.q-download-all {
 #q-download-all-textarea-container {
   width: 100%;
 }
+
+.q-copy-button {
+  margin: 0 2vw 0 .5vw;
+}

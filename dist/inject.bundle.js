@@ -33188,8 +33188,7 @@ console.log('hi react app');
 //Clean up any whitespace in parsing 
 //Send update call instead of upload when source content already exists
 //Make dropdown menu so it actually shows active language
-//Add "Copy content to clipboard" button to the "Download all" textarea and close dialog when this is clicked
-//Also, make close button clearer in dialog
+//Add functionality for "add this translation to template"
 //Hide (or figure out how to handle) textarea on locale dropdown pages
 //Handle launching of extension (repeat launches, launching on wrong page, etc. -- prob just make auto -- or both?)
 
@@ -44047,7 +44046,7 @@ exports = module.exports = __webpack_require__(3)(undefined);
 
 
 // module
-exports.push([module.i, "/*#language-switcher {\n  color: red\n}*/\n\n#q-app-container {\n  align-self: left;\n  padding: 10px 0 0 10px;\n  display: flex;\n  max-width: 100%;\n}\n\nbutton.q-download-all {\n  display: block;\n  white-space: normal;\n}\n\n.q-close-modal {\n  float: right;\n}\n\n.q-nav-bar {\n  display: flex;\n  border-bottom: 1px solid #d0d0d0;\n}\n\n.q-nav-item {\n  padding-right: 20px;\n  padding-left: 0px;\n}\n\n#q-translation-status-container-email {\n  display: flex;\n  flex-direction: column;\n  flex: 1;\n}\n\n#q-download-all-textarea {\n  width: 100%;\n}\n\n#q-download-all-textarea-container {\n  width: 100%;\n}\n\n.q-copy-button {\n  margin: 0 2vw 0 .5vw;\n}", ""]);
+exports.push([module.i, "/*#language-switcher {\n  color: red\n}*/\n\n#q-app-container {\n  align-self: left;\n  padding: 10px 0 0 10px;\n  display: flex;\n  max-width: 100%;\n}\n\nbutton.q-download-all {\n  display: block;\n  white-space: normal;\n}\n\n.q-close-modal {\n  float: right;\n}\n\n.q-nav-bar {\n  display: flex;\n  border-bottom: 1px solid #d0d0d0;\n}\n\n.q-nav-item {\n  padding-right: 20px;\n  padding-left: 0px;\n}\n\n#q-translation-status-container-email {\n  display: flex;\n  flex-direction: column;\n  flex: 1;\n}\n\n#q-download-all-textarea {\n  width: 100%;\n}\n\n#q-download-all-textarea-container {\n  width: 100%;\n}\n\n.q-copy-button {\n  margin: 0 2vw 0 .5vw;\n}\n\n#q-app-container {\n  height: 100vh;\n}\n\n#q-refresh {\n  padding-top: 1vh; /* hacky */\n}", ""]);
 
 // exports
 
@@ -44339,7 +44338,7 @@ class DownloadAllButton extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Co
       __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         'button',
         { disabled: this.props.disabled, type: 'button', className: 'btn q-download-all', onClick: this.props.handleDownloadAllClick },
-        'Download / publish all completed translations'
+        'Download / Publish All'
       ),
       __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         __WEBPACK_IMPORTED_MODULE_2_react_modal___default.a,

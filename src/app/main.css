@@ -45,3 +45,11 @@ button.q-download-all {
 .q-copy-button {
   margin: 0 2vw 0 .5vw;
 }
+
+#q-app-container {
+  height: 100vh;
+}
+
+#q-refresh {
+  padding-top: 1vh; /* hacky */
+}

@@ -15,8 +15,7 @@ import Spinner from 'react-spinkit';
   //Clean up any whitespace in parsing 
   //Send update call instead of upload when source content already exists
   //Make dropdown menu so it actually shows active language
-  //Add "Copy content to clipboard" button to the "Download all" textarea and close dialog when this is clicked
-  //Also, make close button clearer in dialog
+  //Add functionality for "add this translation to template"
   //Hide (or figure out how to handle) textarea on locale dropdown pages
   //Handle launching of extension (repeat launches, launching on wrong page, etc. -- prob just make auto -- or both?)
 

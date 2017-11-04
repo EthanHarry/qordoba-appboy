@@ -66,7 +66,7 @@ class DownloadAllButton extends React.Component {
     console.log('IS MODAL OPEN?!?', this.props.downloadAllModalOpen)
     return (
       <div className='q-nav-item'>
-        <button disabled={this.props.disabled} type='button' className='btn q-download-all' onClick={this.props.handleDownloadAllClick}>Download / publish all completed translations</button>
+        <button disabled={this.props.disabled} type='button' className='btn q-download-all' onClick={this.props.handleDownloadAllClick}>Download / Publish All</button>
         <Modal
           id='q-download-all-modal'
           isOpen={this.props.downloadAllModalOpen}

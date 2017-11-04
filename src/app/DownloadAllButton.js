@@ -3,6 +3,7 @@ import Dialog from 'react-dialog';
 import Modal from 'react-modal';
 import TextArea from 'react-textarea-autosize';
 import pretty from 'pretty-html';
+import CopyToClipboardButton from './CopyToClipboardButton';
 
 
 class DownloadAllButton extends React.Component {
@@ -10,7 +11,6 @@ class DownloadAllButton extends React.Component {
     super(props);
     this.state = {
       templateHtml: '', 
-      modalOpen: false, 
       modalStyle: {
         overlay: {
           position: 'absolute'
@@ -59,7 +59,7 @@ class DownloadAllButton extends React.Component {
   }
 
   getParentSelector() {
-    return document.querySelector('.q-app-container')
+    return document.querySelector('#q-app-container')
   }
 
   render() {
@@ -76,11 +76,14 @@ class DownloadAllButton extends React.Component {
           contentLabel="Modal"
           style={this.state.modalStyle}
         >
-          <h1>Modal Content</h1>
-          <div className='q-download-all-textarea-container'>
-            <TextArea className='q-download-all-textarea' value={this.state.templateHtml} />
+          <div className='flex'>
+            <h1>Translated HTML</h1>
+            <CopyToClipboardButton handleModalClose={this.props.handleDownloadAllClose} textAreaQuery='#q-download-all-textarea' type="submit" className='q-copy-button' />
           </div>
-          <p>Etc.</p>
+          <p className='helptext'> If you'd like to include all completed translations from Qordoba.<strong> click the "Copy to Clipboard" button </strong>and replace the contents of the template to the left with the new HTML.</p>
+          <div className='q-download-all-textarea-container'>
+            <TextArea disabled id='q-download-all-textarea' value={this.state.templateHtml} />
+          </div>
         </Modal>
       </div>
     );

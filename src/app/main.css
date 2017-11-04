@@ -2,7 +2,7 @@
   color: red
 }*/
 
-.q-app-container {
+#q-app-container {
   align-self: left;
   padding: 10px 0 0 10px;
   display: flex;
@@ -28,16 +28,16 @@ button.q-download-all {
   padding-left: 0px;
 }
 
-.q-translation-status-container {
+#q-translation-status-container-email {
   display: flex;
   flex-direction: column;
   flex: 1;
 }
 
-.q-download-all-textarea {
+#q-download-all-textarea {
   width: 100%;
 }
 
-.q-download-all-textarea-container {
+#q-download-all-textarea-container {
   width: 100%;
 }

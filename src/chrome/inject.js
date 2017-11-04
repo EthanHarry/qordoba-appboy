@@ -79,7 +79,8 @@ var renderReactApp = () => {
     ReactDOM.render(<App/>, appContainer);
     appRendered = true;
   }
-  appContainer.classList.add('q-app-container', 'flex');
+  appContainer.classList.add('flex');
+  appContainer.id = 'q-app-container';
   appContainer.style.display = 'flex';
 }
 

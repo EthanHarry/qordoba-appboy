@@ -12965,7 +12965,8 @@ var renderReactApp = () => {
     __WEBPACK_IMPORTED_MODULE_1_react_dom___default.a.render(__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__app_App_js__["a" /* default */], null), appContainer);
     appRendered = true;
   }
-  appContainer.classList.add('q-app-container', 'flex');
+  appContainer.classList.add('flex');
+  appContainer.id = 'q-app-container';
   appContainer.style.display = 'flex';
 };
 
@@ -33574,7 +33575,7 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
           if (this.state.abFileCompletedInQ) {
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
               'div',
-              { className: 'q-translation-status-container' },
+              { id: 'q-translation-status-container-email' },
               __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 'div',
                 { className: 'q-nav-bar' },
@@ -33593,9 +33594,9 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
                     ' Re-upload changed template to Qordoba '
                   )
                 ),
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__DownloadAllButton_js__["a" /* default */], { abHeadContent: this.state.abHeadContent, abSourceContent: this.state.abSourceContent, abAllTargetContent: this.state.abAllTargetContent, downloadAllModalOpen: this.state.downloadAllModalOpen, handleDownloadAllClick: this.handleDownloadAllClick, handleDownloadAllClose: this.handleDownloadAllClose })
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__DownloadAllButton_js__["a" /* default */], { downloadAllModalOpen: this.state.downloadAllModalOpen, abHeadContent: this.state.abHeadContent, abSourceContent: this.state.abSourceContent, abAllTargetContent: this.state.abAllTargetContent, downloadAllModalOpen: this.state.downloadAllModalOpen, handleDownloadAllClick: this.handleDownloadAllClick, handleDownloadAllClose: this.handleDownloadAllClose })
               ),
-              __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__TranslationPreview_js__["a" /* default */], { abLanguageCode: this.state.abLanguageCode, disabled: this.state.qTranslationStatus !== 'completed', abTranslationStatuses: this.state.abTranslationStatuses, qFileUpload: this.qFileUpload, abLocaleTargetContent: this.state.abLocaleTargetContent, handleLanguageChange: this.handleLanguageChange, qProjectLanguages: this.state.qProjectLanguages, qGetLanguages: this.qGetLanguages })
+              __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__TranslationPreview_js__["a" /* default */], { handleDownloadAllClose: this.handleDownloadAllClose, abLanguageCode: this.state.abLanguageCode, disabled: this.state.qTranslationStatus !== 'completed', abTranslationStatuses: this.state.abTranslationStatuses, qFileUpload: this.qFileUpload, abLocaleTargetContent: this.state.abLocaleTargetContent, handleLanguageChange: this.handleLanguageChange, qProjectLanguages: this.state.qProjectLanguages, qGetLanguages: this.qGetLanguages })
             );
           } else {
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -33619,7 +33620,7 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
                     ' Re-upload changed template to Qordoba '
                   )
                 ),
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__DownloadAllButton_js__["a" /* default */], { disabled: true, abFileCompletedInQ: this.state.qFileTranslationStatus === 'completed', abHeadContent: this.state.abHeadContent, abSourceContent: this.state.abSourceContent, abAllTargetContent: this.state.abAllTargetContent, downloadAllModalOpen: this.state.downloadAllModalOpen, handleDownloadAllClick: this.handleDownloadAllClick, handleDownloadAllClose: this.handleDownloadAllClose })
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__DownloadAllButton_js__["a" /* default */], { downloadAllModalOpen: this.state.downloadAllModalOpen, disabled: true, abFileCompletedInQ: this.state.qFileTranslationStatus === 'completed', abHeadContent: this.state.abHeadContent, abSourceContent: this.state.abSourceContent, abAllTargetContent: this.state.abAllTargetContent, downloadAllModalOpen: this.state.downloadAllModalOpen, handleDownloadAllClick: this.handleDownloadAllClick, handleDownloadAllClose: this.handleDownloadAllClose })
               ),
               __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 'p',
@@ -33650,7 +33651,7 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
                   ' Upload to Qordoba '
                 )
               ),
-              __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__DownloadAllButton_js__["a" /* default */], { disabled: true, abHeadContent: this.state.abHeadContent, abSourceContent: this.state.abSourceContent, abAllTargetContent: this.state.abAllTargetContent, downloadAllModalOpen: this.state.downloadAllModalOpen, handleDownloadAllClick: this.handleDownloadAllClick, handleDownloadAllClose: this.handleDownloadAllClose })
+              __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__DownloadAllButton_js__["a" /* default */], { downloadAllModalOpen: this.state.downloadAllModalOpen, disabled: true, abHeadContent: this.state.abHeadContent, abSourceContent: this.state.abSourceContent, abAllTargetContent: this.state.abAllTargetContent, downloadAllModalOpen: this.state.downloadAllModalOpen, handleDownloadAllClick: this.handleDownloadAllClick, handleDownloadAllClose: this.handleDownloadAllClose })
             ),
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
               'p',
@@ -33681,7 +33682,7 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
                 ' Upload to Qordoba '
               )
             ),
-            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__DownloadAllButton_js__["a" /* default */], { disabled: true, abHeadContent: this.state.abHeadContent, abSourceContent: this.state.abSourceContent, abAllTargetContent: this.state.abAllTargetContent, downloadAllModalOpen: this.state.downloadAllModalOpen, handleDownloadAllClick: this.handleDownloadAllClick, handleDownloadAllClose: this.handleDownloadAllClose })
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__DownloadAllButton_js__["a" /* default */], { downloadAllModalOpen: this.state.downloadAllModalOpen, disabled: true, abHeadContent: this.state.abHeadContent, abSourceContent: this.state.abSourceContent, abAllTargetContent: this.state.abAllTargetContent, downloadAllModalOpen: this.state.downloadAllModalOpen, handleDownloadAllClick: this.handleDownloadAllClick, handleDownloadAllClose: this.handleDownloadAllClose })
           ),
           __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
             'p',
@@ -44001,7 +44002,7 @@ exports = module.exports = __webpack_require__(3)(undefined);
 
 
 // module
-exports.push([module.i, "/*#language-switcher {\n  color: red\n}*/\n\n.q-app-container {\n  align-self: left;\n  padding: 10px 0 0 10px;\n  display: flex;\n  max-width: 100%;\n}\n\nbutton.q-download-all {\n  display: block;\n  white-space: normal;\n}\n\n.q-close-modal {\n  float: right;\n}\n\n.q-nav-bar {\n  display: flex;\n  border-bottom: 1px solid #d0d0d0;\n}\n\n.q-nav-item {\n  padding-right: 20px;\n  padding-left: 0px;\n}\n\n.q-translation-status-container {\n  display: flex;\n  flex-direction: column;\n  flex: 1;\n}\n\n.q-download-all-textarea {\n  width: 100%;\n}\n\n.q-download-all-textarea-container {\n  width: 100%;\n}", ""]);
+exports.push([module.i, "/*#language-switcher {\n  color: red\n}*/\n\n#q-app-container {\n  align-self: left;\n  padding: 10px 0 0 10px;\n  display: flex;\n  max-width: 100%;\n}\n\nbutton.q-download-all {\n  display: block;\n  white-space: normal;\n}\n\n.q-close-modal {\n  float: right;\n}\n\n.q-nav-bar {\n  display: flex;\n  border-bottom: 1px solid #d0d0d0;\n}\n\n.q-nav-item {\n  padding-right: 20px;\n  padding-left: 0px;\n}\n\n#q-translation-status-container-email {\n  display: flex;\n  flex-direction: column;\n  flex: 1;\n}\n\n#q-download-all-textarea {\n  width: 100%;\n}\n\n#q-download-all-textarea-container {\n  width: 100%;\n}", ""]);
 
 // exports
 
@@ -44152,26 +44153,15 @@ class LanguageDropdown extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Com
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__CopyToClipboardButton_js__ = __webpack_require__(292);
+
 
 
 class TranslationPreview extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
   constructor(props) {
     console.log('PROPS YO!!!', props);
     super(props);
-    this.state = { abTargetCompleteHtml: '' };
-  }
-
-  abCopyTargetContent() {
-    var textArea = document.querySelector('textarea.q-translated-textarea');
-    console.log('textarea', textArea);
-    textArea.select();
-    try {
-      var successful = document.execCommand('copy');
-      var msg = successful ? 'successful' : 'unsuccessful';
-      console.log('Copying text command was ' + msg);
-    } catch (err) {
-      console.log('Oops, unable to copy');
-    }
+    this.state = { abTargetCompleteHtml: '', textArea: '' };
   }
 
   render() {
@@ -44192,14 +44182,10 @@ class TranslationPreview extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.C
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
           'div',
           null,
+          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__CopyToClipboardButton_js__["a" /* default */], { textAreaQuery: 'textarea.q-translated-textarea', type: 'submit', className: 'q-copy-button' }),
           __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
             'button',
-            { className: 'btn img-btn pull-left', onClick: this.abCopyTargetContent, type: 'submit', id: 'q-copy-button' },
-            ' Copy translation to clipboard '
-          ),
-          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-            'button',
-            { className: 'btn img-btn pull-left', onClick: this.props.qFileUpload, type: 'submit', id: 'q-upload-button' },
+            { className: 'btn pull-left', onClick: this.props.qFileUpload, type: 'submit', id: 'q-upload-button' },
             ' Re-upload changed template to Qordoba '
           )
         ),
@@ -44237,6 +44223,8 @@ class TranslationPreview extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.C
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_react_textarea_autosize__ = __webpack_require__(203);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_pretty_html__ = __webpack_require__(204);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_pretty_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_pretty_html__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__CopyToClipboardButton__ = __webpack_require__(292);
+
 
 
 
@@ -44248,7 +44236,6 @@ class DownloadAllButton extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Co
     super(props);
     this.state = {
       templateHtml: '',
-      modalOpen: false,
       modalStyle: {
         overlay: {
           position: 'absolute'
@@ -44296,7 +44283,7 @@ class DownloadAllButton extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Co
   }
 
   getParentSelector() {
-    return document.querySelector('.q-app-container');
+    return document.querySelector('#q-app-container');
   }
 
   render() {
@@ -44321,19 +44308,30 @@ class DownloadAllButton extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Co
           style: this.state.modalStyle
         },
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-          'h1',
-          null,
-          'Modal Content'
+          'div',
+          { className: 'flex' },
+          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            'h1',
+            null,
+            'Translated HTML'
+          ),
+          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__CopyToClipboardButton__["a" /* default */], { handleModalClose: this.props.handleDownloadAllClose, textAreaQuery: '#q-download-all-textarea', type: 'submit', className: 'q-copy-button' })
+        ),
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          'p',
+          { className: 'helptext' },
+          ' If you\'d like to include all completed translations from Qordoba.',
+          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            'strong',
+            null,
+            ' click the "Copy to Clipboard" button '
+          ),
+          'and replace the contents of the template to the left with the new HTML.'
         ),
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
           'div',
           { className: 'q-download-all-textarea-container' },
-          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_react_textarea_autosize__["a" /* default */], { className: 'q-download-all-textarea', value: this.state.templateHtml })
-        ),
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-          'p',
-          null,
-          'Etc.'
+          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_react_textarea_autosize__["a" /* default */], { disabled: true, id: 'q-download-all-textarea', value: this.state.templateHtml })
         )
       )
     );
@@ -75628,6 +75626,53 @@ exports.push([module.i, ".sk-wordpress > div {\n  width: 27px;\n  height: 27px;\
 
 // exports
 
+
+/***/ }),
+/* 290 */,
+/* 291 */,
+/* 292 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+
+
+class CopyToClipboardButton extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
+  constructor(props) {
+    super(props);
+    this.abCopyTargetContent = this.abCopyTargetContent.bind(this);
+  }
+
+  abCopyTargetContent() {
+    console.log('COPY BUTTON SHIT', this);
+    var textArea = document.querySelector(this.props.textAreaQuery);
+    console.log('TECTAREA WE FOUND', textArea);
+    textArea.disabled = false;
+    textArea.select();
+    try {
+      var successful = document.execCommand('copy');
+      var msg = successful ? 'successful' : 'unsuccessful';
+      console.log('Copying text command was ' + msg);
+    } catch (err) {
+      console.log('Oops, unable to copy');
+    }
+    textArea.disabled = true;
+    if (this.props.handleModalClose) {
+      this.props.handleModalClose();
+    }
+  }
+
+  render() {
+    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+      'button',
+      { className: 'btn pull-left', onClick: this.abCopyTargetContent },
+      'Copy HTML to Clipboard'
+    );
+  }
+}
+
+/* harmony default export */ __webpack_exports__["a"] = (CopyToClipboardButton);
 
 /***/ })
 /******/ ]);

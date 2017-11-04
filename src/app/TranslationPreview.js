@@ -1,23 +1,11 @@
 import React from 'react';
+import CopyToClipboardButton from './CopyToClipboardButton.js';
 
 class TranslationPreview extends React.Component {
   constructor(props) {
     console.log('PROPS YO!!!', props)
     super(props);
-    this.state = {abTargetCompleteHtml: ''}
-  }
-
-  abCopyTargetContent() {
-    var textArea = document.querySelector('textarea.q-translated-textarea');
-    console.log('textarea', textArea)
-    textArea.select();
-    try {
-      var successful = document.execCommand('copy');
-      var msg = successful ? 'successful' : 'unsuccessful';
-      console.log('Copying text command was ' + msg);
-    } catch (err) {
-      console.log('Oops, unable to copy');
-    }
+    this.state = {abTargetCompleteHtml: '', textArea: ''}
   }
 
   render() {
@@ -33,8 +21,8 @@ class TranslationPreview extends React.Component {
             />
           </div>
             <div>
-              <button className='btn img-btn pull-left' onClick={this.abCopyTargetContent} type="submit" id='q-copy-button'> Copy translation to clipboard </button>
-              <button className='btn img-btn pull-left' onClick={this.props.qFileUpload} type="submit" id='q-upload-button'> Re-upload changed template to Qordoba </button>
+              <CopyToClipboardButton textAreaQuery='textarea.q-translated-textarea' type="submit" className='q-copy-button' />
+              <button className='btn pull-left' onClick={this.props.qFileUpload} type="submit" id='q-upload-button'> Re-upload changed template to Qordoba </button>
             </div>
           <textarea className='q-translated-textarea' value={this.props.abLocaleTargetContent}></textarea>
         </div>

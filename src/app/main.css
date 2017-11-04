@@ -4,11 +4,14 @@
 
 .q-app-container {
   align-self: left;
-  padding: 20px
+  padding: 10px 0 0 10px;
+  display: flex;
+  max-width: 100%;
 }
 
 button.q-download-all {
-  display: block
+  display: block;
+  white-space: normal;
 }
 
 .q-close-modal {
@@ -23,4 +26,18 @@ button.q-download-all {
 .q-nav-item {
   padding-right: 20px;
   padding-left: 0px;
+}
+
+.q-translation-status-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.q-download-all-textarea {
+  width: 100%;
+}
+
+.q-download-all-textarea-container {
+  width: 100%;
 }

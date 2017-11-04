@@ -29,10 +29,12 @@
     "jquery": "^3.2.1",
     "jszip": "^3.1.4",
     "jszip-utils": "0.0.2",
+    "pretty-html": "0.0.1",
     "react": "^16.0.0",
     "react-dialog": "^1.0.2",
     "react-dom": "^16.0.0",
     "react-loader": "^2.4.2",
+    "react-modal": "^3.1.0",
     "react-spinkit": "^3.0.0",
     "react-spinner": "^0.2.7",
     "reactify": "^1.1.1",
@@ -40,6 +42,7 @@
     "webpack": "^3.8.1"
   },
   "dependencies": {
-    "react-spinners": "^0.1.9"
+    "react-spinners": "^0.1.9",
+    "react-textarea-autosize": "^5.1.0"
   }
 }

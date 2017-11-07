@@ -55,7 +55,8 @@ class App extends React.Component {
       downloadAllModalOpen: false,
       loading: true,
       qSourceContent: '',
-      dropdownValue: 0
+      dropdownValue: 0,
+      sourceContentChanged: ''
     }
     this.state.jsonReqHeader = {'X-AUTH-TOKEN': this.state.qAuthToken,'Content-Type': 'application/json'};
     this.qGetLanguages = this.qGetLanguages.bind(this);

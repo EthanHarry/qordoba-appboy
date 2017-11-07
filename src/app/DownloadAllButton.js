@@ -48,9 +48,8 @@ class DownloadAllButton extends React.Component {
         html += `{% elsif $\{language} == '${locale}' %}`
       }
       html += nextProps.abAllTargetContent[key];
-      html += '\n';
     }
-    html += `{% else %}${nextProps.abSourceContent}{% endif %}\n</body></html>`
+    html += `{% else %}${nextProps.qSourceContent}{% endif %}\n</body>\n</html>`
     this.setState({templateHtml:html})
   }
 

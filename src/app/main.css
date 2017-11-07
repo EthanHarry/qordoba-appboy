@@ -6,7 +6,8 @@
   align-self: left;
   padding: 10px 0 0 10px;
   display: flex;
-  max-width: 100%;
+  width: 100%;
+  height: 100vh;
 }
 
 button.q-download-all {

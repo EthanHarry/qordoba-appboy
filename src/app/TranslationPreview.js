@@ -20,11 +20,6 @@ class TranslationPreview extends React.Component {
               id="q-preview-iframe"
             />
           </div>
-            <div>
-              <CopyToClipboardButton textAreaQuery='textarea.q-translated-textarea' type="submit" className='q-copy-button' />
-              <button className='btn pull-left' onClick={this.props.qFileUpload} type="submit" id='q-upload-button'> Re-upload changed template to Qordoba </button>
-            </div>
-          <textarea className='q-translated-textarea' value={this.props.abLocaleTargetContent}></textarea>
         </div>
       )
     }
@@ -42,3 +37,5 @@ class TranslationPreview extends React.Component {
 }
 
 export default TranslationPreview;
+              //<CopyToClipboardButton textAreaQuery='textarea.q-translated-textarea' type="submit" className='q-copy-button' />
+          // <textarea className='q-translated-textarea' value={this.props.abLocaleTargetContent}></textarea>

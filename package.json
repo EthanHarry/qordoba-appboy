@@ -23,6 +23,7 @@
     "babel-preset-es2017": "^6.24.1",
     "babel-preset-react": "^6.24.1",
     "browserify": "^14.5.0",
+    "computed-style-to-inline-style": "^2.0.0",
     "css-loader": "^0.28.7",
     "extract-text-webpack-plugin": "^3.0.2",
     "halogen": "^0.2.0",

@@ -53,10 +53,6 @@ class DownloadAllButton extends React.Component {
     this.setState({templateHtml:html})
   }
 
-  afterModalOpen() {
-    console.log('MODAL IS OPEN', this)
-  }
-
   getParentSelector() {
     return document.querySelector('#q-app-container')
   }
@@ -70,7 +66,7 @@ class DownloadAllButton extends React.Component {
           id='q-download-all-modal'
           isOpen={this.props.downloadAllModalOpen}
           parentSelector={this.getParentSelector}
-          onAfterOpen={this.afterModalOpen}
+          onAfterOpen={this.props.afterModalOpen}
           onRequestClose={this.props.handleDownloadAllClose}
           contentLabel="Modal"
           style={this.state.modalStyle}

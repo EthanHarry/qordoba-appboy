@@ -8,14 +8,15 @@ import DownloadAllButton from './DownloadAllButton.js';
 import JSZip from 'jszip';
 import JSZipUtils from 'jszip-utils';
 import Spinner from 'react-spinkit';
+var computedToInline = require("computed-style-to-inline-style");
 
 
 //TODO
   //RELEASE BLOCKERS
-  //Make dropdown menu so it actually shows active language
   //Handle launching of extension (repeat launches, launching on wrong page, etc. -- prob just make auto -- or both?)
   //QA MANY MANY DIFF TEMPLATES
     //Try to come up with cases where my matching src content will FAIL (i.e. we'll see option to upload even when it's not possible)
+      // MIGHT NEED TO LEAVE UPLOAD BUTTON ACTIVE AT ALL TIMES IF CANT GET TEXT PARSING DOWN
   //Audit performance again (setState calls, etc.)
 
   //FEATURES
@@ -54,7 +55,8 @@ class App extends React.Component {
       jsonReqHeader: {},
       downloadAllModalOpen: false,
       loading: true,
-      qSourceContent: ''
+      qSourceContent: '',
+      dropdownValue: 0
     }
     this.state.jsonReqHeader = {'X-AUTH-TOKEN': this.state.qAuthToken,'Content-Type': 'application/json'};
     this.qGetLanguages = this.qGetLanguages.bind(this);
@@ -63,6 +65,7 @@ class App extends React.Component {
     this.qGetOneTranslation = this.qGetOneTranslation.bind(this);
     this.handleDownloadAllClick = this.handleDownloadAllClick.bind(this);
     this.handleDownloadAllClose = this.handleDownloadAllClose.bind(this);
+    this.afterModalOpen = this.afterModalOpen.bind(this);
     this.init = this.init.bind(this);
   }
 
@@ -70,6 +73,15 @@ class App extends React.Component {
   //React Data
   async componentDidUpdate() {
     console.log('STATE', this.state)
+    if (this.state.qSourceContent !== this.state.abSourceContent && this.state.qSourceContent && this.state.abSourceContent) {
+      console.log(this.state.qSourceContent)
+      console.log('!!!!!!!!!!!!')
+      console.log('!!!!!!!!!!!!')
+      console.log('!!!!!!!!!!!!')
+      console.log('!!!!!!!!!!!!')
+      console.log('!!!!!!!!!!!!')
+      console.log(this.state.abSourceContent)
+    }
   }
 
 
@@ -97,35 +109,40 @@ class App extends React.Component {
 
   async handleLanguageChange(e) {
     this.setState({loading: true})
+    console.log(e.target.value)
     var dropdownMenu = e.target;
-    var selectedOption = dropdownMenu.querySelector(`[data-name="${e.target.value}"]`);
-    await this.setState({abLanguageName: selectedOption.dataset.name, abLanguageCode: selectedOption.dataset.locale, qProjectLocaleFiles: this.state.qProjectAllFiles[selectedOption.dataset.locale]});
+    var selectedOption = dropdownMenu.querySelector(`[value="${e.target.value}"]`);
+    console.log('dropdownMenu', dropdownMenu)
+    console.log('selectedOption', selectedOption)
+    dropdownMenu.value = selectedOption.value;
+    await this.setState({dropdownValue: e.target.value, abLanguageName: selectedOption.dataset.name, abLanguageCode: selectedOption.dataset.locale, qProjectLocaleFiles: this.state.qProjectAllFiles[selectedOption.dataset.locale]});
     await this.qGetOneTranslation(false)
     var qFileTitle = `${this.state.abType}-${this.state.abId}`;
     if (this.state.qProjectLocaleFiles[qFileTitle]) {
       if (this.state.qProjectLocaleFiles[qFileTitle].completed) {
-        await this.setState({qTranslationStatus: 'completed'})
+        await this.setState({qTranslationStatus: 'completed', loading: false})
       }
       else {
-        await this.setState({qTranslationStatus: 'enabled'})
+        await this.setState({qTranslationStatus: 'enabled', loading: false})
       }
     }
     else {
-      await this.setState({qTranslationStatus: 'none'})
-      console.log('setting state to untranslated')
+      await this.setState({qTranslationStatus: 'none', loading: false})
     }
-    this.setState({loading: false})
   }
 
   async handleDownloadAllClick(e) {
     this.setState({loading: true})
     await this.qGetAllTranslations();
-    this.setState({loading: false})
+  }
+
+  async afterModalOpen() {
+    console.log('MODAL IS OPEN', this)
+    await this.setState({loading: false})
   }
 
 
   async handleDownloadAllClose() {
-    console.log('CLOSING THE MODAL!!!')
     this.setState({ downloadAllModalOpen: false })
   }
 
@@ -145,7 +162,6 @@ class App extends React.Component {
         var iframeHtml = iFramesArray[i].contentWindow.document.documentElement.outerHTML;
         var headRegex = /<head[\s, \S]*?>([\s,\S]*?)<\/head>/g;
         var headRegexMatches = headRegex.exec(iframeHtml);
-
         if (iframeHtml.includes('{% else %}')) {
           var tagRegex = /{% else %}([\s,\S]*?){% endif %}/g;
           var tagRegexMatches = tagRegex.exec(iframeHtml);
@@ -156,7 +172,9 @@ class App extends React.Component {
           var bodyRegexMatches = bodyRegex.exec(iframeHtml);
           var sourceContent = bodyRegexMatches[1];
           var sourceContent = bodyRegexMatches[1].replace(/></g, '>\n<');
+          sourceContent = sourceContent.replace(/^\s*[\r\n]/gm, '');
           sourceContent = sourceContent.replace(/<script.*<\/script>/g, '');
+          sourceContent = sourceContent.replace(/inject.*\n/g, '');
           await this.setState({sourceIframe: sourceIframe, abSourceContent: sourceContent, abHeadContent: headRegexMatches[1]});
         }
       }
@@ -173,7 +191,6 @@ class App extends React.Component {
       url: `https://app.qordoba.com/api/organizations/${this.state.qOrganizationId}/projects?limit=1&offset=0&limit_to_projects=${this.state.qProjectId}`,
       headers: this.state.jsonReqHeader
     })
-    console.log('PROJECT DETAIL CALL', projectDetailCall.projects[0].source_language);
     var qProjectLanguages = projectDetailCall.projects[0].target_languages;
     var qLangs = {};
     var sourceLangObj = projectDetailCall.projects[0].source_language;
@@ -185,38 +202,7 @@ class App extends React.Component {
   }
 
 
-  async qGetSelectedFiles() {
-    if (Object.keys(this.state.qProjectAllFiles).length > 0 && this.state.qProjectAllFiles[this.state.abLanguageCode][`${this.state.abType}-${this.state.abId}`]) {
-      var qProjectFiles = this.state.qProjectAllFiles[this.state.abLanguageCode];
-      await this.setState({qProjectLocaleFiles: qProjectFiles})
-    }
-    else {
-      var qordobaLanguageId = this.state.qProjectLanguages[this.state.abLanguageCode].id;
-      var qordobaResponse = await $.ajax({
-        type: 'POST',
-        url: `https://app.qordoba.com/api/projects/${this.state.qProjectId}/languages/${qordobaLanguageId}/page_settings/search`,
-        headers: this.state.jsonReqHeader,
-        data: JSON.stringify({})
-      })
-      var qordobaFiles = qordobaResponse.pages;
-      var allQFilesObj = Object.assign({}, this.state.qProjectLocaleFiles);
-      for (var i = 0; i < qordobaFiles.length; i++) {
-        var qordobaFileObj = {};
-        var fileNameNoHtml = qordobaFiles[i].url.replace('.html', '');
-        qordobaFileObj.completed = qordobaFiles[i].completed;
-        qordobaFileObj.enabled = qordobaFiles[i].enabled;
-        qordobaFileObj.createdAt = qordobaFiles[i].created_at;
-        qordobaFileObj.updatedAt = qordobaFiles[i].update;
-        qordobaFileObj.qArticleId = qordobaFiles[i].page_id;
-        allQFilesObj[fileNameNoHtml] = qordobaFileObj;
-      }
-      await this.setState({qProjectLocaleFiles: allQFilesObj})
-    }
-  }
-
-
   async qGetAllFiles() {
-    console.log('GETTING ALL FILES')
     var allQFilesObj = Object.assign({}, this.state.qProjectAllFiles);
     var abFileExistsInQ = false;
     var abFileCompletedInQ = false;
@@ -305,7 +291,6 @@ class App extends React.Component {
         headers: this.state.jsonReqHeader
       })
       console.log('RESPONSE AFTER APPEND', responseToFilesUploaded)
-      // this.setState({abFileExistsInQ: true});
     }
     this.init();
   }
@@ -339,13 +324,9 @@ class App extends React.Component {
 
     var newZip = new JSZip();
     JSZipUtils.getBinaryContent(`https://app.qordoba.com/api/file/download?token=${completeZipFile.token}&filename=${encodeURIComponent(completeZipFile.filename)}`, async (err, data) => {
-
-
       var completedZipDataObj = await newZip.loadAsync(data);
       var completedZipData = completedZipDataObj.files;
-
       console.log('COMPLETED ZIP DATA!!!', completedZipData)
-
       var abToBePublished = {};
       var qSourceContent = '';
 
@@ -360,7 +341,6 @@ class App extends React.Component {
             var bodyRegexp = /<body[\s, \S]*?>([\s,\S]*?)<\/body>/g;
             var bodyRegexMatches = bodyRegexp.exec(finalizedZipData);
             abToBePublished[locale] = bodyRegexMatches[1];
-            //TODO FIX SO I DONT CALL SETSTATE TWICE HERE -- ONCE FOR .COMPLETED AND ONCE FOR ZIP DATA
           }
         }
         else {
@@ -372,7 +352,6 @@ class App extends React.Component {
             var finalizedZipData = await completedZipData[key].async('text');
             console.log('ZIP DATA FOR SRC FILE'. finalizedZipData)
             qSourceContent = finalizedZipData
-            //TODO FIX SO I DONT CALL SETSTATE TWICE HERE -- ONCE FOR .COMPLETED AND ONCE FOR ZIP DATA
           }
         }
       }
@@ -385,23 +364,18 @@ class App extends React.Component {
     var languageCode;
     var languageIdArray;
     var pageIdArray = [];
+    pageIdArray.push(this.state.qPageId);
     if (sourceBool) {
       var languageKey = Object.keys(this.state.qProjectLanguages)[0];
       if (languageKey === this.state.sourceLocale) {
         languageKey = Object.keys(this.state.qProjectLanguages)[1];
       }
-      console.log('KEY', languageKey);
-      console.log('value', this.state.qProjectLanguages[languageKey]);
       languageCode = this.state.sourceLocale;
       languageIdArray = [this.state.qProjectLanguages[languageKey].id];
-      pageIdArray.push(this.state.qPageId);
     }
     else {
       languageIdArray = [this.state.qProjectLanguages[this.state.abLanguageCode].id];
       languageCode = this.state.abLanguageCode;
-      for (var key in this.state.qProjectLocaleFiles) {
-        pageIdArray.push(this.state.qProjectLocaleFiles[key].qArticleId);
-      }
     }
 
     var completeZipFile = await $.ajax({
@@ -416,14 +390,11 @@ class App extends React.Component {
       }),
       headers: this.state.jsonReqHeader,
     })
-    console.log('RESPONSE COMP FILE', completeZipFile)
 
     var newZip = new JSZip();
     JSZipUtils.getBinaryContent(`https://app.qordoba.com/api/file/download?token=${completeZipFile.token}&filename=${encodeURIComponent(completeZipFile.filename)}`, async (err, data) => {
-
       var completedZipDataObj = await newZip.loadAsync(data);
       var completedZipData = completedZipDataObj.files;
-
       console.log('COMPLETED ZIP DATA!', completedZipData)
 
       for (var key in completedZipData) {
@@ -444,7 +415,7 @@ class App extends React.Component {
             else {
               await this.setState({abLocaleTargetContent:this.state.abHeadContent +  finalizedZipData, loading: false});
             }
-            break; //TODO FIX SO I DONT CALL SETSTATE TWICE HERE -- ONCE FOR .COMPLETED AND ONCE FOR ZIP DATA
+            break; 
           }
         }
       }
@@ -463,14 +434,14 @@ class App extends React.Component {
             return (
               <div id='q-translation-status-container-email'>
                 <div className="q-nav-bar">
-                  <LanguageDropdown sourceLocale={this.state.sourceLocale} handleLanguageChange={this.handleLanguageChange} qProjectLanguages={this.state.qProjectLanguages} qGetLanguages={this.qGetLanguages}/>
+                  <LanguageDropdown dropdownValue={this.state.dropdownValue} sourceLocale={this.state.sourceLocale} handleLanguageChange={this.handleLanguageChange} qProjectLanguages={this.state.qProjectLanguages} qGetLanguages={this.qGetLanguages}/>
                   <div onClick={this.init} className='q-nav-item' id='q-refresh'>
                     <i class="fa fa-refresh" aria-hidden="true"></i>
                   </div>
                   <div className='q-nav-item'>
                     <button disabled={!this.state.sourceContentChanged} className='btn img-btn pull-left' onClick={this.qFileUpload} type="submit" id='q-upload-button'> Re-upload changed template to Qordoba </button>
                   </div>
-                  <DownloadAllButton qSourceContent={this.state.qSourceContent} downloadAllModalOpen={this.state.downloadAllModalOpen} abHeadContent={this.state.abHeadContent} abSourceContent={this.state.abSourceContent} abAllTargetContent={this.state.abAllTargetContent} downloadAllModalOpen={this.state.downloadAllModalOpen} handleDownloadAllClick={this.handleDownloadAllClick} handleDownloadAllClose={this.handleDownloadAllClose} />
+                  <DownloadAllButton afterModalOpen={this.afterModalOpen} qSourceContent={this.state.qSourceContent} downloadAllModalOpen={this.state.downloadAllModalOpen} abHeadContent={this.state.abHeadContent} abSourceContent={this.state.abSourceContent} abAllTargetContent={this.state.abAllTargetContent} downloadAllModalOpen={this.state.downloadAllModalOpen} handleDownloadAllClick={this.handleDownloadAllClick} handleDownloadAllClose={this.handleDownloadAllClose} />
                 </div>
                 <TranslationPreview handleDownloadAllClose={this.handleDownloadAllClose} abLanguageCode={this.state.abLanguageCode} disabled={this.state.qTranslationStatus !== 'completed'} abTranslationStatuses={this.state.abTranslationStatuses} qFileUpload={this.qFileUpload} abLocaleTargetContent={this.state.abLocaleTargetContent} handleLanguageChange={this.handleLanguageChange} qProjectLanguages={this.state.qProjectLanguages} qGetLanguages={this.qGetLanguages}/>
               </div>
@@ -480,14 +451,14 @@ class App extends React.Component {
             return (
               <div className='q-translation-status-container'>
                 <div className="q-nav-bar">
-                  <LanguageDropdown sourceLocale={this.state.sourceLocale} disabled={true} abFileExistsInQ={this.state.abFileExistsInQ} abFileCompletedInQ = {this.state.qFileTranslationStatus === 'completed'}  handleLanguageChange={this.handleLanguageChange} qProjectLanguages={this.state.qProjectLanguages} qGetLanguages={this.qGetLanguages}/>
-                  <div onClick={this.refresh} className='q-nav-item' id='q-refresh'>
+                  <LanguageDropdown dropdownValue={this.state.dropdownValue} sourceLocale={this.state.sourceLocale} disabled={true} abFileExistsInQ={this.state.abFileExistsInQ} abFileCompletedInQ = {this.state.qFileTranslationStatus === 'completed'}  handleLanguageChange={this.handleLanguageChange} qProjectLanguages={this.state.qProjectLanguages} qGetLanguages={this.qGetLanguages}/>
+                  <div onClick={this.init} className='q-nav-item' id='q-refresh'>
                     <i class="fa fa-refresh" aria-hidden="true"></i>
                   </div>
                   <div className='q-nav-item'>
                     <button disabled={!this.state.sourceContentChanged} className='btn img-btn pull-left' onClick={this.qFileUpload} type="submit" id='q-upload-button'> Re-upload changed template to Qordoba </button>
                   </div>
-                  <DownloadAllButton qSourceContent={this.state.qSourceContent} downloadAllModalOpen={this.state.downloadAllModalOpen} disabled={true} abFileCompletedInQ = {this.state.qFileTranslationStatus === 'completed'} abHeadContent={this.state.abHeadContent} abSourceContent={this.state.abSourceContent} abAllTargetContent={this.state.abAllTargetContent} downloadAllModalOpen={this.state.downloadAllModalOpen} handleDownloadAllClick={this.handleDownloadAllClick} handleDownloadAllClose={this.handleDownloadAllClose} />
+                  <DownloadAllButton afterModalOpen={this.afterModalOpen} qSourceContent={this.state.qSourceContent} downloadAllModalOpen={this.state.downloadAllModalOpen} disabled={true} abFileCompletedInQ = {this.state.qFileTranslationStatus === 'completed'} abHeadContent={this.state.abHeadContent} abSourceContent={this.state.abSourceContent} abAllTargetContent={this.state.abAllTargetContent} downloadAllModalOpen={this.state.downloadAllModalOpen} handleDownloadAllClick={this.handleDownloadAllClick} handleDownloadAllClose={this.handleDownloadAllClose} />
                 </div>
                 <p className='helptext'>This template is currently being translated in Qordoba. If the original template content has changed, please click the button above to re-upload to Qordoba. Otherwise, please return when translators have finished!</p>
               </div>
@@ -498,14 +469,14 @@ class App extends React.Component {
           return (
             <div className='q-translation-status-container'>
               <div className="q-nav-bar">
-                <LanguageDropdown sourceLocale={this.state.sourceLocale} disabled={true} handleLanguageChange={this.handleLanguageChange} qProjectLanguages={this.state.qProjectLanguages} qGetLanguages={this.qGetLanguages}/>
+                <LanguageDropdown dropdownValue={this.state.dropdownValue} sourceLocale={this.state.sourceLocale} disabled={true} handleLanguageChange={this.handleLanguageChange} qProjectLanguages={this.state.qProjectLanguages} qGetLanguages={this.qGetLanguages}/>
                 <div className='q-nav-item' id='q-refresh'>
                   <i class="fa fa-refresh" aria-hidden="true"></i>
                 </div>
                 <div className='q-nav-item'>
                   <button className='btn img-btn' onClick={this.qFileUpload} type="submit" id='q-upload-button'> Upload to Qordoba </button>
                 </div>
-                <DownloadAllButton qSourceContent={this.state.qSourceContent} downloadAllModalOpen={this.state.downloadAllModalOpen} disabled={true} abHeadContent={this.state.abHeadContent} abSourceContent={this.state.abSourceContent} abAllTargetContent={this.state.abAllTargetContent} downloadAllModalOpen={this.state.downloadAllModalOpen} handleDownloadAllClick={this.handleDownloadAllClick} handleDownloadAllClose={this.handleDownloadAllClose} />
+                <DownloadAllButton afterModalOpen={this.afterModalOpen} qSourceContent={this.state.qSourceContent} downloadAllModalOpen={this.state.downloadAllModalOpen} disabled={true} abHeadContent={this.state.abHeadContent} abSourceContent={this.state.abSourceContent} abAllTargetContent={this.state.abAllTargetContent} downloadAllModalOpen={this.state.downloadAllModalOpen} handleDownloadAllClick={this.handleDownloadAllClick} handleDownloadAllClose={this.handleDownloadAllClose} />
               </div>
               <p className='helptext'>This template is not yet in Qordoba. Please click the button above to start translating! </p>
             </div>
@@ -516,14 +487,14 @@ class App extends React.Component {
         return (
           <div className='q-translation-status-container'>
             <div className="q-nav-bar">
-              <LanguageDropdown sourceLocale={this.state.sourceLocale} disabled={true} handleLanguageChange={this.handleLanguageChange} qProjectLanguages={this.state.qProjectLanguages} qGetLanguages={this.qGetLanguages}/>
+              <LanguageDropdown dropdownValue={this.state.dropdownValue} sourceLocale={this.state.sourceLocale} disabled={true} handleLanguageChange={this.handleLanguageChange} qProjectLanguages={this.state.qProjectLanguages} qGetLanguages={this.qGetLanguages}/>
               <div className='q-nav-item' id='q-refresh'>
                 <i class="fa fa-refresh" aria-hidden="true"></i>
               </div>
               <div className='q-nav-item'>
                 <button disabled className='btn img-btn' onClick={this.qFileUpload} type="submit" id='q-upload-button'> Upload to Qordoba </button>
               </div>
-              <DownloadAllButton downloadAllModalOpen={this.state.downloadAllModalOpen} disabled={true} abHeadContent={this.state.abHeadContent} abSourceContent={this.state.abSourceContent} abAllTargetContent={this.state.abAllTargetContent} downloadAllModalOpen={this.state.downloadAllModalOpen} handleDownloadAllClick={this.handleDownloadAllClick} handleDownloadAllClose={this.handleDownloadAllClose} />
+              <DownloadAllButton afterModalOpen={this.afterModalOpen} downloadAllModalOpen={this.state.downloadAllModalOpen} disabled={true} abHeadContent={this.state.abHeadContent} abSourceContent={this.state.abSourceContent} abAllTargetContent={this.state.abAllTargetContent} downloadAllModalOpen={this.state.downloadAllModalOpen} handleDownloadAllClick={this.handleDownloadAllClick} handleDownloadAllClose={this.handleDownloadAllClose} />
             </div>
             <p className='helptext'>This template does not yet have a unique ID assigned to it. Please make a change to the template, save it, and refresh. </p>
           </div>

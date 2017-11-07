@@ -33182,7 +33182,6 @@ console.log('hi react app');
 
 
 
-var computedToInline = __webpack_require__(293);
 
 //TODO
 //RELEASE BLOCKERS
@@ -33320,6 +33319,7 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
     return _asyncToGenerator(function* () {
       _this5.setState({ loading: true });
       yield _this5.qGetAllTranslations();
+      _this5.setState({ loading: false });
     })();
   }
 
@@ -33450,7 +33450,6 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
     var _this12 = this;
 
     return _asyncToGenerator(function* () {
-      console.log('uploading file');
       var fileToUpload = new File([_this12.state.abSourceContent], `${_this12.state.abType}-${_this12.state.abId}.html`, {
         type: "text/html"
       });
@@ -33550,16 +33549,6 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
                 var bodyRegexp = /<body[\s, \S]*?>([\s,\S]*?)<\/body>/g;
                 var bodyRegexMatches = bodyRegexp.exec(finalizedZipData);
                 abToBePublished[locale] = bodyRegexMatches[1];
-              }
-            } else {
-              console.log('CURRENT KEY IN COMPLETED ZIP', key);
-              var myRegexp = /.*\/([a-z,_]*-[a-z,0-9]*).*.html/g;
-              var regexMatches = myRegexp.exec(key);
-              var templateName = regexMatches[1];
-              if (templateName === `${_this13.state.abType}-${_this13.state.abId}`) {
-                var finalizedZipData = yield completedZipData[key].async('text');
-                console.log('ZIP DATA FOR SRC FILE'.finalizedZipData);
-                qSourceContent = finalizedZipData;
               }
             }
           }
@@ -33669,7 +33658,7 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
                     ' Re-upload changed template to Qordoba '
                   )
                 ),
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__DownloadAllButton_js__["a" /* default */], { afterModalOpen: this.afterModalOpen, qSourceContent: this.state.qSourceContent, downloadAllModalOpen: this.state.downloadAllModalOpen, abHeadContent: this.state.abHeadContent, abSourceContent: this.state.abSourceContent, abAllTargetContent: this.state.abAllTargetContent, downloadAllModalOpen: this.state.downloadAllModalOpen, handleDownloadAllClick: this.handleDownloadAllClick, handleDownloadAllClose: this.handleDownloadAllClose })
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__DownloadAllButton_js__["a" /* default */], { qSourceContent: this.state.qSourceContent, downloadAllModalOpen: this.state.downloadAllModalOpen, abHeadContent: this.state.abHeadContent, abSourceContent: this.state.abSourceContent, abAllTargetContent: this.state.abAllTargetContent, downloadAllModalOpen: this.state.downloadAllModalOpen, handleDownloadAllClick: this.handleDownloadAllClick, handleDownloadAllClose: this.handleDownloadAllClose })
               ),
               __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__TranslationPreview_js__["a" /* default */], { handleDownloadAllClose: this.handleDownloadAllClose, abLanguageCode: this.state.abLanguageCode, disabled: this.state.qTranslationStatus !== 'completed', abTranslationStatuses: this.state.abTranslationStatuses, qFileUpload: this.qFileUpload, abLocaleTargetContent: this.state.abLocaleTargetContent, handleLanguageChange: this.handleLanguageChange, qProjectLanguages: this.state.qProjectLanguages, qGetLanguages: this.qGetLanguages })
             );
@@ -33695,7 +33684,7 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
                     ' Re-upload changed template to Qordoba '
                   )
                 ),
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__DownloadAllButton_js__["a" /* default */], { afterModalOpen: this.afterModalOpen, qSourceContent: this.state.qSourceContent, downloadAllModalOpen: this.state.downloadAllModalOpen, disabled: true, abFileCompletedInQ: this.state.qFileTranslationStatus === 'completed', abHeadContent: this.state.abHeadContent, abSourceContent: this.state.abSourceContent, abAllTargetContent: this.state.abAllTargetContent, downloadAllModalOpen: this.state.downloadAllModalOpen, handleDownloadAllClick: this.handleDownloadAllClick, handleDownloadAllClose: this.handleDownloadAllClose })
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__DownloadAllButton_js__["a" /* default */], { qSourceContent: this.state.qSourceContent, downloadAllModalOpen: this.state.downloadAllModalOpen, disabled: true, abFileCompletedInQ: this.state.qFileTranslationStatus === 'completed', abHeadContent: this.state.abHeadContent, abSourceContent: this.state.abSourceContent, abAllTargetContent: this.state.abAllTargetContent, downloadAllModalOpen: this.state.downloadAllModalOpen, handleDownloadAllClick: this.handleDownloadAllClick, handleDownloadAllClose: this.handleDownloadAllClose })
               ),
               __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 'p',
@@ -33726,7 +33715,7 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
                   ' Upload to Qordoba '
                 )
               ),
-              __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__DownloadAllButton_js__["a" /* default */], { afterModalOpen: this.afterModalOpen, qSourceContent: this.state.qSourceContent, downloadAllModalOpen: this.state.downloadAllModalOpen, disabled: true, abHeadContent: this.state.abHeadContent, abSourceContent: this.state.abSourceContent, abAllTargetContent: this.state.abAllTargetContent, downloadAllModalOpen: this.state.downloadAllModalOpen, handleDownloadAllClick: this.handleDownloadAllClick, handleDownloadAllClose: this.handleDownloadAllClose })
+              __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__DownloadAllButton_js__["a" /* default */], { qSourceContent: this.state.qSourceContent, downloadAllModalOpen: this.state.downloadAllModalOpen, disabled: true, abHeadContent: this.state.abHeadContent, abSourceContent: this.state.abSourceContent, abAllTargetContent: this.state.abAllTargetContent, downloadAllModalOpen: this.state.downloadAllModalOpen, handleDownloadAllClick: this.handleDownloadAllClick, handleDownloadAllClose: this.handleDownloadAllClose })
             ),
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
               'p',
@@ -33757,7 +33746,7 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
                 ' Upload to Qordoba '
               )
             ),
-            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__DownloadAllButton_js__["a" /* default */], { afterModalOpen: this.afterModalOpen, downloadAllModalOpen: this.state.downloadAllModalOpen, disabled: true, abHeadContent: this.state.abHeadContent, abSourceContent: this.state.abSourceContent, abAllTargetContent: this.state.abAllTargetContent, downloadAllModalOpen: this.state.downloadAllModalOpen, handleDownloadAllClick: this.handleDownloadAllClick, handleDownloadAllClose: this.handleDownloadAllClose })
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__DownloadAllButton_js__["a" /* default */], { downloadAllModalOpen: this.state.downloadAllModalOpen, disabled: true, abHeadContent: this.state.abHeadContent, abSourceContent: this.state.abSourceContent, abAllTargetContent: this.state.abAllTargetContent, downloadAllModalOpen: this.state.downloadAllModalOpen, handleDownloadAllClick: this.handleDownloadAllClick, handleDownloadAllClose: this.handleDownloadAllClose })
           ),
           __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
             'p',
@@ -44316,7 +44305,6 @@ class DownloadAllButton extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Co
 
   componentWillReceiveProps(nextProps) {
     if (Object.keys(nextProps.abAllTargetContent).length > 0) {
-      console.log('BUILDING TEMPLATE HTML', this.props.abAllTargetContent);
       this.buildTemplateHtml(nextProps);
     }
   }
@@ -44347,8 +44335,12 @@ class DownloadAllButton extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Co
     return document.querySelector('#q-app-container');
   }
 
+  testModalOpen() {
+    console.log('MODAL OPEN!!!!!');
+  }
+
   render() {
-    console.log('IS MODAL OPEN?!?', this.props.downloadAllModalOpen);
+    console.log('IS MODAL OPEN?!??', this.props.downloadAllModalOpen);
     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
       'div',
       { className: 'q-nav-item' },
@@ -44363,7 +44355,7 @@ class DownloadAllButton extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Co
           id: 'q-download-all-modal',
           isOpen: this.props.downloadAllModalOpen,
           parentSelector: this.getParentSelector,
-          onAfterOpen: this.props.afterModalOpen,
+          onAfterOpen: this.testModalOpen,
           onRequestClose: this.props.handleDownloadAllClose,
           contentLabel: 'Modal',
           style: this.state.modalStyle
@@ -75682,51 +75674,6 @@ exports = module.exports = __webpack_require__(3)(undefined);
 exports.push([module.i, ".sk-wordpress > div {\n  width: 27px;\n  height: 27px;\n  background-color: currentColor;\n  display: inline-block;\n  border-radius: 27px;\n  position: relative;\n\n  -webkit-animation: sk-inner-circle 1s linear infinite;\n  animation: sk-inner-circle 1s linear infinite;\n}\n\n.sk-wordpress > div::after {\n  content: '';\n  display: block;\n  background-color: #fff;\n  width: 8px;\n  height: 8px;\n  position: absolute;\n  border-radius: 8px;\n  top: 5px;\n  left: 5px;\n}\n\n@-webkit-keyframes sk-inner-circle {\n  0% { -webkit-transform: rotate(0); }\n  100% { -webkit-transform: rotate(360deg); }\n}\n\n@keyframes sk-inner-circle {\n  0% { transform: rotate(0); -webkit-transform:rotate(0); }\n  100% { transform: rotate(360deg); -webkit-transform:rotate(360deg); }\n}\n", ""]);
 
 // exports
-
-
-/***/ }),
-/* 291 */,
-/* 292 */,
-/* 293 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function(root, factory) {
-  if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
-				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
-				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
-				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD.
-  } else if (typeof module === 'object' && module.exports) {
-    module.exports = factory(); // CommonJS.
-  } else {
-    root.computedStyleToInlineStyle = factory(); // Browser.
-  }
-}(this, function() {
-  return function computedStyleToInlineStyle(element, options) {
-    if (!element) {
-      throw new Error("No element specified.");
-    }
-
-    if (!options) {
-      options = {};
-    }
-
-    if (options.recursive) {
-      Array.prototype.forEach.call(element.children, function(child) {
-        computedStyleToInlineStyle(child, options);
-      });
-    }
-
-    var computedStyle = getComputedStyle(element);
-    for (var i = 0; i < computedStyle.length; i++) {
-      var property = computedStyle.item(i);
-      if (!options.properties || options.properties.indexOf(property) >= 0) {
-        var value = computedStyle.getPropertyValue(property);
-        element.style[property] = value;
-      }
-    }
-  };
-}));
 
 
 /***/ })

@@ -33552,7 +33552,7 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
               }
             }
           }
-          yield _this13.setState({ abAllTargetContent: abToBePublished, downloadAllModalOpen: true, qSourceContent: qSourceContent });
+          yield _this13.setState({ abAllTargetContent: abToBePublished, downloadAllModalOpen: true });
         });
 
         return function (_x, _x2) {

@@ -343,7 +343,7 @@ class App extends React.Component {
           }
         }
       }
-      await this.setState({abAllTargetContent: abToBePublished, downloadAllModalOpen: true, qSourceContent: qSourceContent});
+      await this.setState({abAllTargetContent: abToBePublished, downloadAllModalOpen: true});
     });
   }
 

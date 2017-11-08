@@ -13,10 +13,10 @@ import config from './config.js';
 
 //TODO
   //RELEASE BLOCKERS
+    //Pagination on Qordoba request -- we cant find translation
     //Setup postmates proj
     //Change Config to Postmates
     //QA MANY MANY DIFF TEMPLATES
-      //Try to come up with cases where my matching src content will FAIL (i.e. we'll see option to upload even when it's not possible)
     //Audit performance again (setState calls, etc.)
 
   //FEATURES
@@ -93,7 +93,7 @@ class App extends React.Component {
 
 
   async init () {
-    this.setState({loading: true, abFileExistsInQ: false, abFileCompletedInQ: false})
+    this.setState({loading: true, abFileExistsInQ: false, abFileCompletedInQ: false, dropdownValue: 0})
     this.abGetTemplateContent();
     this.abGetTemplate();
     await this.qGetLanguages();
@@ -171,10 +171,27 @@ class App extends React.Component {
           var bodyRegex = /<body[\s,\S]*?>([\s,\S]*?)<\/body>/g;
           var bodyRegexMatches = bodyRegex.exec(iframeHtml);
           var sourceContent = bodyRegexMatches[1];
-          var sourceContent = bodyRegexMatches[1].replace(/></g, '>\n<');
+          sourceContent = bodyRegexMatches[1].replace(/&nbsp;*/g, '');
+          var sourceContent = sourceContent.replace(/></g, '>\n<');
           sourceContent = sourceContent.replace(/^\s*[\r\n]/gm, '');
           sourceContent = sourceContent.replace(/<script.*<\/script>/g, '');
-          sourceContent = sourceContent.replace(/inject.*\n/g, '');
+          var removeNBSP = new RegExp(String.fromCharCode(160), "g");
+          sourceContent = sourceContent.replace(removeNBSP, '');
+          console.log('!!!')
+          console.log('!!!')
+          console.log('!!!')
+          console.log('!!!')
+          console.log('!!!')
+          console.log('!!!')
+          console.log(typeof sourceContent)
+          console.log('removing nbsp')
+          console.log('?????')
+          console.log('?????')
+          console.log('?????')
+          console.log('?????')
+          console.log('?????')
+          console.log('?????')
+          console.log(sourceContent)
           await this.setState({sourceIframe: sourceIframe, abSourceContent: sourceContent, abHeadContent: headRegexMatches[1]});
         }
       }
@@ -203,7 +220,7 @@ class App extends React.Component {
 
 
   async qGetAllFiles() {
-    var allQFilesObj = Object.assign({}, this.state.qProjectAllFiles);
+    var allQFilesObj = {};
     var abFileExistsInQ = false;
     var abFileCompletedInQ = false;
     for (var key in this.state.qProjectLanguages) {
@@ -228,6 +245,7 @@ class App extends React.Component {
         allQFilesObj[key][fileNameNoHtml] = qordobaFileObj;
         if (fileNameNoHtml === `${this.state.abType}-${this.state.abId}`) {
           currentFileObj = Object.assign({}, qordobaFileObj);
+          console.log('FOUND OUR FILE', key, currentFileObj)
           var qPageId = currentFileObj.qArticleId;
           if (currentFileObj.completed && currentFileObj.enabled) {
             abFileCompletedInQ = true;
@@ -238,7 +256,6 @@ class App extends React.Component {
     if (Object.keys(currentFileObj).length > 0) {
       abFileExistsInQ = true;
     }
-    
     await this.setState({qPageId: qPageId, abFileExistsInQ: abFileExistsInQ, abFileCompletedInQ: abFileCompletedInQ, qProjectAllFiles: allQFilesObj})
   }
 
@@ -296,14 +313,11 @@ class App extends React.Component {
 
 
   async qGetAllTranslations() {
-    var pageIdArray = [];
+    var pageIdArray = [this.state.qPageId];
     var languageIdArray = [];
     var anyLanguage = Object.keys(this.state.qProjectAllFiles)[0];
     if (anyLanguage === this.state.sourceLocale) {
       anyLanguage = Object.keys(this.state.qProjectAllFiles)[1];
-    }
-    for (var key in this.state.qProjectAllFiles[anyLanguage]) {
-      pageIdArray.push(this.state.qProjectAllFiles[anyLanguage][key].qArticleId);
     }
     for (var key in this.state.qProjectLanguages) {
       languageIdArray.push(this.state.qProjectLanguages[key].id);
@@ -351,8 +365,7 @@ class App extends React.Component {
   async qGetOneTranslation(sourceBool) {
     var languageCode;
     var languageIdArray;
-    var pageIdArray = [];
-    pageIdArray.push(this.state.qPageId);
+    var pageIdArray = [this.state.qPageId];
     if (sourceBool) {
       var languageKey = Object.keys(this.state.qProjectLanguages)[0];
       if (languageKey === this.state.sourceLocale) {
@@ -424,7 +437,7 @@ class App extends React.Component {
                 <div className="q-nav-bar">
                   <LanguageDropdown dropdownValue={this.state.dropdownValue} sourceLocale={this.state.sourceLocale} handleLanguageChange={this.handleLanguageChange} qProjectLanguages={this.state.qProjectLanguages} qGetLanguages={this.qGetLanguages}/>
                   <div onClick={this.init} className='q-nav-item' id='q-refresh'>
-                    <i class="fa fa-refresh" aria-hidden="true"></i>
+                    <i className="fa fa-refresh" aria-hidden="true"></i>
                   </div>
                   <div className='q-nav-item'>
                     <button disabled={!this.state.sourceContentChanged} className='btn img-btn pull-left' onClick={this.qFileUpload} type="submit" id='q-upload-button'> Re-upload changed template to Qordoba </button>
@@ -441,7 +454,7 @@ class App extends React.Component {
                 <div className="q-nav-bar">
                   <LanguageDropdown dropdownValue={this.state.dropdownValue} sourceLocale={this.state.sourceLocale} disabled={true} abFileExistsInQ={this.state.abFileExistsInQ} abFileCompletedInQ = {this.state.qFileTranslationStatus === 'completed'}  handleLanguageChange={this.handleLanguageChange} qProjectLanguages={this.state.qProjectLanguages} qGetLanguages={this.qGetLanguages}/>
                   <div onClick={this.init} className='q-nav-item' id='q-refresh'>
-                    <i class="fa fa-refresh" aria-hidden="true"></i>
+                    <i className="fa fa-refresh" aria-hidden="true"></i>
                   </div>
                   <div className='q-nav-item'>
                     <button disabled={!this.state.sourceContentChanged} className='btn img-btn pull-left' onClick={this.qFileUpload} type="submit" id='q-upload-button'> Re-upload changed template to Qordoba </button>
@@ -459,7 +472,7 @@ class App extends React.Component {
               <div className="q-nav-bar">
                 <LanguageDropdown dropdownValue={this.state.dropdownValue} sourceLocale={this.state.sourceLocale} disabled={true} handleLanguageChange={this.handleLanguageChange} qProjectLanguages={this.state.qProjectLanguages} qGetLanguages={this.qGetLanguages}/>
                 <div className='q-nav-item' id='q-refresh'>
-                  <i class="fa fa-refresh" aria-hidden="true"></i>
+                  <i className="fa fa-refresh" aria-hidden="true"></i>
                 </div>
                 <div className='q-nav-item'>
                   <button className='btn img-btn' onClick={this.qFileUpload} type="submit" id='q-upload-button'> Upload to Qordoba </button>
@@ -477,7 +490,7 @@ class App extends React.Component {
             <div className="q-nav-bar">
               <LanguageDropdown dropdownValue={this.state.dropdownValue} sourceLocale={this.state.sourceLocale} disabled={true} handleLanguageChange={this.handleLanguageChange} qProjectLanguages={this.state.qProjectLanguages} qGetLanguages={this.qGetLanguages}/>
               <div className='q-nav-item' id='q-refresh'>
-                <i class="fa fa-refresh" aria-hidden="true"></i>
+                <i className="fa fa-refresh" aria-hidden="true"></i>
               </div>
               <div className='q-nav-item'>
                 <button disabled={!this.state.sourceContentChanged} className='btn img-btn' onClick={this.qFileUpload} type="submit" id='q-upload-button'> Upload to Qordoba </button>

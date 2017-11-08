@@ -3,13 +3,12 @@ import CopyToClipboardButton from './CopyToClipboardButton.js';
 
 class TranslationPreview extends React.Component {
   constructor(props) {
-    console.log('PROPS YO!!!', props)
+    console.log('translation preview props!!!', props)
     super(props);
     this.state = {abTargetCompleteHtml: '', textArea: ''}
   }
 
   render() {
-    console.log(this.props)
     if (!this.props.disabled) {
       return (
         <div className='q-translation-status-container flex flex-column flex-full-width-height'>

@@ -6680,9 +6680,7 @@ class CopyToClipboardButton extends __WEBPACK_IMPORTED_MODULE_0_react___default.
   }
 
   abCopyTargetContent() {
-    console.log('COPY BUTTON SHIT', this);
     var textArea = document.querySelector(this.props.textAreaQuery);
-    console.log('TECTAREA WE FOUND', textArea);
     textArea.disabled = false;
     textArea.select();
     try {
@@ -33196,10 +33194,10 @@ console.log('hi react app');
 
 //TODO
 //RELEASE BLOCKERS
+//Pagination on Qordoba request -- we cant find translation
 //Setup postmates proj
 //Change Config to Postmates
 //QA MANY MANY DIFF TEMPLATES
-//Try to come up with cases where my matching src content will FAIL (i.e. we'll see option to upload even when it's not possible)
 //Audit performance again (setState calls, etc.)
 
 //FEATURES
@@ -33281,7 +33279,7 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
     var _this2 = this;
 
     return _asyncToGenerator(function* () {
-      _this2.setState({ loading: true, abFileExistsInQ: false, abFileCompletedInQ: false });
+      _this2.setState({ loading: true, abFileExistsInQ: false, abFileCompletedInQ: false, dropdownValue: 0 });
       _this2.abGetTemplateContent();
       _this2.abGetTemplate();
       yield _this2.qGetLanguages();
@@ -33380,10 +33378,27 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
             var bodyRegex = /<body[\s,\S]*?>([\s,\S]*?)<\/body>/g;
             var bodyRegexMatches = bodyRegex.exec(iframeHtml);
             var sourceContent = bodyRegexMatches[1];
-            var sourceContent = bodyRegexMatches[1].replace(/></g, '>\n<');
+            sourceContent = bodyRegexMatches[1].replace(/&nbsp;*/g, '');
+            var sourceContent = sourceContent.replace(/></g, '>\n<');
             sourceContent = sourceContent.replace(/^\s*[\r\n]/gm, '');
             sourceContent = sourceContent.replace(/<script.*<\/script>/g, '');
-            sourceContent = sourceContent.replace(/inject.*\n/g, '');
+            var removeNBSP = new RegExp(String.fromCharCode(160), "g");
+            sourceContent = sourceContent.replace(removeNBSP, '');
+            console.log('!!!');
+            console.log('!!!');
+            console.log('!!!');
+            console.log('!!!');
+            console.log('!!!');
+            console.log('!!!');
+            console.log(typeof sourceContent);
+            console.log('removing nbsp');
+            console.log('?????');
+            console.log('?????');
+            console.log('?????');
+            console.log('?????');
+            console.log('?????');
+            console.log('?????');
+            console.log(sourceContent);
             yield _this9.setState({ sourceIframe: sourceIframe, abSourceContent: sourceContent, abHeadContent: headRegexMatches[1] });
           }
         }
@@ -33416,7 +33431,7 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
     var _this11 = this;
 
     return _asyncToGenerator(function* () {
-      var allQFilesObj = Object.assign({}, _this11.state.qProjectAllFiles);
+      var allQFilesObj = {};
       var abFileExistsInQ = false;
       var abFileCompletedInQ = false;
       for (var key in _this11.state.qProjectLanguages) {
@@ -33441,6 +33456,7 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
           allQFilesObj[key][fileNameNoHtml] = qordobaFileObj;
           if (fileNameNoHtml === `${_this11.state.abType}-${_this11.state.abId}`) {
             currentFileObj = Object.assign({}, qordobaFileObj);
+            console.log('FOUND OUR FILE', key, currentFileObj);
             var qPageId = currentFileObj.qArticleId;
             if (currentFileObj.completed && currentFileObj.enabled) {
               abFileCompletedInQ = true;
@@ -33451,7 +33467,6 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
       if (Object.keys(currentFileObj).length > 0) {
         abFileExistsInQ = true;
       }
-
       yield _this11.setState({ qPageId: qPageId, abFileExistsInQ: abFileExistsInQ, abFileCompletedInQ: abFileCompletedInQ, qProjectAllFiles: allQFilesObj });
     })();
   }
@@ -33514,14 +33529,11 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
     var _this13 = this;
 
     return _asyncToGenerator(function* () {
-      var pageIdArray = [];
+      var pageIdArray = [_this13.state.qPageId];
       var languageIdArray = [];
       var anyLanguage = Object.keys(_this13.state.qProjectAllFiles)[0];
       if (anyLanguage === _this13.state.sourceLocale) {
         anyLanguage = Object.keys(_this13.state.qProjectAllFiles)[1];
-      }
-      for (var key in _this13.state.qProjectAllFiles[anyLanguage]) {
-        pageIdArray.push(_this13.state.qProjectAllFiles[anyLanguage][key].qArticleId);
       }
       for (var key in _this13.state.qProjectLanguages) {
         languageIdArray.push(_this13.state.qProjectLanguages[key].id);
@@ -33578,8 +33590,7 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
     return _asyncToGenerator(function* () {
       var languageCode;
       var languageIdArray;
-      var pageIdArray = [];
-      pageIdArray.push(_this14.state.qPageId);
+      var pageIdArray = [_this14.state.qPageId];
       if (sourceBool) {
         var languageKey = Object.keys(_this14.state.qProjectLanguages)[0];
         if (languageKey === _this14.state.sourceLocale) {
@@ -33657,7 +33668,7 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                   'div',
                   { onClick: this.init, className: 'q-nav-item', id: 'q-refresh' },
-                  __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { 'class': 'fa fa-refresh', 'aria-hidden': 'true' })
+                  __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { className: 'fa fa-refresh', 'aria-hidden': 'true' })
                 ),
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                   'div',
@@ -33683,7 +33694,7 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                   'div',
                   { onClick: this.init, className: 'q-nav-item', id: 'q-refresh' },
-                  __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { 'class': 'fa fa-refresh', 'aria-hidden': 'true' })
+                  __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { className: 'fa fa-refresh', 'aria-hidden': 'true' })
                 ),
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                   'div',
@@ -33714,7 +33725,7 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
               __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 'div',
                 { className: 'q-nav-item', id: 'q-refresh' },
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { 'class': 'fa fa-refresh', 'aria-hidden': 'true' })
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { className: 'fa fa-refresh', 'aria-hidden': 'true' })
               ),
               __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 'div',
@@ -33745,7 +33756,7 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
               'div',
               { className: 'q-nav-item', id: 'q-refresh' },
-              __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { 'class': 'fa fa-refresh', 'aria-hidden': 'true' })
+              __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { className: 'fa fa-refresh', 'aria-hidden': 'true' })
             ),
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
               'div',
@@ -44233,13 +44244,12 @@ class LanguageDropdown extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Com
 
 class TranslationPreview extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
   constructor(props) {
-    console.log('PROPS YO!!!', props);
+    console.log('translation preview props!!!', props);
     super(props);
     this.state = { abTargetCompleteHtml: '', textArea: '' };
   }
 
   render() {
-    console.log(this.props);
     if (!this.props.disabled) {
       return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         'div',
@@ -44319,12 +44329,8 @@ class DownloadAllButton extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Co
     }
   }
 
-  componentDidUpdate() {
-    console.log('UPDTATING DL ALL BUTTON!!!!', this.state);
-  }
-
   buildTemplateHtml(nextProps) {
-    console.log('NEXT PROPS', nextProps);
+    console.log('DL BUTTON NEXT PROPS', nextProps);
     var html = `<html>\n<head>\n${this.props.abHeadContent}\n</head>\n<body>\n`;
     var ifUsed = false;
     for (var key in nextProps.abAllTargetContent) {
@@ -44345,12 +44351,7 @@ class DownloadAllButton extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Co
     return document.querySelector('#q-app-container');
   }
 
-  testModalOpen() {
-    console.log('MODAL OPEN!!!!!');
-  }
-
   render() {
-    console.log('IS MODAL OPEN?!??', this.props.downloadAllModalOpen);
     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
       'div',
       { className: 'q-nav-item' },
@@ -44365,7 +44366,6 @@ class DownloadAllButton extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Co
           id: 'q-download-all-modal',
           isOpen: this.props.downloadAllModalOpen,
           parentSelector: this.getParentSelector,
-          onAfterOpen: this.testModalOpen,
           onRequestClose: this.props.handleDownloadAllClose,
           contentLabel: 'Modal',
           style: this.state.modalStyle

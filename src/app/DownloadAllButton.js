@@ -29,12 +29,8 @@ class DownloadAllButton extends React.Component {
     }
   }
 
-  componentDidUpdate() {
-    console.log('UPDTATING DL ALL BUTTON!!!!', this.state)
-  }
-
   buildTemplateHtml(nextProps) {
-    console.log('NEXT PROPS', nextProps)
+    console.log('DL BUTTON NEXT PROPS', nextProps)
     var html = `<html>\n<head>\n${this.props.abHeadContent}\n</head>\n<body>\n`;
     var ifUsed = false;
     for (var key in nextProps.abAllTargetContent) {
@@ -56,12 +52,7 @@ class DownloadAllButton extends React.Component {
     return document.querySelector('#q-app-container')
   }
 
-  testModalOpen() {
-    console.log('MODAL OPEN!!!!!')
-  }
-
   render() {
-    console.log('IS MODAL OPEN?!??', this.props.downloadAllModalOpen)
     return (
       <div className='q-nav-item'>
         <button disabled={this.props.disabled} type='button' className='btn q-download-all' onClick={this.props.handleDownloadAllClick}>Download / Publish All</button>
@@ -69,7 +60,6 @@ class DownloadAllButton extends React.Component {
           id='q-download-all-modal'
           isOpen={this.props.downloadAllModalOpen}
           parentSelector={this.getParentSelector}
-          onAfterOpen={this.testModalOpen}
           onRequestClose={this.props.handleDownloadAllClose}
           contentLabel="Modal"
           style={this.state.modalStyle}

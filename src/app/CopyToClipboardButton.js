@@ -7,9 +7,7 @@ class CopyToClipboardButton extends React.Component {
   }
 
   abCopyTargetContent() {
-    console.log('COPY BUTTON SHIT', this)
     var textArea = document.querySelector(this.props.textAreaQuery);
-    console.log('TECTAREA WE FOUND', textArea)
     textArea.disabled = false;
     textArea.select();
     try {

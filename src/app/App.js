@@ -13,6 +13,8 @@ import config from './config.js';
 
 //TODO
   //RELEASE BLOCKERS
+    //Setup postmates proj
+    //Change Config to Postmates
     //QA MANY MANY DIFF TEMPLATES
       //Try to come up with cases where my matching src content will FAIL (i.e. we'll see option to upload even when it's not possible)
     //Audit performance again (setState calls, etc.)

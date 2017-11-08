@@ -10,20 +10,24 @@ import App from '../app/App.js';
 //Global variables
 var appPanelTab;
 var outerContainer = document.querySelector('.panel.preview-panel');
-var controlPanel = outerContainer.querySelector('div.controls.left-controls');
-var previewContainer = outerContainer.querySelector('.panel-body');
-var header = outerContainer.querySelector('div.panel-header.padded-header');
+if (outerContainer) {
+  var controlPanel = outerContainer.querySelector('div.controls.left-controls');
+  var previewContainer = outerContainer.querySelector('.panel-body');
+  var header = outerContainer.querySelector('div.panel-header.padded-header');
+}
+
 var appRendered = false;
-var renderedApp = document.querySelector('#q-app-container');
+var appPanelTab = document.querySelector('#q-control-panel-tab');
 var appContainer;
 
 
 // Create click target in control panel to launch our app
 var createControlPanelTab = () => {
-  if (!renderedApp) {
+  if (!appPanelTab) {
     appPanelTab = document.createElement('div');
     appPanelTab.innerHTML = 'Qordoba';
     appPanelTab.classList.add('control');
+    appPanelTab.id = 'q-control-panel-tab';
     appPanelTab.addEventListener('click', (e) => {
       //Manage tab UI state
       var currentActiveControl = controlPanel.querySelector('div.active');
@@ -32,6 +36,9 @@ var createControlPanelTab = () => {
       //render App
       renderReactApp();
     });;
+  }
+  else {
+    console.log('You have already launched Qordoba on this page.')
   }
 }
 
@@ -97,11 +104,11 @@ var injectReactApp = () => {
     handleOtherTabClicks();
   }
   else if (1000 === 10) {
-     //TODO -- MOBILE NOTIFICATION LOGIC
+    //TODO -- MOBILE NOTIFICATION LOGIC
   } 
   else {
     console.log('DIDNT FIND CONTROL PANEL');
-    alert('Didn\'t find control panel to insert Qordoba app. Make sure you\'re on the right page!')
+    console.log('Didn\'t find control panel to insert Qordoba app. Make sure you\'re on the right page!')
   }
 }
 

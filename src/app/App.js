@@ -9,7 +9,7 @@ import JSZip from 'jszip';
 import JSZipUtils from 'jszip-utils';
 import Spinner from 'react-spinkit';
 import config from './config.js';
-
+import Modal from 'react-modal';
 
 //TODO
   //Let's look back and see if we can just make 
@@ -137,9 +137,25 @@ class App extends React.Component {
 
   //Appboy Data
   async abGetTemplate() {
+    var abType;
+    var abId;
     var urlPathArray = window.location.pathname.split('/');
+    var modalOpen;
     var articleTitleSpan = document.querySelector('span.editable-heading');
-    await this.setState({abType: urlPathArray[urlPathArray.length - 2], abId: window.location.search.split('=')[1], abTitle: articleTitleSpan.innerHTML})
+    for (var i = 0; i < urlPathArray.length; i++) {
+      if (urlPathArray[i] === 'email_templates') {
+        abType = urlPathArray[i];
+        abId = window.location.search.split('=')[1];
+        modalOpen = false;
+        break;
+      }
+      else if (urlPathArray[i] === 'canvas') {
+        abType = `${urlPathArray[i]}-${urlPathArray[i + 1]}`;
+        modalOpen={this.state.canvasModalOpen}
+        break;
+      }
+    } 
+    await this.setState({abType: abType, abId: abId, abTitle: articleTitleSpan.innerHTML})
   }
 
   async abGetTemplateContent() {
@@ -160,7 +176,7 @@ class App extends React.Component {
           var bodyRegexMatches = bodyRegex.exec(iframeHtml);
           var sourceContent = bodyRegexMatches[1];
           sourceContent = bodyRegexMatches[1].replace(/&nbsp;*/g, '');
-          var sourceContent = sourceContent.replace(/></g, '>\n<');
+          sourceContent = sourceContent.replace(/></g, '>\n<');
           sourceContent = sourceContent.replace(/^\s*[\r\n]/gm, '');
           sourceContent = sourceContent.replace(/<script.*<\/script>/g, '');
           var removeNBSP = new RegExp(String.fromCharCode(160), "g");
@@ -169,6 +185,11 @@ class App extends React.Component {
         }
       }
     }
+  }
+
+
+  getParentSelector() {
+    return document.querySelector('#q-app-container')
   }
 
 
@@ -457,21 +478,41 @@ class App extends React.Component {
         }
       }
       else {
-        return (
+        if (this.state.abType.includes('canvas')) {
+          //render prompt and set state accordingly
           <div className='q-translation-status-container'>
-            <div className="q-nav-bar">
-              <LanguageDropdown dropdownValue={this.state.dropdownValue} sourceLocale={this.state.sourceLocale} disabled={true} handleLanguageChange={this.handleLanguageChange} qProjectLanguages={this.state.qProjectLanguages} qGetLanguages={this.qGetLanguages}/>
-              <div className='q-nav-item' id='q-refresh'>
-                <i className="fa fa-refresh" aria-hidden="true"></i>
-              </div>
-              <div className='q-nav-item'>
-                <button disabled={!this.state.sourceContentChanged} className='btn img-btn' onClick={this.qFileUpload} type="submit" id='q-upload-button'> Upload to Qordoba </button>
-              </div>
-              <DownloadAllButton downloadAllModalOpen={this.state.downloadAllModalOpen} disabled={true} abHeadContent={this.state.abHeadContent} abSourceContent={this.state.abSourceContent} abAllTargetContent={this.state.abAllTargetContent} downloadAllModalOpen={this.state.downloadAllModalOpen} handleDownloadAllClick={this.handleDownloadAllClick} handleDownloadAllClose={this.handleDownloadAllClose} />
+            <div className='q-nav-item'>
+              <Modal
+                id='q-canvas-prompt-modal'
+                isOpen={this.state.canvasModalOpen}
+                parentSelector={this.getParentSelector}
+                onRequestClose={this.handleCanvasModalClose}
+                contentLabel="canvasPromptModal"
+                style={{overlay: {position: 'absolute'}, content: {left: '10px', right: '10px'}}}
+              >
+                <div> Placeholder for list of canvas emails </div>
+                <div> Placeholder for text input </div>
+              </Modal>
             </div>
-            <p className='helptext'>This template does not yet have a unique ID assigned to it. Please make a change to the template, save it, and refresh. </p>
           </div>
-        )
+        }
+        else {
+          return (
+            <div className='q-translation-status-container'>
+              <div className="q-nav-bar">
+                <LanguageDropdown dropdownValue={this.state.dropdownValue} sourceLocale={this.state.sourceLocale} disabled={true} handleLanguageChange={this.handleLanguageChange} qProjectLanguages={this.state.qProjectLanguages} qGetLanguages={this.qGetLanguages}/>
+                <div className='q-nav-item' id='q-refresh'>
+                  <i className="fa fa-refresh" aria-hidden="true"></i>
+                </div>
+                <div className='q-nav-item'>
+                  <button disabled={!this.state.sourceContentChanged} className='btn img-btn' onClick={this.qFileUpload} type="submit" id='q-upload-button'> Upload to Qordoba </button>
+                </div>
+                <DownloadAllButton downloadAllModalOpen={this.state.downloadAllModalOpen} disabled={true} abHeadContent={this.state.abHeadContent} abSourceContent={this.state.abSourceContent} abAllTargetContent={this.state.abAllTargetContent} downloadAllModalOpen={this.state.downloadAllModalOpen} handleDownloadAllClick={this.handleDownloadAllClick} handleDownloadAllClose={this.handleDownloadAllClose} />
+              </div>
+              <p className='helptext'>This template does not yet have a unique ID assigned to it. Please make a change to the template, save it, and refresh. </p>
+            </div>
+          )
+        }
       }
     }
     else {

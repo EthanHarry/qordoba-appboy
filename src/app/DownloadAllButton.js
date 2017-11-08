@@ -61,7 +61,7 @@ class DownloadAllButton extends React.Component {
           isOpen={this.props.downloadAllModalOpen}
           parentSelector={this.getParentSelector}
           onRequestClose={this.props.handleDownloadAllClose}
-          contentLabel="Modal"
+          contentLabel="downloadAllModal"
           style={this.state.modalStyle}
         >
           <h1>Translated HTML</h1>

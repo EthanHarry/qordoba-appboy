@@ -33260,15 +33260,6 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 
     return _asyncToGenerator(function* () {
       console.log('STATE', _this.state);
-      if (_this.state.qSourceContent !== _this.state.abSourceContent && _this.state.qSourceContent && _this.state.abSourceContent) {
-        console.log(_this.state.qSourceContent);
-        console.log('!!!!!!!!!!!!');
-        console.log('!!!!!!!!!!!!');
-        console.log('!!!!!!!!!!!!');
-        console.log('!!!!!!!!!!!!');
-        console.log('!!!!!!!!!!!!');
-        console.log(_this.state.abSourceContent);
-      }
     })();
   }
 
@@ -33381,21 +33372,6 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
             sourceContent = sourceContent.replace(/<script.*<\/script>/g, '');
             var removeNBSP = new RegExp(String.fromCharCode(160), "g");
             sourceContent = sourceContent.replace(removeNBSP, '');
-            console.log('!!!');
-            console.log('!!!');
-            console.log('!!!');
-            console.log('!!!');
-            console.log('!!!');
-            console.log('!!!');
-            console.log(typeof sourceContent);
-            console.log('removing nbsp');
-            console.log('?????');
-            console.log('?????');
-            console.log('?????');
-            console.log('?????');
-            console.log('?????');
-            console.log('?????');
-            console.log(sourceContent);
             yield _this9.setState({ sourceIframe: sourceIframe, abSourceContent: sourceContent, abHeadContent: headRegexMatches[1] });
           }
         }
@@ -33453,7 +33429,6 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
           allQFilesObj[key][fileNameNoHtml] = qordobaFileObj;
           if (fileNameNoHtml === `${_this11.state.abType}-${_this11.state.abId}`) {
             currentFileObj = Object.assign({}, qordobaFileObj);
-            console.log('FOUND OUR FILE', key, currentFileObj);
             var qPageId = currentFileObj.qArticleId;
             if (currentFileObj.completed && currentFileObj.enabled) {
               abFileCompletedInQ = true;

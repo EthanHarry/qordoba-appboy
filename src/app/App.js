@@ -77,15 +77,6 @@ class App extends React.Component {
   //React Data
   async componentDidUpdate() {
     console.log('STATE', this.state)
-    if (this.state.qSourceContent !== this.state.abSourceContent && this.state.qSourceContent && this.state.abSourceContent) {
-      console.log(this.state.qSourceContent)
-      console.log('!!!!!!!!!!!!')
-      console.log('!!!!!!!!!!!!')
-      console.log('!!!!!!!!!!!!')
-      console.log('!!!!!!!!!!!!')
-      console.log('!!!!!!!!!!!!')
-      console.log(this.state.abSourceContent)
-    }
   }
 
 
@@ -174,21 +165,6 @@ class App extends React.Component {
           sourceContent = sourceContent.replace(/<script.*<\/script>/g, '');
           var removeNBSP = new RegExp(String.fromCharCode(160), "g");
           sourceContent = sourceContent.replace(removeNBSP, '');
-          console.log('!!!')
-          console.log('!!!')
-          console.log('!!!')
-          console.log('!!!')
-          console.log('!!!')
-          console.log('!!!')
-          console.log(typeof sourceContent)
-          console.log('removing nbsp')
-          console.log('?????')
-          console.log('?????')
-          console.log('?????')
-          console.log('?????')
-          console.log('?????')
-          console.log('?????')
-          console.log(sourceContent)
           await this.setState({sourceIframe: sourceIframe, abSourceContent: sourceContent, abHeadContent: headRegexMatches[1]});
         }
       }
@@ -242,7 +218,6 @@ class App extends React.Component {
         allQFilesObj[key][fileNameNoHtml] = qordobaFileObj;
         if (fileNameNoHtml === `${this.state.abType}-${this.state.abId}`) {
           currentFileObj = Object.assign({}, qordobaFileObj);
-          console.log('FOUND OUR FILE', key, currentFileObj)
           var qPageId = currentFileObj.qArticleId;
           if (currentFileObj.completed && currentFileObj.enabled) {
             abFileCompletedInQ = true;

@@ -12,12 +12,9 @@ import config from './config.js';
 
 
 //TODO
-  //RELEASE BLOCKERS
-    //Pagination on Qordoba request -- we cant find translation
-    //Setup postmates proj
-    //Change Config to Postmates
-    //QA MANY MANY DIFF TEMPLATES
-    //Audit performance again (setState calls, etc.)
+  //Let's look back and see if we can just make 
+    //one call to Qordoba to get pageId and exists status
+    //one call to Qordoba to get abfilecompletedinq and Locale content (on click) and publish
 
   //FEATURES
   //CONFIG!!!! Right now, hard-coding in all Auth

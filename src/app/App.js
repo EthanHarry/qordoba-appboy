@@ -8,21 +8,22 @@ import DownloadAllButton from './DownloadAllButton.js';
 import JSZip from 'jszip';
 import JSZipUtils from 'jszip-utils';
 import Spinner from 'react-spinkit';
+import config from './config.js';
 
 
 //TODO
   //RELEASE BLOCKERS
-  //Handle launching of extension (repeat launches, launching on wrong page, etc. -- prob just make auto -- or both?)
-  //QA MANY MANY DIFF TEMPLATES
-    //Try to come up with cases where my matching src content will FAIL (i.e. we'll see option to upload even when it's not possible)
-      // MIGHT NEED TO LEAVE UPLOAD BUTTON ACTIVE AT ALL TIMES IF CANT GET TEXT PARSING DOWN
-  //Audit performance again (setState calls, etc.)
+    //QA MANY MANY DIFF TEMPLATES
+      //Try to come up with cases where my matching src content will FAIL (i.e. we'll see option to upload even when it's not possible)
+    //Audit performance again (setState calls, etc.)
 
   //FEATURES
+  //CONFIG!!!! Right now, hard-coding in all Auth
+  //Publish as private Chrome extension
+  //Loading spinner for modal
   //Add functionality for "add ONE translation to template"
   //Upload files by name instead of ID
   //auth
-  //Fix config import and usage
 
 class App extends React.Component {
   constructor(props) {
@@ -30,18 +31,22 @@ class App extends React.Component {
 
     //Need to actually render from auth
     this.state = {
-      qAuthToken: '279e9109-7795-4203-a727-ff30868d35bf',
-      qOrganizationId: '3168',
-      qProjectId: '5895',
+      qAuthToken: config.qAuthToken,
+      qOrganizationId: config.qOrganizationId,
+      qProjectId: config.qProjectId,
+
       qProjectLanguages: {},
       qProjectLocaleFiles: {},
       qProjectAllFiles: {},
       qTranslationStatus: '',
+      qSourceContent: '',
+
       abLanguageCode: '',
       abLanguageName: '',
       abType: '',
       abId: '',
       abTitle: '',
+
       abFileExistsInQ: false,
       abFileCompletedInQ: false,
       abSourceContent: '',
@@ -50,11 +55,11 @@ class App extends React.Component {
       abAllTargetContent: {},
       abTranslationStatuses: {},
       abContentToPublish: {},
+      
       sourceLocale: 'en-us', //need to actually set,
       jsonReqHeader: {},
       downloadAllModalOpen: false,
       loading: true,
-      qSourceContent: '',
       dropdownValue: 0,
       sourceContentChanged: ''
     }
@@ -100,20 +105,13 @@ class App extends React.Component {
 
   async componentDidMount() {
     await this.init();
-    console.log('SRC IFRAME', this.state.sourceIframe)
-    this.state.sourceIframe.addEventListener('change', (e) => {
-      console.log('SOURCE CONTENT CHANGED!!!')
-    });
   }
 
 
   async handleLanguageChange(e) {
     this.setState({loading: true})
-    console.log(e.target.value)
     var dropdownMenu = e.target;
     var selectedOption = dropdownMenu.querySelector(`[value="${e.target.value}"]`);
-    console.log('dropdownMenu', dropdownMenu)
-    console.log('selectedOption', selectedOption)
     dropdownMenu.value = selectedOption.value;
     await this.setState({dropdownValue: e.target.value, abLanguageName: selectedOption.dataset.name, abLanguageCode: selectedOption.dataset.locale, qProjectLocaleFiles: this.state.qProjectAllFiles[selectedOption.dataset.locale]});
     await this.qGetOneTranslation(false)
@@ -138,7 +136,6 @@ class App extends React.Component {
   }
 
   async afterModalOpen() {
-    console.log('MODAL IS OPEN', this)
     await this.setState({loading: false})
   }
 
@@ -449,7 +446,7 @@ class App extends React.Component {
                   </div>
                   <DownloadAllButton qSourceContent={this.state.qSourceContent} downloadAllModalOpen={this.state.downloadAllModalOpen} disabled={true} abFileCompletedInQ = {this.state.qFileTranslationStatus === 'completed'} abHeadContent={this.state.abHeadContent} abSourceContent={this.state.abSourceContent} abAllTargetContent={this.state.abAllTargetContent} downloadAllModalOpen={this.state.downloadAllModalOpen} handleDownloadAllClick={this.handleDownloadAllClick} handleDownloadAllClose={this.handleDownloadAllClose} />
                 </div>
-                <p className='helptext'>This template is currently being translated in Qordoba. If the original template content has changed, please click the button above to re-upload to Qordoba. Otherwise, please return when translators have finished!</p>
+                <p className='helptext'>This template is currently being translated in Qordoba. Please return when translators have finished!</p>
               </div>
             )
           }
@@ -481,7 +478,7 @@ class App extends React.Component {
                 <i class="fa fa-refresh" aria-hidden="true"></i>
               </div>
               <div className='q-nav-item'>
-                <button disabled className='btn img-btn' onClick={this.qFileUpload} type="submit" id='q-upload-button'> Upload to Qordoba </button>
+                <button disabled={!this.state.sourceContentChanged} className='btn img-btn' onClick={this.qFileUpload} type="submit" id='q-upload-button'> Upload to Qordoba </button>
               </div>
               <DownloadAllButton downloadAllModalOpen={this.state.downloadAllModalOpen} disabled={true} abHeadContent={this.state.abHeadContent} abSourceContent={this.state.abSourceContent} abAllTargetContent={this.state.abAllTargetContent} downloadAllModalOpen={this.state.downloadAllModalOpen} handleDownloadAllClick={this.handleDownloadAllClick} handleDownloadAllClose={this.handleDownloadAllClose} />
             </div>

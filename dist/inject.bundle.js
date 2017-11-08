@@ -12948,21 +12948,24 @@ var controlPanel = outerContainer.querySelector('div.controls.left-controls');
 var previewContainer = outerContainer.querySelector('.panel-body');
 var header = outerContainer.querySelector('div.panel-header.padded-header');
 var appRendered = false;
+var renderedApp = document.querySelector('#q-app-container');
 var appContainer;
 
 // Create click target in control panel to launch our app
 var createControlPanelTab = () => {
-  appPanelTab = document.createElement('div');
-  appPanelTab.innerHTML = 'Qordoba';
-  appPanelTab.classList.add('control');
-  appPanelTab.addEventListener('click', e => {
-    //Manage tab UI state
-    var currentActiveControl = controlPanel.querySelector('div.active');
-    currentActiveControl.classList.remove('active');
-    appPanelTab.classList.add('active');
-    //render App
-    renderReactApp();
-  });;
+  if (!renderedApp) {
+    appPanelTab = document.createElement('div');
+    appPanelTab.innerHTML = 'Qordoba';
+    appPanelTab.classList.add('control');
+    appPanelTab.addEventListener('click', e => {
+      //Manage tab UI state
+      var currentActiveControl = controlPanel.querySelector('div.active');
+      currentActiveControl.classList.remove('active');
+      appPanelTab.classList.add('active');
+      //render App
+      renderReactApp();
+    });;
+  }
 };
 
 //Handle clicks on other tabs in targrt control panel
@@ -33170,6 +33173,7 @@ module.exports = function() {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_jszip_utils___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_jszip_utils__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_react_spinkit__ = __webpack_require__(259);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_react_spinkit___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8_react_spinkit__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__config_js__ = __webpack_require__(294);
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 console.log('hi react app');
@@ -33183,19 +33187,20 @@ console.log('hi react app');
 
 
 
+
 //TODO
 //RELEASE BLOCKERS
-//Handle launching of extension (repeat launches, launching on wrong page, etc. -- prob just make auto -- or both?)
 //QA MANY MANY DIFF TEMPLATES
 //Try to come up with cases where my matching src content will FAIL (i.e. we'll see option to upload even when it's not possible)
-// MIGHT NEED TO LEAVE UPLOAD BUTTON ACTIVE AT ALL TIMES IF CANT GET TEXT PARSING DOWN
 //Audit performance again (setState calls, etc.)
 
 //FEATURES
+//CONFIG!!!! Right now, hard-coding in all Auth
+//Publish as private Chrome extension
+//Loading spinner for modal
 //Add functionality for "add ONE translation to template"
 //Upload files by name instead of ID
 //auth
-//Fix config import and usage
 
 class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
   constructor(props) {
@@ -33203,18 +33208,22 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 
     //Need to actually render from auth
     this.state = {
-      qAuthToken: '279e9109-7795-4203-a727-ff30868d35bf',
-      qOrganizationId: '3168',
-      qProjectId: '5895',
+      qAuthToken: __WEBPACK_IMPORTED_MODULE_9__config_js__["a" /* default */].qAuthToken,
+      qOrganizationId: __WEBPACK_IMPORTED_MODULE_9__config_js__["a" /* default */].qOrganizationId,
+      qProjectId: __WEBPACK_IMPORTED_MODULE_9__config_js__["a" /* default */].qProjectId,
+
       qProjectLanguages: {},
       qProjectLocaleFiles: {},
       qProjectAllFiles: {},
       qTranslationStatus: '',
+      qSourceContent: '',
+
       abLanguageCode: '',
       abLanguageName: '',
       abType: '',
       abId: '',
       abTitle: '',
+
       abFileExistsInQ: false,
       abFileCompletedInQ: false,
       abSourceContent: '',
@@ -33223,11 +33232,11 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
       abAllTargetContent: {},
       abTranslationStatuses: {},
       abContentToPublish: {},
+
       sourceLocale: 'en-us', //need to actually set,
       jsonReqHeader: {},
       downloadAllModalOpen: false,
       loading: true,
-      qSourceContent: '',
       dropdownValue: 0,
       sourceContentChanged: ''
     };
@@ -33281,10 +33290,6 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 
     return _asyncToGenerator(function* () {
       yield _this3.init();
-      console.log('SRC IFRAME', _this3.state.sourceIframe);
-      _this3.state.sourceIframe.addEventListener('change', function (e) {
-        console.log('SOURCE CONTENT CHANGED!!!');
-      });
     })();
   }
 
@@ -33293,11 +33298,8 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 
     return _asyncToGenerator(function* () {
       _this4.setState({ loading: true });
-      console.log(e.target.value);
       var dropdownMenu = e.target;
       var selectedOption = dropdownMenu.querySelector(`[value="${e.target.value}"]`);
-      console.log('dropdownMenu', dropdownMenu);
-      console.log('selectedOption', selectedOption);
       dropdownMenu.value = selectedOption.value;
       yield _this4.setState({ dropdownValue: e.target.value, abLanguageName: selectedOption.dataset.name, abLanguageCode: selectedOption.dataset.locale, qProjectLocaleFiles: _this4.state.qProjectAllFiles[selectedOption.dataset.locale] });
       yield _this4.qGetOneTranslation(false);
@@ -33328,7 +33330,6 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
     var _this6 = this;
 
     return _asyncToGenerator(function* () {
-      console.log('MODAL IS OPEN', _this6);
       yield _this6.setState({ loading: false });
     })();
   }
@@ -33690,7 +33691,7 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
               __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 'p',
                 { className: 'helptext' },
-                'This template is currently being translated in Qordoba. If the original template content has changed, please click the button above to re-upload to Qordoba. Otherwise, please return when translators have finished!'
+                'This template is currently being translated in Qordoba. Please return when translators have finished!'
               )
             );
           }
@@ -33743,7 +33744,7 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
               { className: 'q-nav-item' },
               __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 'button',
-                { disabled: true, className: 'btn img-btn', onClick: this.qFileUpload, type: 'submit', id: 'q-upload-button' },
+                { disabled: !this.state.sourceContentChanged, className: 'btn img-btn', onClick: this.qFileUpload, type: 'submit', id: 'q-upload-button' },
                 ' Upload to Qordoba '
               )
             ),
@@ -75676,6 +75677,22 @@ exports.push([module.i, ".sk-wordpress > div {\n  width: 27px;\n  height: 27px;\
 
 // exports
 
+
+/***/ }),
+/* 291 */,
+/* 292 */,
+/* 293 */,
+/* 294 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var config = {
+  qAuthToken: '279e9109-7795-4203-a727-ff30868d35bf',
+  qOrganizationId: '3168',
+  qProjectId: '5895'
+};
+
+/* harmony default export */ __webpack_exports__["a"] = (config);
 
 /***/ })
 /******/ ]);

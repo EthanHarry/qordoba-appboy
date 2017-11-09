@@ -159,30 +159,8 @@ class App extends React.Component {
           var bodyRegex = /<body[\s,\S]*?>([\s,\S]*?)<\/body>/g;
           var bodyRegexMatches = bodyRegex.exec(iframeHtml);
           var sourceContent = bodyRegexMatches[1];
-          // sourceContent = bodyRegexMatches[1].replace(/&nbsp;*/g, '');
-          // var sourceContent = sourceContent.replace(/></g, '>\n<');
-          // sourceContent = sourceContent.replace(/^\s*[\r\n]/gm, '');
-          // sourceContent = sourceContent.replace(/<script.*<\/script>/g, '');
-          // var removeNBSP = new RegExp(String.fromCharCode(160), "g");
-          // sourceContent = sourceContent.replace(removeNBSP, '');
-          console.log('!!!!!!!!')
-          console.log('!!!!!!!!')
-          console.log('!!!!!!!!')
-          console.log('!!!!!!!!')
-          console.log('!!!!!!!!')
-          console.log('!!!!!!!!')
-          console.log('!!!!!!!!')
-          console.log('!!!!!!!!')
-          console.log('!!!!!!!!')
-          console.log('!!!!!!!!')
-          console.log('!!!!!!!!')
-          console.log('!!!!!!!!')
-          console.log('!!!!!!!!')
-          console.log('!!!!!!!!')
-          console.log('!!!!!!!!')
-          console.log('!!!!!!!!')
-          console.log('!!!!!!!!')
-          console.log('!!!!!!!!')
+          var sourceContent = sourceContent.replace(/></g, '>\n<');
+          sourceContent = sourceContent.replace(/<script.*<\/script>/g, '');
           await this.setState({sourceIframe: sourceIframe, abSourceContent: sourceContent, abHeadContent: headRegexMatches[1]});
         }
       }

@@ -33366,12 +33366,30 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
             var bodyRegex = /<body[\s,\S]*?>([\s,\S]*?)<\/body>/g;
             var bodyRegexMatches = bodyRegex.exec(iframeHtml);
             var sourceContent = bodyRegexMatches[1];
-            sourceContent = bodyRegexMatches[1].replace(/&nbsp;*/g, '');
-            var sourceContent = sourceContent.replace(/></g, '>\n<');
-            sourceContent = sourceContent.replace(/^\s*[\r\n]/gm, '');
-            sourceContent = sourceContent.replace(/<script.*<\/script>/g, '');
-            var removeNBSP = new RegExp(String.fromCharCode(160), "g");
-            sourceContent = sourceContent.replace(removeNBSP, '');
+            // sourceContent = bodyRegexMatches[1].replace(/&nbsp;*/g, '');
+            // var sourceContent = sourceContent.replace(/></g, '>\n<');
+            // sourceContent = sourceContent.replace(/^\s*[\r\n]/gm, '');
+            // sourceContent = sourceContent.replace(/<script.*<\/script>/g, '');
+            // var removeNBSP = new RegExp(String.fromCharCode(160), "g");
+            // sourceContent = sourceContent.replace(removeNBSP, '');
+            console.log('!!!!!!!!');
+            console.log('!!!!!!!!');
+            console.log('!!!!!!!!');
+            console.log('!!!!!!!!');
+            console.log('!!!!!!!!');
+            console.log('!!!!!!!!');
+            console.log('!!!!!!!!');
+            console.log('!!!!!!!!');
+            console.log('!!!!!!!!');
+            console.log('!!!!!!!!');
+            console.log('!!!!!!!!');
+            console.log('!!!!!!!!');
+            console.log('!!!!!!!!');
+            console.log('!!!!!!!!');
+            console.log('!!!!!!!!');
+            console.log('!!!!!!!!');
+            console.log('!!!!!!!!');
+            console.log('!!!!!!!!');
             yield _this9.setState({ sourceIframe: sourceIframe, abSourceContent: sourceContent, abHeadContent: headRegexMatches[1] });
           }
         }
@@ -33540,6 +33558,7 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
               var templateName = regexMatches[1];
               if (templateName === `${_this13.state.abType}-${_this13.state.abId}` && _this13.state.qProjectAllFiles[locale][templateName].completed) {
                 var finalizedZipData = yield completedZipData[key].async('text');
+                console.log('this file zip data', finalizedZipData);
                 var bodyRegexp = /<body[\s, \S]*?>([\s,\S]*?)<\/body>/g;
                 var bodyRegexMatches = bodyRegexp.exec(finalizedZipData);
                 abToBePublished[locale] = bodyRegexMatches[1];

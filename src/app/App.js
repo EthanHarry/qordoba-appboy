@@ -159,12 +159,30 @@ class App extends React.Component {
           var bodyRegex = /<body[\s,\S]*?>([\s,\S]*?)<\/body>/g;
           var bodyRegexMatches = bodyRegex.exec(iframeHtml);
           var sourceContent = bodyRegexMatches[1];
-          sourceContent = bodyRegexMatches[1].replace(/&nbsp;*/g, '');
-          var sourceContent = sourceContent.replace(/></g, '>\n<');
-          sourceContent = sourceContent.replace(/^\s*[\r\n]/gm, '');
-          sourceContent = sourceContent.replace(/<script.*<\/script>/g, '');
-          var removeNBSP = new RegExp(String.fromCharCode(160), "g");
-          sourceContent = sourceContent.replace(removeNBSP, '');
+          // sourceContent = bodyRegexMatches[1].replace(/&nbsp;*/g, '');
+          // var sourceContent = sourceContent.replace(/></g, '>\n<');
+          // sourceContent = sourceContent.replace(/^\s*[\r\n]/gm, '');
+          // sourceContent = sourceContent.replace(/<script.*<\/script>/g, '');
+          // var removeNBSP = new RegExp(String.fromCharCode(160), "g");
+          // sourceContent = sourceContent.replace(removeNBSP, '');
+          console.log('!!!!!!!!')
+          console.log('!!!!!!!!')
+          console.log('!!!!!!!!')
+          console.log('!!!!!!!!')
+          console.log('!!!!!!!!')
+          console.log('!!!!!!!!')
+          console.log('!!!!!!!!')
+          console.log('!!!!!!!!')
+          console.log('!!!!!!!!')
+          console.log('!!!!!!!!')
+          console.log('!!!!!!!!')
+          console.log('!!!!!!!!')
+          console.log('!!!!!!!!')
+          console.log('!!!!!!!!')
+          console.log('!!!!!!!!')
+          console.log('!!!!!!!!')
+          console.log('!!!!!!!!')
+          console.log('!!!!!!!!')
           await this.setState({sourceIframe: sourceIframe, abSourceContent: sourceContent, abHeadContent: headRegexMatches[1]});
         }
       }
@@ -323,6 +341,7 @@ class App extends React.Component {
           var templateName = regexMatches[1];
           if (templateName === `${this.state.abType}-${this.state.abId}` && this.state.qProjectAllFiles[locale][templateName].completed) {
             var finalizedZipData = await completedZipData[key].async('text');
+            console.log('this file zip data', finalizedZipData)
             var bodyRegexp = /<body[\s, \S]*?>([\s,\S]*?)<\/body>/g;
             var bodyRegexMatches = bodyRegexp.exec(finalizedZipData);
             abToBePublished[locale] = bodyRegexMatches[1];

@@ -10,16 +10,7 @@ class DownloadAllButton extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      templateHtml: '', 
-      modalStyle: {
-        overlay: {
-          position: 'absolute'
-        },
-        content: {
-          left: '10px',
-          right: '10px'
-        }
-      }
+      templateHtml: ''
     }
   }
 
@@ -48,10 +39,6 @@ class DownloadAllButton extends React.Component {
     this.setState({templateHtml:html})
   }
 
-  getParentSelector() {
-    return document.querySelector('#q-app-container')
-  }
-
   render() {
     return (
       <div className='q-nav-item'>
@@ -59,10 +46,10 @@ class DownloadAllButton extends React.Component {
         <Modal
           id='q-download-all-modal'
           isOpen={this.props.downloadAllModalOpen}
-          parentSelector={this.getParentSelector}
+          parentSelector={this.props.qModalGetParentSelector}
           onRequestClose={this.props.handleDownloadAllClose}
-          contentLabel="Modal"
-          style={this.state.modalStyle}
+          contentLabel="Download All Modal"
+          style={this.props.qModalStyle}
         >
           <h1>Translated HTML</h1>
           <CopyToClipboardButton handleModalClose={this.props.handleDownloadAllClose} textAreaQuery='#q-download-all-textarea' type="submit" />
@@ -77,24 +64,3 @@ class DownloadAllButton extends React.Component {
 }
 
 export default DownloadAllButton;
-
-/*
-    <div className='container'>
-          {
-            this.props.downloadAllModalOpen &&
-            <Dialog
-            title="Dialog Title"
-            width={700}
-            onClose={this.props.handleDownloadAllClose}
-            buttons={
-            [
-              {text: "Close",onClick: () => this.props.handleDownloadAllClose(), className: 'q-close-modal'}
-            ]
-            }>
-              <h1>Dialog Content</h1>
-              <p>More Content. Anything goes here</p>
-            </Dialog>
-          }
-        </div>
-      </div>
-      */

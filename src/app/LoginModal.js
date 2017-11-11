@@ -1,5 +1,6 @@
 import React from 'react';
 import Modal from 'react-modal';
+import LogoutButton from './LogoutButton';
 
 var LoginModal = (props) => {
   if (!props.qAuthenticated) {
@@ -45,8 +46,6 @@ var LoginModal = (props) => {
               )
             })}
           </select>
-
-
           <select disabled={props.qOrganizationId === 0} value={props.qProjectId} onChange={props.qHandleProjectSubmit}>
             <option disabled={true} value={0}> Select a Project </option>
               {props.qAllProjects.map((projectObject) => {
@@ -57,7 +56,7 @@ var LoginModal = (props) => {
                 )
               })}
           </select>
-
+          <LogoutButton handleLogoutClick={props.handleLogoutClick} />
           <button className='btn' type='submit'> Submit </button>
         </form>
       </Modal>

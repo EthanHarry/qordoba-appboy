@@ -523,7 +523,7 @@ class App extends React.Component {
           var myRegexp = /.*\/([a-z,_]*-[a-z,0-9]*).*.html/g;
           var regexMatches = myRegexp.exec(key);
           var templateName = regexMatches[1];
-          if (templateName === `${this.state.abType}-${this.state.abId}` && this.state.qProjectAllFiles[locale][templateName].completed) {
+          if (templateName === `${this.state.abType}-${this.state.abId}` && this.state.qTranslationStatusObj[locale].completed) {
             var finalizedZipData = await completedZipData[key].async('text');
             console.log('this file zip data', finalizedZipData)
             var bodyRegexp = /<body[\s, \S]*?>([\s,\S]*?)<\/body>/g;
@@ -615,7 +615,7 @@ class App extends React.Component {
               return (
                 <div id='q-translation-status-container-email'>
                   <div className="q-nav-bar">
-                    <LanguageDropdown languageDropdownValue={this.state.languageDropdownValue} qSourceLocale={this.state.qSourceLocale} handleLanguageChange={this.handleLanguageChange} qProjectLanguages={this.state.qProjectLanguages} qGetLanguages={this.qGetLanguages}/>
+                    <LanguageDropdown qTranslationStatusObj={this.state.qTranslationStatusObj} languageDropdownValue={this.state.languageDropdownValue} qSourceLocale={this.state.qSourceLocale} handleLanguageChange={this.handleLanguageChange} qProjectLanguages={this.state.qProjectLanguages} qGetLanguages={this.qGetLanguages}/>
                     <div onClick={this.init} className='q-nav-item' id='q-refresh'>
                       <i className="fa fa-refresh" aria-hidden="true"></i>
                     </div>
@@ -633,7 +633,7 @@ class App extends React.Component {
               return (
                 <div className='q-translation-status-container'>
                   <div className="q-nav-bar">
-                    <LanguageDropdown languageDropdownValue={this.state.languageDropdownValue} qSourceLocale={this.state.qSourceLocale} disabled={true} abFileExistsInQ={this.state.abFileExistsInQ} abFileCompletedInQ = {this.state.qFileTranslationStatus === 'completed'}  handleLanguageChange={this.handleLanguageChange} qProjectLanguages={this.state.qProjectLanguages} qGetLanguages={this.qGetLanguages}/>
+                    <LanguageDropdown qTranslationStatusObj={this.state.qTranslationStatusObj} languageDropdownValue={this.state.languageDropdownValue} qSourceLocale={this.state.qSourceLocale} disabled={true} abFileExistsInQ={this.state.abFileExistsInQ} abFileCompletedInQ = {this.state.qFileTranslationStatus === 'completed'}  handleLanguageChange={this.handleLanguageChange} qProjectLanguages={this.state.qProjectLanguages} qGetLanguages={this.qGetLanguages}/>
                     <div onClick={this.init} className='q-nav-item' id='q-refresh'>
                       <i className="fa fa-refresh" aria-hidden="true"></i>
                     </div>
@@ -652,7 +652,7 @@ class App extends React.Component {
             return (
               <div className='q-translation-status-container'>
                 <div className="q-nav-bar">
-                  <LanguageDropdown languageDropdownValue={this.state.languageDropdownValue} qSourceLocale={this.state.qSourceLocale} disabled={true} handleLanguageChange={this.handleLanguageChange} qProjectLanguages={this.state.qProjectLanguages} qGetLanguages={this.qGetLanguages}/>
+                  <LanguageDropdown qTranslationStatusObj={this.state.qTranslationStatusObj} languageDropdownValue={this.state.languageDropdownValue} qSourceLocale={this.state.qSourceLocale} disabled={true} handleLanguageChange={this.handleLanguageChange} qProjectLanguages={this.state.qProjectLanguages} qGetLanguages={this.qGetLanguages}/>
                   <div className='q-nav-item' id='q-refresh'>
                     <i className="fa fa-refresh" aria-hidden="true"></i>
                   </div>
@@ -671,7 +671,7 @@ class App extends React.Component {
           return (
             <div className='q-translation-status-container'>
               <div className="q-nav-bar">
-                <LanguageDropdown languageDropdownValue={this.state.languageDropdownValue} qSourceLocale={this.state.qSourceLocale} disabled={true} handleLanguageChange={this.handleLanguageChange} qProjectLanguages={this.state.qProjectLanguages} qGetLanguages={this.qGetLanguages}/>
+                <LanguageDropdown qTranslationStatusObj={this.state.qTranslationStatusObj} languageDropdownValue={this.state.languageDropdownValue} qSourceLocale={this.state.qSourceLocale} disabled={true} handleLanguageChange={this.handleLanguageChange} qProjectLanguages={this.state.qProjectLanguages} qGetLanguages={this.qGetLanguages}/>
                 <div className='q-nav-item' id='q-refresh'>
                   <i className="fa fa-refresh" aria-hidden="true"></i>
                 </div>

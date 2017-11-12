@@ -21856,7 +21856,7 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
               var myRegexp = /.*\/([a-z,_]*-[a-z,0-9]*).*.html/g;
               var regexMatches = myRegexp.exec(key);
               var templateName = regexMatches[1];
-              if (templateName === `${_this21.state.abType}-${_this21.state.abId}` && _this21.state.qProjectAllFiles[locale][templateName].completed) {
+              if (templateName === `${_this21.state.abType}-${_this21.state.abId}` && _this21.state.qTranslationStatusObj[locale].completed) {
                 var finalizedZipData = yield completedZipData[key].async('text');
                 console.log('this file zip data', finalizedZipData);
                 var bodyRegexp = /<body[\s, \S]*?>([\s,\S]*?)<\/body>/g;
@@ -21958,7 +21958,7 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                   'div',
                   { className: 'q-nav-bar' },
-                  __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__LanguageDropdown_js__["a" /* default */], { languageDropdownValue: this.state.languageDropdownValue, qSourceLocale: this.state.qSourceLocale, handleLanguageChange: this.handleLanguageChange, qProjectLanguages: this.state.qProjectLanguages, qGetLanguages: this.qGetLanguages }),
+                  __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__LanguageDropdown_js__["a" /* default */], { qTranslationStatusObj: this.state.qTranslationStatusObj, languageDropdownValue: this.state.languageDropdownValue, qSourceLocale: this.state.qSourceLocale, handleLanguageChange: this.handleLanguageChange, qProjectLanguages: this.state.qProjectLanguages, qGetLanguages: this.qGetLanguages }),
                   __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                     'div',
                     { onClick: this.init, className: 'q-nav-item', id: 'q-refresh' },
@@ -21985,7 +21985,7 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                   'div',
                   { className: 'q-nav-bar' },
-                  __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__LanguageDropdown_js__["a" /* default */], { languageDropdownValue: this.state.languageDropdownValue, qSourceLocale: this.state.qSourceLocale, disabled: true, abFileExistsInQ: this.state.abFileExistsInQ, abFileCompletedInQ: this.state.qFileTranslationStatus === 'completed', handleLanguageChange: this.handleLanguageChange, qProjectLanguages: this.state.qProjectLanguages, qGetLanguages: this.qGetLanguages }),
+                  __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__LanguageDropdown_js__["a" /* default */], { qTranslationStatusObj: this.state.qTranslationStatusObj, languageDropdownValue: this.state.languageDropdownValue, qSourceLocale: this.state.qSourceLocale, disabled: true, abFileExistsInQ: this.state.abFileExistsInQ, abFileCompletedInQ: this.state.qFileTranslationStatus === 'completed', handleLanguageChange: this.handleLanguageChange, qProjectLanguages: this.state.qProjectLanguages, qGetLanguages: this.qGetLanguages }),
                   __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                     'div',
                     { onClick: this.init, className: 'q-nav-item', id: 'q-refresh' },
@@ -22017,7 +22017,7 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
               __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 'div',
                 { className: 'q-nav-bar' },
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__LanguageDropdown_js__["a" /* default */], { languageDropdownValue: this.state.languageDropdownValue, qSourceLocale: this.state.qSourceLocale, disabled: true, handleLanguageChange: this.handleLanguageChange, qProjectLanguages: this.state.qProjectLanguages, qGetLanguages: this.qGetLanguages }),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__LanguageDropdown_js__["a" /* default */], { qTranslationStatusObj: this.state.qTranslationStatusObj, languageDropdownValue: this.state.languageDropdownValue, qSourceLocale: this.state.qSourceLocale, disabled: true, handleLanguageChange: this.handleLanguageChange, qProjectLanguages: this.state.qProjectLanguages, qGetLanguages: this.qGetLanguages }),
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                   'div',
                   { className: 'q-nav-item', id: 'q-refresh' },
@@ -22049,7 +22049,7 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
               'div',
               { className: 'q-nav-bar' },
-              __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__LanguageDropdown_js__["a" /* default */], { languageDropdownValue: this.state.languageDropdownValue, qSourceLocale: this.state.qSourceLocale, disabled: true, handleLanguageChange: this.handleLanguageChange, qProjectLanguages: this.state.qProjectLanguages, qGetLanguages: this.qGetLanguages }),
+              __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__LanguageDropdown_js__["a" /* default */], { qTranslationStatusObj: this.state.qTranslationStatusObj, languageDropdownValue: this.state.languageDropdownValue, qSourceLocale: this.state.qSourceLocale, disabled: true, handleLanguageChange: this.handleLanguageChange, qProjectLanguages: this.state.qProjectLanguages, qGetLanguages: this.qGetLanguages }),
               __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 'div',
                 { className: 'q-nav-item', id: 'q-refresh' },
@@ -44458,7 +44458,7 @@ class LanguageDropdown extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Com
         Object.keys(this.props.qProjectLanguages).map(locale => {
           if (locale !== this.props.qSourceLocale) return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
             'option',
-            { className: 'q-language-dropdown-option', value: locale, key: locale, 'data-locale': locale, 'data-name': this.props.qProjectLanguages[locale].name, 'data-id': this.props.qProjectLanguages[locale].id },
+            { disabled: !this.props.qTranslationStatusObj[locale].completed, className: 'q-language-dropdown-option', value: locale, key: locale, 'data-locale': locale, 'data-name': this.props.qProjectLanguages[locale].name, 'data-id': this.props.qProjectLanguages[locale].id },
             this.props.qProjectLanguages[locale].name
           );
         })

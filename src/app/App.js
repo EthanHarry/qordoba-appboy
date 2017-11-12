@@ -16,9 +16,9 @@ import LogoutButton from './LogoutButton.js';
   //Let's look back and see if we can just make 
     //one call to Qordoba to get pageId and exists status
     //one call to Qordoba to get abfilecompletedinq and Locale content (on click) and publish
-      //TODO PICK UP HERE!!!! TRYING TO FIGURE OUT HOW WE CAN FIGURE OUT IF INDIVIDUAL LANGUAGE IS COMPLETED
   //Need to actually set qSourceLocale from API call
-  //
+  //Need to call downloadOneFile for EACH locale to know if anything is translated in Q
+    //Then, store all of those statuses but just DL translations as needed
 
   //FEATURES
   //Publish as private Chrome extension
@@ -64,6 +64,7 @@ class App extends React.Component {
       loading: true,
       languageDropdownValue: 0,
       sourceContentChanged: '',
+      randomLangId: '',
 
       qLoginModalOpen: false,
       qModalStyle: {overlay: {position: 'absolute'}, content: {left: '10px', right: '10px'}}
@@ -90,7 +91,7 @@ class App extends React.Component {
   }
 
 
-  async init () {
+  async init() {
     this.setState({loading: true, abFileExistsInQ: false, abFileCompletedInQ: false, languageDropdownValue: 0})
     this.abGetTemplateContent();
     this.abGetTemplate();
@@ -98,7 +99,7 @@ class App extends React.Component {
       await this.abCheckCookie();
       await this.qGetLanguages();
       // await this.qGetAllFiles();
-      await this.qGetTemplateFile();
+      await this.qGetTranslationStatuses();
       if (this.state.abFileExistsInQ) {
         await this.qGetOneTranslation(true);
       }
@@ -120,12 +121,12 @@ class App extends React.Component {
     this.setState({loading: true})
     var dropdownMenu = e.target;
     var selectedOption = dropdownMenu.querySelector(`[value="${e.target.value}"]`);
-    // dropdownMenu.value = selectedOption.value;
+    dropdownMenu.value = selectedOption.value;
     await this.setState({languageDropdownValue: e.target.value, abLanguageName: selectedOption.dataset.name, abLanguageCode: selectedOption.dataset.locale});
     await this.qGetOneTranslation(false);
     var qFileTitle = `${this.state.abType}-${this.state.abId}`;
-    if (this.state.qProjectCurrentFile) {
-      if (this.state.qProjectCurrentFile.completed) {
+    if (this.state.qTranslationStatusObj[this.state.abLanguageCode]) {
+      if (this.state.qTranslationStatusObj[this.state.abLanguageCode].completed) {
         await this.setState({qLocaleTranslationStatus: 'completed', loading: false})
       }
       else {
@@ -326,6 +327,7 @@ class App extends React.Component {
 
 
   async qGetLanguages() {
+    var randomLangId;
     var projectDetailCall = await $.ajax({
       type: 'GET',
       url: `https://app.qordoba.com/api/organizations/${this.state.qOrganizationId}/projects?limit=1&offset=0&limit_to_projects=${this.state.qProjectId}`,
@@ -336,9 +338,12 @@ class App extends React.Component {
     var sourceLangObj = projectDetailCall.projects[0].source_language;
     qLangs[sourceLangObj.code] = {id: sourceLangObj.id, name: sourceLangObj.name};
     for (var i = 0; i < qProjectLanguages.length; i++) {
+      if (!randomLangId && qProjectLanguages[i] !== this.state.abLanguageCode) {
+        randomLangId = qProjectLanguages[i].id;
+      }
       qLangs[qProjectLanguages[i].code] = {id: qProjectLanguages[i].id, name: qProjectLanguages[i].name}
     }
-    await this.setState({qProjectLanguages: qLangs});
+    await this.setState({qProjectLanguages: qLangs, randomLangId: randomLangId});
   }
 
 
@@ -348,40 +353,47 @@ class App extends React.Component {
 
 
 
-  async qGetTemplateFile() {
-    console.log('calling qGetTemplateFile')
-    var currentFileObj = {};
+  async qGetTranslationStatuses() {
+    console.log('calling qGetOneFile')
+    var languageId;
+    var allLocalesObj = {};
     var abFileExistsInQ = false;
     var abFileCompletedInQ = false;
-
-    var anyLanguage = Object.keys(this.state.qProjectLanguages)[0];
-    if (anyLanguage === this.state.qSourceLocale) {
-      anyLanguage = Object.keys(this.state.qProjectLanguages)[1];
-    }
-    var anyLanguageId = this.state.qProjectLanguages[anyLanguage].id;
-    console.log('RANDOM LANGUAGE', anyLanguage)
-    console.log('RANDOM LANGUAGE ID', anyLanguageId)
-    var qordobaResponse = await $.ajax({
-      type: 'POST',
-      url: `https://app.qordoba.com/api/projects/${this.state.qProjectId}/languages/${anyLanguageId}/page_settings/search`, 
-      headers: this.state.jsonReqHeader,
-      data: JSON.stringify({title: `${this.state.abType}-${this.state.abId}`})
-    })
-    if (qordobaResponse.pages.length === 1) {
-      abFileExistsInQ = true; 
-      currentFileObj.completed = qordobaResponse.pages[0].completed;
-      currentFileObj.enabled = qordobaResponse.pages[0].enabled;
-      currentFileObj.createdAt = qordobaResponse.pages[0].created_at;
-      currentFileObj.updatedAt = qordobaResponse.pages[0].update;
-      currentFileObj.qArticleId = qordobaResponse.pages[0].page_id;
-      if (currentFileObj.completed && currentFileObj.enabled) {
-        abFileCompletedInQ = true;
+    for (var key in this.state.qProjectLanguages) {
+      if (key !== this.state.qSourceLocale) {
+        languageId = this.state.qProjectLanguages[key].id;
+        console.log('LANGUAGE ID!!!!', languageId)
+        var currentLocaleObj = {};
+        var qordobaResponse = await $.ajax({
+          type: 'POST',
+          url: `https://app.qordoba.com/api/projects/${this.state.qProjectId}/languages/${languageId}/page_settings/search`, 
+          headers: this.state.jsonReqHeader,
+          data: JSON.stringify({title: `${this.state.abType}-${this.state.abId}`})
+        })
+        console.log('QORDOBA RESPONSE', key, qordobaResponse.pages[0])
+        if (qordobaResponse.pages.length === 1) {
+          abFileExistsInQ = true; 
+          currentLocaleObj.completed = qordobaResponse.pages[0].completed;
+          currentLocaleObj.enabled = qordobaResponse.pages[0].enabled;
+          currentLocaleObj.createdAt = qordobaResponse.pages[0].created_at;
+          currentLocaleObj.updatedAt = qordobaResponse.pages[0].update;
+          currentLocaleObj.qArticleId = qordobaResponse.pages[0].page_id;
+          if (currentLocaleObj.completed && currentLocaleObj.enabled) {
+            abFileCompletedInQ = true;
+          }
+        }
+        else if (qordobaResponse.pages.length > 1) {
+          throw new Error('found more than one match')
+        }
+        allLocalesObj[key] = currentLocaleObj;
       }
     }
-    else if (qordobaResponse.pages.length > 1) {
-      throw new Error('found more than one match')
-    }
-    await this.setState({qPageId: currentFileObj.qArticleId, abFileExistsInQ: abFileExistsInQ, abFileCompletedInQ: abFileCompletedInQ, qProjectCurrentFile: currentFileObj})
+    await this.setState({qPageId: currentLocaleObj.qArticleId, abFileExistsInQ: abFileExistsInQ, abFileCompletedInQ: abFileCompletedInQ, qTranslationStatusObj: allLocalesObj})
+  }
+
+
+  async qGetAllFiles() {
+
   }
 
 
@@ -399,7 +411,7 @@ class App extends React.Component {
       console.log('QORDOBA RESPONSE GETTING ALL FILES', qordobaResponse)
       var qordobaFiles = qordobaResponse.pages;
       allQFilesObj[key] = {};
-      var currentFileObj = {};
+      var currentLocaleObj = {};
       for (var i = 0; i < qordobaFiles.length; i++) {
         var qordobaFileObj = {};
         var fileNameNoHtml = qordobaFiles[i].url.replace('.html', '');
@@ -480,10 +492,6 @@ class App extends React.Component {
   async qGetAllTranslations() {
     var pageIdArray = [this.state.qPageId];
     var languageIdArray = [];
-    var anyLanguage = Object.keys(this.state.qProjectAllFiles)[0];
-    if (anyLanguage === this.state.qSourceLocale) {
-      anyLanguage = Object.keys(this.state.qProjectAllFiles)[1];
-    }
     for (var key in this.state.qProjectLanguages) {
       languageIdArray.push(this.state.qProjectLanguages[key].id);
     }
@@ -509,6 +517,7 @@ class App extends React.Component {
       var qSourceContent = '';
 
       for (var key in completedZipData) {
+        console.log('KEY', key)
         var locale = key.split('/')[0];
         if (!key.includes(this.state.qSourceLocale)) {
           var myRegexp = /.*\/([a-z,_]*-[a-z,0-9]*).*.html/g;

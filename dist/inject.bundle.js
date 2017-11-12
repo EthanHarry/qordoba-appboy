@@ -21310,9 +21310,9 @@ console.log('hi react app');
 //Let's look back and see if we can just make 
 //one call to Qordoba to get pageId and exists status
 //one call to Qordoba to get abfilecompletedinq and Locale content (on click) and publish
-//TODO PICK UP HERE!!!! TRYING TO FIGURE OUT HOW WE CAN FIGURE OUT IF INDIVIDUAL LANGUAGE IS COMPLETED
 //Need to actually set qSourceLocale from API call
-//
+//Need to call downloadOneFile for EACH locale to know if anything is translated in Q
+//Then, store all of those statuses but just DL translations as needed
 
 //FEATURES
 //Publish as private Chrome extension
@@ -21358,6 +21358,7 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
       loading: true,
       languageDropdownValue: 0,
       sourceContentChanged: '',
+      randomLangId: '',
 
       qLoginModalOpen: false,
       qModalStyle: { overlay: { position: 'absolute' }, content: { left: '10px', right: '10px' } }
@@ -21397,7 +21398,7 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
         yield _this2.abCheckCookie();
         yield _this2.qGetLanguages();
         // await this.qGetAllFiles();
-        yield _this2.qGetTemplateFile();
+        yield _this2.qGetTranslationStatuses();
         if (_this2.state.abFileExistsInQ) {
           yield _this2.qGetOneTranslation(true);
         }
@@ -21424,12 +21425,12 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
       _this4.setState({ loading: true });
       var dropdownMenu = e.target;
       var selectedOption = dropdownMenu.querySelector(`[value="${e.target.value}"]`);
-      // dropdownMenu.value = selectedOption.value;
+      dropdownMenu.value = selectedOption.value;
       yield _this4.setState({ languageDropdownValue: e.target.value, abLanguageName: selectedOption.dataset.name, abLanguageCode: selectedOption.dataset.locale });
       yield _this4.qGetOneTranslation(false);
       var qFileTitle = `${_this4.state.abType}-${_this4.state.abId}`;
-      if (_this4.state.qProjectCurrentFile) {
-        if (_this4.state.qProjectCurrentFile.completed) {
+      if (_this4.state.qTranslationStatusObj[_this4.state.abLanguageCode]) {
+        if (_this4.state.qTranslationStatusObj[_this4.state.abLanguageCode].completed) {
           yield _this4.setState({ qLocaleTranslationStatus: 'completed', loading: false });
         } else {
           yield _this4.setState({ qLocaleTranslationStatus: 'enabled', loading: false });
@@ -21651,6 +21652,7 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
     var _this17 = this;
 
     return _asyncToGenerator(function* () {
+      var randomLangId;
       var projectDetailCall = yield __WEBPACK_IMPORTED_MODULE_1_jquery___default.a.ajax({
         type: 'GET',
         url: `https://app.qordoba.com/api/organizations/${_this17.state.qOrganizationId}/projects?limit=1&offset=0&limit_to_projects=${_this17.state.qProjectId}`,
@@ -21661,9 +21663,12 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
       var sourceLangObj = projectDetailCall.projects[0].source_language;
       qLangs[sourceLangObj.code] = { id: sourceLangObj.id, name: sourceLangObj.name };
       for (var i = 0; i < qProjectLanguages.length; i++) {
+        if (!randomLangId && qProjectLanguages[i] !== _this17.state.abLanguageCode) {
+          randomLangId = qProjectLanguages[i].id;
+        }
         qLangs[qProjectLanguages[i].code] = { id: qProjectLanguages[i].id, name: qProjectLanguages[i].name };
       }
-      yield _this17.setState({ qProjectLanguages: qLangs });
+      yield _this17.setState({ qProjectLanguages: qLangs, randomLangId: randomLangId });
     })();
   }
 
@@ -21671,43 +21676,49 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
     return _asyncToGenerator(function* () {})();
   }
 
-  qGetTemplateFile() {
+  qGetTranslationStatuses() {
     var _this18 = this;
 
     return _asyncToGenerator(function* () {
-      console.log('calling qGetTemplateFile');
-      var currentFileObj = {};
+      console.log('calling qGetOneFile');
+      var languageId;
+      var allLocalesObj = {};
       var abFileExistsInQ = false;
       var abFileCompletedInQ = false;
-
-      var anyLanguage = Object.keys(_this18.state.qProjectLanguages)[0];
-      if (anyLanguage === _this18.state.qSourceLocale) {
-        anyLanguage = Object.keys(_this18.state.qProjectLanguages)[1];
-      }
-      var anyLanguageId = _this18.state.qProjectLanguages[anyLanguage].id;
-      console.log('RANDOM LANGUAGE', anyLanguage);
-      console.log('RANDOM LANGUAGE ID', anyLanguageId);
-      var qordobaResponse = yield __WEBPACK_IMPORTED_MODULE_1_jquery___default.a.ajax({
-        type: 'POST',
-        url: `https://app.qordoba.com/api/projects/${_this18.state.qProjectId}/languages/${anyLanguageId}/page_settings/search`,
-        headers: _this18.state.jsonReqHeader,
-        data: JSON.stringify({ title: `${_this18.state.abType}-${_this18.state.abId}` })
-      });
-      if (qordobaResponse.pages.length === 1) {
-        abFileExistsInQ = true;
-        currentFileObj.completed = qordobaResponse.pages[0].completed;
-        currentFileObj.enabled = qordobaResponse.pages[0].enabled;
-        currentFileObj.createdAt = qordobaResponse.pages[0].created_at;
-        currentFileObj.updatedAt = qordobaResponse.pages[0].update;
-        currentFileObj.qArticleId = qordobaResponse.pages[0].page_id;
-        if (currentFileObj.completed && currentFileObj.enabled) {
-          abFileCompletedInQ = true;
+      for (var key in _this18.state.qProjectLanguages) {
+        if (key !== _this18.state.qSourceLocale) {
+          languageId = _this18.state.qProjectLanguages[key].id;
+          console.log('LANGUAGE ID!!!!', languageId);
+          var currentLocaleObj = {};
+          var qordobaResponse = yield __WEBPACK_IMPORTED_MODULE_1_jquery___default.a.ajax({
+            type: 'POST',
+            url: `https://app.qordoba.com/api/projects/${_this18.state.qProjectId}/languages/${languageId}/page_settings/search`,
+            headers: _this18.state.jsonReqHeader,
+            data: JSON.stringify({ title: `${_this18.state.abType}-${_this18.state.abId}` })
+          });
+          console.log('QORDOBA RESPONSE', key, qordobaResponse.pages[0]);
+          if (qordobaResponse.pages.length === 1) {
+            abFileExistsInQ = true;
+            currentLocaleObj.completed = qordobaResponse.pages[0].completed;
+            currentLocaleObj.enabled = qordobaResponse.pages[0].enabled;
+            currentLocaleObj.createdAt = qordobaResponse.pages[0].created_at;
+            currentLocaleObj.updatedAt = qordobaResponse.pages[0].update;
+            currentLocaleObj.qArticleId = qordobaResponse.pages[0].page_id;
+            if (currentLocaleObj.completed && currentLocaleObj.enabled) {
+              abFileCompletedInQ = true;
+            }
+          } else if (qordobaResponse.pages.length > 1) {
+            throw new Error('found more than one match');
+          }
+          allLocalesObj[key] = currentLocaleObj;
         }
-      } else if (qordobaResponse.pages.length > 1) {
-        throw new Error('found more than one match');
       }
-      yield _this18.setState({ qPageId: currentFileObj.qArticleId, abFileExistsInQ: abFileExistsInQ, abFileCompletedInQ: abFileCompletedInQ, qProjectCurrentFile: currentFileObj });
+      yield _this18.setState({ qPageId: currentLocaleObj.qArticleId, abFileExistsInQ: abFileExistsInQ, abFileCompletedInQ: abFileCompletedInQ, qTranslationStatusObj: allLocalesObj });
     })();
+  }
+
+  qGetAllFiles() {
+    return _asyncToGenerator(function* () {})();
   }
 
   qGetAllFiles() {
@@ -21727,7 +21738,7 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
         console.log('QORDOBA RESPONSE GETTING ALL FILES', qordobaResponse);
         var qordobaFiles = qordobaResponse.pages;
         allQFilesObj[key] = {};
-        var currentFileObj = {};
+        var currentLocaleObj = {};
         for (var i = 0; i < qordobaFiles.length; i++) {
           var qordobaFileObj = {};
           var fileNameNoHtml = qordobaFiles[i].url.replace('.html', '');
@@ -21813,10 +21824,6 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
     return _asyncToGenerator(function* () {
       var pageIdArray = [_this21.state.qPageId];
       var languageIdArray = [];
-      var anyLanguage = Object.keys(_this21.state.qProjectAllFiles)[0];
-      if (anyLanguage === _this21.state.qSourceLocale) {
-        anyLanguage = Object.keys(_this21.state.qProjectAllFiles)[1];
-      }
       for (var key in _this21.state.qProjectLanguages) {
         languageIdArray.push(_this21.state.qProjectLanguages[key].id);
       }
@@ -21843,6 +21850,7 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
           var qSourceContent = '';
 
           for (var key in completedZipData) {
+            console.log('KEY', key);
             var locale = key.split('/')[0];
             if (!key.includes(_this21.state.qSourceLocale)) {
               var myRegexp = /.*\/([a-z,_]*-[a-z,0-9]*).*.html/g;

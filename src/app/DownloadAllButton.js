@@ -42,7 +42,7 @@ class DownloadAllButton extends React.Component {
   render() {
     return (
       <div className='q-nav-item'>
-        <button disabled={this.props.disabled} type='button' className='btn q-download-all' onClick={this.props.handleDownloadAllClick}>Download / Publish All</button>
+        <button disabled={this.props.disabled} type='button' className='q-btn btn q-download-all' onClick={this.props.handleDownloadAllClick}>Download / Publish All</button>
         <Modal
           id='q-download-all-modal'
           isOpen={this.props.downloadAllModalOpen}

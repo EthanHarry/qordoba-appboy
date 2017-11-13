@@ -54,3 +54,22 @@ button.q-download-all {
 #q-refresh {
   padding-top: 1vh; /* hacky */
 }
+
+#q-logout-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-left: auto
+}
+
+#q-submit-login-btn {
+  margin-right: 4vw;
+}
+
+.q-dropdown {
+  margin: 0 !important;
+}
+
+.q-btn {
+  background-color:  #1B1838 !important
+}

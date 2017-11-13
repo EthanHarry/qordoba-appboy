@@ -36,7 +36,7 @@ var LoginModal = (props) => {
         <h1>Connect to Qordoba</h1>
         <p className='helptext'> Choose organization and project</p>
         <form onSubmit={props.qHandleConfigSubmit} id='q-config-form'>
-          <select value={props.qOrganizationId} onChange={props.qHandleOrgSubmit}>
+          <select className='q-dropdown' value={props.qOrganizationId} onChange={props.qHandleOrgSubmit}>
             <option disabled={true} value={0}> Select an Organization </option>
             {props.qAllOrgs.map((orgObject) => {
               return (
@@ -46,7 +46,7 @@ var LoginModal = (props) => {
               )
             })}
           </select>
-          <select disabled={props.qOrganizationId === 0} value={props.qProjectId} onChange={props.qHandleProjectSubmit}>
+          <select className='q-dropdown' disabled={props.qOrganizationId === 0} value={props.qProjectId} onChange={props.qHandleProjectSubmit}>
             <option disabled={true} value={0}> Select a Project </option>
               {props.qAllProjects.map((projectObject) => {
                 return (
@@ -56,8 +56,8 @@ var LoginModal = (props) => {
                 )
               })}
           </select>
+          <button id='q-submit-login-btn' className='q-btn btn' type='submit'> Submit </button>
           <LogoutButton handleLogoutClick={props.handleLogoutClick} />
-          <button className='btn' type='submit'> Submit </button>
         </form>
       </Modal>
     )

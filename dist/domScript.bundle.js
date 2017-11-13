@@ -60,15 +60,15 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 33);
+/******/ 	return __webpack_require__(__webpack_require__.s = 294);
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ 33:
+/***/ 294:
 /***/ (function(module, exports, __webpack_require__) {
 
-var config = __webpack_require__(34);
+var config = __webpack_require__(295);
 //For webpack compile
 // require('./inject.js');
 
@@ -101,7 +101,7 @@ chrome.pageAction.onClicked.addListener(tab => {
 
 /***/ }),
 
-/***/ 34:
+/***/ 295:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";

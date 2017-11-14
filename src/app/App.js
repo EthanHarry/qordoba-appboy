@@ -7,8 +7,8 @@ import JSZip from 'jszip';
 import JSZipUtils from 'jszip-utils';
 import Spinner from 'react-spinkit';
 import LoginModal from './LoginModal.js';
-import NavBar from './NavBar.js';
-
+import NavBar from './NavBar.js';;
+import Modal from 'react-modal';
 
 //TODO
   //Need to actually set qSourceLocale from API call
@@ -225,9 +225,25 @@ class App extends React.Component {
 
   //Appboy Data
   async abGetTemplate() {
+    var abType;
+    var abId;
     var urlPathArray = window.location.pathname.split('/');
+    var modalOpen;
     var articleTitleSpan = document.querySelector('span.editable-heading');
-    await this.setState({abType: urlPathArray[urlPathArray.length - 2], abId: window.location.search.split('=')[1], abTitle: articleTitleSpan.innerHTML})
+    for (var i = 0; i < urlPathArray.length; i++) {
+      if (urlPathArray[i] === 'email_templates') {
+        abType = urlPathArray[i];
+        abId = window.location.search.split('=')[1];
+        modalOpen = false;
+        break;
+      }
+      else if (urlPathArray[i] === 'canvas') {
+        abType = `${urlPathArray[i]}-${urlPathArray[i + 1]}`;
+        modalOpen={this.state.canvasModalOpen}
+        break;
+      }
+    } 
+    await this.setState({abType: abType, abId: abId, abTitle: articleTitleSpan.innerHTML})
   }
 
   async abGetTemplateContent() {
@@ -293,10 +309,9 @@ class App extends React.Component {
   }
 
 
-
-
-
-
+  getParentSelector() {
+    return document.querySelector('#q-app-container')
+  }
 
 
 
@@ -588,21 +603,40 @@ class App extends React.Component {
           }
         }
         else {
-          return (
-            <div className='q-translation-status-container'>
-              <NavBar handleLogoutClick={this.handleLogoutClick} qModalGetParentSelector={this.qModalGetParentSelector} qModalStyle={this.state.qModalStyle} qSourceContent={this.state.qSourceContent} downloadAllModalOpen={this.state.downloadAllModalOpen} abHeadContent={this.state.abHeadContent} abSourceContent={this.state.abSourceContent} abAllTargetContent={this.state.abAllTargetContent} downloadAllModalOpen={this.state.downloadAllModalOpen} handleDownloadAllClick={this.handleDownloadAllClick} handleDownloadAllClose={this.handleDownloadAllClose} qFileUpload={this.qFileUpload} sourceContentChanged={!this.state.sourceContentChanged} languageDropdownValue={this.state.languageDropdownValue} qSourceLocale={this.state.qSourceLocale} handleLanguageChange={this.handleLanguageChange} qProjectLanguages={this.state.qProjectLanguages} qGetLanguages={this.qGetLanguages} init={this.init} qTranslationStatusObj={this.state.qTranslationStatusObj}  />
-              <p className='helptext'>This template does not yet have a unique ID assigned to it. Please make a change to the template, save it, and refresh. </p>
-            </div>
-          )
+          if (this.state.abType.includes('canvas')) {
+            return (
+              <div className='q-nav-item'>
+                <Modal
+                  id='q-canvas-prompt-modal'
+                  isOpen={this.state.canvasModalOpen}
+                  parentSelector={this.getParentSelector}
+                  onRequestClose={this.handleCanvasModalClose}
+                  contentLabel="canvasPromptModal"
+                  style={{overlay: {position: 'absolute'}, content: {left: '10px', right: '10px'}}}
+                >
+                  <div> Placeholder for list of canvas emails </div>
+                  <div> Placeholder for text input </div>
+                </Modal>
+              </div>
+            )
+          }
+          else {
+            return (
+              <div className='q-translation-status-container'>
+                <NavBar handleLogoutClick={this.handleLogoutClick} qModalGetParentSelector={this.qModalGetParentSelector} qModalStyle={this.state.qModalStyle} qSourceContent={this.state.qSourceContent} downloadAllModalOpen={this.state.downloadAllModalOpen} abHeadContent={this.state.abHeadContent} abSourceContent={this.state.abSourceContent} abAllTargetContent={this.state.abAllTargetContent} downloadAllModalOpen={this.state.downloadAllModalOpen} handleDownloadAllClick={this.handleDownloadAllClick} handleDownloadAllClose={this.handleDownloadAllClose} qFileUpload={this.qFileUpload} sourceContentChanged={!this.state.sourceContentChanged} languageDropdownValue={this.state.languageDropdownValue} qSourceLocale={this.state.qSourceLocale} handleLanguageChange={this.handleLanguageChange} qProjectLanguages={this.state.qProjectLanguages} qGetLanguages={this.qGetLanguages} init={this.init} qTranslationStatusObj={this.state.qTranslationStatusObj}  />
+                <p className='helptext'>This template does not yet have a unique ID assigned to it. Please make a change to the template, save it, and refresh. </p>
+              </div>
+            )
+          }
         }
       }
       else {
-        return (
+        if (this.state.abType.includes('canvas')) {
+          //render prompt and set state accordingly
           <div className='q-translation-status-container'>
             <LoginModal handleLogoutClick={this.handleLogoutClick} qHandleProjectSubmit={this.qHandleProjectSubmit} qAllProjects={this.state.qAllProjects} qProjectId={this.state.qProjectId} qHandleConfigSubmit={this.qHandleConfigSubmit} qOrganizationId={this.state.qOrganizationId} qHandleOrgSubmit={this.qHandleOrgSubmit} qAllOrgs={this.state.qAllOrgs} qAuthenticated={!!this.state.qAuthToken} qHandleLoginSubmit={this.qHandleLoginSubmit} qModalGetParentSelector={this.qModalGetParentSelector} qLoginModalOpen={this.state.qLoginModalOpen} handleLoginClose={this.handleLoginClose} qModalStyle={this.state.qModalStyle} />
           </div>
-        )
-      }
+        }
     }
     else {
       return (

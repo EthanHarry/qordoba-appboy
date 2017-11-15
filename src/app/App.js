@@ -14,6 +14,7 @@ import Modal from 'react-modal';
   //Need to actually set qSourceLocale from API call
   //Need to add API call to grab all matching canvas items
   //Look at why sourceContentChanged not being set correctly
+  //Confirm that replacing ' ' with &nbsp fixes Postmates' problem
 
   //FEATURES
   //Publish as private Chrome extension
@@ -88,7 +89,7 @@ class App extends React.Component {
 
 
   async init() {
-    this.setState({loading: true, abFileExistsInQ: false, abFileCompletedInQ: false, languageDropdownValue: 0})
+    this.setState({loading: true, abFileExistsInQ: false, abFileCompletedInQ: false})
     try {
       await this.abCheckCookie();
       await this.qGetLanguages();

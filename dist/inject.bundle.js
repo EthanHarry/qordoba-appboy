@@ -29756,6 +29756,7 @@ console.log('hi react app');
 //Need to actually set qSourceLocale from API call
 //Need to add API call to grab all matching canvas items
 //Look at why sourceContentChanged not being set correctly
+//Confirm that replacing ' ' with &nbsp fixes Postmates' problem
 
 //FEATURES
 //Publish as private Chrome extension
@@ -29835,7 +29836,7 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
     var _this2 = this;
 
     return _asyncToGenerator(function* () {
-      _this2.setState({ loading: true, abFileExistsInQ: false, abFileCompletedInQ: false, languageDropdownValue: 0 });
+      _this2.setState({ loading: true, abFileExistsInQ: false, abFileCompletedInQ: false });
       try {
         yield _this2.abCheckCookie();
         yield _this2.qGetLanguages();
@@ -53003,10 +53004,10 @@ class LanguageDropdown extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Com
       { id: 'q-language-dropdown', className: 'q-nav-item' },
       __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         'select',
-        { value: this.props.dropdownValue, disabled: this.props.disabled, onChange: this.props.handleLanguageChange },
+        { value: this.props.languageDropdownValue, disabled: this.props.disabled, onChange: this.props.handleLanguageChange },
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
           'option',
-          { value: 0 },
+          { disabled: true, value: 0 },
           'Select a language'
         ),
         Object.keys(this.props.qProjectLanguages).map(locale => {

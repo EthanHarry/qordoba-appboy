@@ -12,8 +12,8 @@ class LanguageDropdown extends React.Component {
   render() {
     return (
       <div id='q-language-dropdown' className="q-nav-item">
-        <select value={this.props.dropdownValue} disabled={this.props.disabled} onChange={this.props.handleLanguageChange}>
-          <option value={0}>Select a language</option>
+        <select value={this.props.languageDropdownValue} disabled={this.props.disabled} onChange={this.props.handleLanguageChange}>
+          <option disabled value={0}>Select a language</option>
           {Object.keys(this.props.qProjectLanguages).map((locale) => {
             if (locale !== this.props.qSourceLocale)
             return ( 

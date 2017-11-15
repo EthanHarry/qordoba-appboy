@@ -59,7 +59,7 @@ button.q-download-all {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  margin-left: auto
+  /*margin-left: auto*/
 }
 
 #q-submit-login-btn {

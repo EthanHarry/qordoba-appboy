@@ -1,5 +1,6 @@
 import React from 'react';
 import Modal from 'react-modal';
+import CanvasSelectionDropdown from './CanvasSelectionDropdown.js';
 
 var CanvasSelectionModal = (props) => {
   return (
@@ -12,15 +13,7 @@ var CanvasSelectionModal = (props) => {
       style={props.qModalStyle}
     >
       <h1> Choose your canvas </h1>
-      <select value={props.abId} onChange={props.handleCanvasSelect} id='q-canvas-dropdwn' className='q-dropdown'>
-        <option disabled value={0}> Choose a Canvas </option>
-        {props.qCanvasFileMatches.map((canvasFile) => {
-          var fileNameRegex = /canvas_.*-(.*).html/;
-          var fileNameMatches = fileNameRegex.exec(canvasFile.url);
-          var fileName = fileNameMatches[1];
-          return <option className='q-canvas-option' value={fileName} key={fileName}>{fileName}</option>
-        })}
-      </select>
+      <CanvasSelectionDropdown abId={props.abId} handleCanvasSelect={props.handleCanvasSelect} qCanvasFileMatches={props.qCanvasFileMatches} />
       <button onClick={props.handleCanvasNoMatchClick} id='q-canvas-no-match-btn' className='btn q-btn'>None of the above </button>
       <div> Some stuff about ID's </div>
     </Modal>

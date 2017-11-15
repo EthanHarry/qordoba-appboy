@@ -29753,10 +29753,10 @@ console.log('hi react app');
 
 
 //TODO
-//Need to actually set qSourceLocale from API call
 //Confirm that replacing ' ' with &nbsp fixes Postmates' problem
 //Add default behaviors for Canvas (i.e. only 0 or 1 canvas found)
 //Add canvas switcher dropdown to Nav
+//Need to actually set qSourceLocale from API call
 
 //FEATURES
 //Publish as private Chrome extension
@@ -29784,7 +29784,7 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
       abLanguageCode: '',
       abLanguageName: '',
       abType: '',
-      abId: '',
+      abId: 0,
       abTitle: '',
 
       abFileExistsInQ: false,
@@ -30471,7 +30471,7 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
                     ),
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                       'select',
-                      { onChange: this.handleCanvasSelect, defaultValue: 0, id: 'q-canvas-dropdwn', className: 'q-dropdown' },
+                      { value: this.state.abId, onChange: this.handleCanvasSelect, id: 'q-canvas-dropdwn', className: 'q-dropdown' },
                       __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                         'option',
                         { disabled: true, value: 0 },

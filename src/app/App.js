@@ -11,10 +11,10 @@ import NavBar from './NavBar.js';;
 import Modal from 'react-modal';
 
 //TODO
-  //Need to actually set qSourceLocale from API call
   //Confirm that replacing ' ' with &nbsp fixes Postmates' problem
   //Add default behaviors for Canvas (i.e. only 0 or 1 canvas found)
   //Add canvas switcher dropdown to Nav
+  //Need to actually set qSourceLocale from API call
 
   //FEATURES
   //Publish as private Chrome extension
@@ -42,7 +42,7 @@ class App extends React.Component {
       abLanguageCode: '',
       abLanguageName: '',
       abType: '',
-      abId: '',
+      abId: 0,
       abTitle: '',
 
       abFileExistsInQ: false,
@@ -656,7 +656,7 @@ class App extends React.Component {
                       style={this.state.qModalStyle}
                     >
                       <h1> Choose your canvas </h1>
-                      <select onChange={this.handleCanvasSelect} defaultValue={0} id='q-canvas-dropdwn' className='q-dropdown'>
+                      <select value={this.state.abId} onChange={this.handleCanvasSelect} id='q-canvas-dropdwn' className='q-dropdown'>
                         <option disabled value={0}> Choose a Canvas </option>
                         {this.state.qCanvasFileMatches.map((canvasFile) => {
                           var fileNameRegex = /canvas_.*-(.*).html/;

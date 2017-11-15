@@ -43,6 +43,8 @@ class App extends React.Component {
       abLanguageName: '',
       abType: '',
       abId: 0,
+      abCanvasSelectionInProgress: false,
+      abCanvasExistInQ: true,
       abTitle: '',
 
       abFileExistsInQ: false,
@@ -168,12 +170,12 @@ class App extends React.Component {
 
   async handleCanvasSelect(e) {
     console.log('canvas selected', e.target.value)
-    await this.setState({abId: e.target.value})
+    await this.setState({abId: e.target.value, abCanvasSelectionInProgress: false})
     this.init();
   }
 
   async handleCanvasNoMatchClick() {
-    await this.setState({abId: 'canvas'})
+    await this.setState({abCanvasExistInQ: false})
   }
 
   async handleCanvasIdSubmit(e) {
@@ -271,8 +273,7 @@ class App extends React.Component {
           await this.setState({abType: abType, abTitle: articleTitleSpan.innerHTML, abId: abId})
         }
         else {
-          abId = 'canvas-TBD';
-          await this.setState({abType: abType, abTitle: articleTitleSpan.innerHTML, abId: abId})
+          await this.setState({abType: abType, abTitle: articleTitleSpan.innerHTML, abCanvasSelectionInProgress: true})
           await this.qGetCanvasFileMatches();
         }
         break;
@@ -446,7 +447,7 @@ class App extends React.Component {
   }
 
   async qFileUpload() {
-    if (this.state.abId === 'canvas') {
+    if (this.state.abId === 0) {
       await this.setState({canvasCreationModalOpen: true})
     }
     else {
@@ -624,7 +625,7 @@ class App extends React.Component {
     if (!this.state.loading) {
       if (!this.state.qLoginModalOpen) {
         if (!this.state.canvasCreationModalOpen) {
-          if (this.state.abId) {
+          if (this.state.abId || !this.state.abId && this.state.abCanvasSelectionInProgress && !this.state.abCanvasExistInQ) {
             if (this.state.abFileExistsInQ) {
               if (this.state.abFileCompletedInQ) {
                 return (
@@ -644,50 +645,50 @@ class App extends React.Component {
               }
             }
             else {
-              if (this.state.abId === 'canvas-TBD') {
-                return (
-                  <div className='q-nav-item'>
-                    <Modal
-                      id='q-canvas-choose-modal'
-                      isOpen={!this.state.loading && !this.state.qLoginModalOpen && !this.state.canvasCreationModalOpen && this.state.abId === 'canvas-TBD'}
-                      parentSelector={this.getParentSelector}
-                      onRequestClose={this.handleCanvasModalClose}
-                      contentLabel="Canvas Choose Modal"
-                      style={this.state.qModalStyle}
-                    >
-                      <h1> Choose your canvas </h1>
-                      <select value={this.state.abId} onChange={this.handleCanvasSelect} id='q-canvas-dropdwn' className='q-dropdown'>
-                        <option disabled value={0}> Choose a Canvas </option>
-                        {this.state.qCanvasFileMatches.map((canvasFile) => {
-                          var fileNameRegex = /canvas_.*-(.*).html/;
-                          var fileNameMatches = fileNameRegex.exec(canvasFile.url);
-                          var fileName = fileNameMatches[1];
-                          return <option className='q-canvas-option' value={fileName} key={fileName}>{fileName}</option>
-                        })}
-                      </select>
-                      <button onClick={this.handleCanvasNoMatchClick} id='q-canvas-no-match-btn' className='btn q-btn'>None of the above </button>
-                      <div> Some stuff about ID's </div>
-                    </Modal>
-                  </div>
-                )
-              }
-              else {
-                return (
-                  <div className='q-translation-status-container'>
-                    <NavBar abFileCompletedInQ={this.state.abFileCompletedInQ} abFileExistsInQ={this.state.abFileExistsInQ} handleLogoutClick={this.handleLogoutClick} qModalGetParentSelector={this.qModalGetParentSelector} qModalStyle={this.state.qModalStyle} qSourceContent={this.state.qSourceContent} downloadAllModalOpen={this.state.downloadAllModalOpen} abHeadContent={this.state.abHeadContent} abSourceContent={this.state.abSourceContent} abAllTargetContent={this.state.abAllTargetContent} downloadAllModalOpen={this.state.downloadAllModalOpen} handleDownloadAllClick={this.handleDownloadAllClick} handleDownloadAllClose={this.handleDownloadAllClose} qFileUpload={this.qFileUpload} sourceContentChanged={this.state.sourceContentChanged} languageDropdownValue={this.state.languageDropdownValue} qSourceLocale={this.state.qSourceLocale} handleLanguageChange={this.handleLanguageChange} qProjectLanguages={this.state.qProjectLanguages} qGetLanguages={this.qGetLanguages} init={this.init} qTranslationStatusObj={this.state.qTranslationStatusObj}  />
-                    <p className='helptext'>This template is not yet in Qordoba. Please click the button above to start translating! </p>
-                  </div>
-                )
-              }
+              return (
+                <div className='q-translation-status-container'>
+                  <NavBar abFileCompletedInQ={this.state.abFileCompletedInQ} abFileExistsInQ={this.state.abFileExistsInQ} handleLogoutClick={this.handleLogoutClick} qModalGetParentSelector={this.qModalGetParentSelector} qModalStyle={this.state.qModalStyle} qSourceContent={this.state.qSourceContent} downloadAllModalOpen={this.state.downloadAllModalOpen} abHeadContent={this.state.abHeadContent} abSourceContent={this.state.abSourceContent} abAllTargetContent={this.state.abAllTargetContent} downloadAllModalOpen={this.state.downloadAllModalOpen} handleDownloadAllClick={this.handleDownloadAllClick} handleDownloadAllClose={this.handleDownloadAllClose} qFileUpload={this.qFileUpload} sourceContentChanged={this.state.sourceContentChanged} languageDropdownValue={this.state.languageDropdownValue} qSourceLocale={this.state.qSourceLocale} handleLanguageChange={this.handleLanguageChange} qProjectLanguages={this.state.qProjectLanguages} qGetLanguages={this.qGetLanguages} init={this.init} qTranslationStatusObj={this.state.qTranslationStatusObj}  />
+                  <p className='helptext'>This template is not yet in Qordoba. Please click the button above to start translating! </p>
+                </div>
+              )
             }
           }
           else {
-            return (
-              <div className='q-translation-status-container'>
-                <NavBar abFileCompletedInQ={this.state.abFileCompletedInQ} abFileExistsInQ={this.state.abFileExistsInQ} handleLogoutClick={this.handleLogoutClick} qModalGetParentSelector={this.qModalGetParentSelector} qModalStyle={this.state.qModalStyle} qSourceContent={this.state.qSourceContent} downloadAllModalOpen={this.state.downloadAllModalOpen} abHeadContent={this.state.abHeadContent} abSourceContent={this.state.abSourceContent} abAllTargetContent={this.state.abAllTargetContent} downloadAllModalOpen={this.state.downloadAllModalOpen} handleDownloadAllClick={this.handleDownloadAllClick} handleDownloadAllClose={this.handleDownloadAllClose} qFileUpload={this.qFileUpload} sourceContentChanged={this.state.sourceContentChanged} languageDropdownValue={this.state.languageDropdownValue} qSourceLocale={this.state.qSourceLocale} handleLanguageChange={this.handleLanguageChange} qProjectLanguages={this.state.qProjectLanguages} qGetLanguages={this.qGetLanguages} init={this.init} qTranslationStatusObj={this.state.qTranslationStatusObj}  />
-                <p className='helptext'>This template does not yet have a unique ID assigned to it. Please make a change to the template, save it, and refresh. </p>
-              </div>
-            )
+            if (this.state.abCanvasSelectionInProgress) {
+              return (
+                <div className='q-nav-item'>
+                  <Modal
+                    id='q-canvas-choose-modal'
+                    isOpen={!this.state.abId && this.state.abCanvasSelectionInProgress}
+                    parentSelector={this.getParentSelector}
+                    onRequestClose={this.handleCanvasModalClose}
+                    contentLabel="Canvas Choose Modal"
+                    style={this.state.qModalStyle}
+                  >
+                    <h1> Choose your canvas </h1>
+                    <select value={this.state.abId} onChange={this.handleCanvasSelect} id='q-canvas-dropdwn' className='q-dropdown'>
+                      <option disabled value={0}> Choose a Canvas </option>
+                      {this.state.qCanvasFileMatches.map((canvasFile) => {
+                        var fileNameRegex = /canvas_.*-(.*).html/;
+                        var fileNameMatches = fileNameRegex.exec(canvasFile.url);
+                        var fileName = fileNameMatches[1];
+                        return <option className='q-canvas-option' value={fileName} key={fileName}>{fileName}</option>
+                      })}
+                    </select>
+                    <button onClick={this.handleCanvasNoMatchClick} id='q-canvas-no-match-btn' className='btn q-btn'>None of the above </button>
+                    <div> Some stuff about ID's </div>
+                  </Modal>
+                </div>
+              )
+            }
+            else {
+              return (
+                <div className='q-translation-status-container'>
+                  <NavBar abFileCompletedInQ={this.state.abFileCompletedInQ} abFileExistsInQ={this.state.abFileExistsInQ} handleLogoutClick={this.handleLogoutClick} qModalGetParentSelector={this.qModalGetParentSelector} qModalStyle={this.state.qModalStyle} qSourceContent={this.state.qSourceContent} downloadAllModalOpen={this.state.downloadAllModalOpen} abHeadContent={this.state.abHeadContent} abSourceContent={this.state.abSourceContent} abAllTargetContent={this.state.abAllTargetContent} downloadAllModalOpen={this.state.downloadAllModalOpen} handleDownloadAllClick={this.handleDownloadAllClick} handleDownloadAllClose={this.handleDownloadAllClose} qFileUpload={this.qFileUpload} sourceContentChanged={this.state.sourceContentChanged} languageDropdownValue={this.state.languageDropdownValue} qSourceLocale={this.state.qSourceLocale} handleLanguageChange={this.handleLanguageChange} qProjectLanguages={this.state.qProjectLanguages} qGetLanguages={this.qGetLanguages} init={this.init} qTranslationStatusObj={this.state.qTranslationStatusObj}  />
+                  <p className='helptext'>This template does not yet have a unique ID assigned to it. Please make a change to the template, save it, and refresh. </p>
+                </div>
+              )
+            }
           }
         }
         else {

@@ -11,7 +11,7 @@ var NavBar = (props) => {
         <i className="fa fa-refresh" aria-hidden="true"></i>
       </div>
       <div className='q-nav-item'>
-        <button disabled={!props.sourceContentChanged} className='q-btn btn img-btn pull-left' onClick={props.qFileUpload} type="submit" id='q-upload-button'> Re-upload changed template to Qordoba </button>
+        <button disabled={!props.sourceContentChanged} className='q-btn btn img-btn pull-left' onClick={props.qFileUpload} type="submit" id='q-upload-button'> Upload to Qordoba </button>
       </div>
       <DownloadAllButton qModalGetParentSelector={props.qModalGetParentSelector} qModalStyle={props.qModalStyle} qSourceContent={props.qSourceContent} downloadAllModalOpen={props.downloadAllModalOpen} abHeadContent={props.abHeadContent} abSourceContent={props.abSourceContent} abAllTargetContent={props.abAllTargetContent} downloadAllModalOpen={props.downloadAllModalOpen} handleDownloadAllClick={props.handleDownloadAllClick} handleDownloadAllClose={props.handleDownloadAllClose} />
       <LogoutButton handleLogoutClick={props.handleLogoutClick} />

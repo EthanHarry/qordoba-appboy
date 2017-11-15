@@ -1,5 +1,4 @@
 import React from 'react';
-import Dialog from 'react-dialog';
 import Modal from 'react-modal';
 import TextArea from 'react-textarea-autosize';
 import pretty from 'pretty-html';

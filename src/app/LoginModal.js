@@ -16,8 +16,8 @@ var LoginModal = (props) => {
         <h1>Login</h1>
         <p className='helptext'> Log in.</p>
         <form onSubmit={props.qHandleLoginSubmit} id='q-login-form'>
-          <input id='q-username-input' style={{display: 'block'}} type='text' placeholder='email'/>
-          <input id='q-password-input' style={{display: 'block'}} type='password' placeholder='password'/>
+          <input className='q-input'id='q-username-input' style={{display: 'block'}} type='text' placeholder='email'/>
+          <input className='q-input'id='q-password-input' style={{display: 'block'}} type='password' placeholder='password'/>
           <button className='btn' type='submit'> Submit </button>
         </form>
       </Modal>

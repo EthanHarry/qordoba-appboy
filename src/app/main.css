@@ -70,6 +70,16 @@ button.q-download-all {
   margin: 0 !important;
 }
 
+.q-input {
+  margin: 0 !important;
+}
+
 .q-btn {
   background-color:  #1B1838 !important
+}
+
+.q-btn[disabled] {
+  background-color:  #ccc !important;
+  cursor: default !important;
+  outline: none !important;
 }

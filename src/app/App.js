@@ -9,6 +9,8 @@ import Spinner from 'react-spinkit';
 import LoginModal from './LoginModal.js';
 import NavBar from './NavBar.js';;
 import Modal from 'react-modal';
+import CanvasSelectionModal from './CanvasSelectionModal.js';
+import CanvasCreationModal from './CanvasCreationModal.js';
 
 //TODO
   //Confirm that replacing ' ' with &nbsp fixes Postmates' problem
@@ -656,29 +658,7 @@ class App extends React.Component {
           else {
             if (this.state.abCanvasSelectionInProgress) {
               return (
-                <div className='q-nav-item'>
-                  <Modal
-                    id='q-canvas-choose-modal'
-                    isOpen={!this.state.abId && this.state.abCanvasSelectionInProgress}
-                    parentSelector={this.getParentSelector}
-                    onRequestClose={this.handleCanvasModalClose}
-                    contentLabel="Canvas Choose Modal"
-                    style={this.state.qModalStyle}
-                  >
-                    <h1> Choose your canvas </h1>
-                    <select value={this.state.abId} onChange={this.handleCanvasSelect} id='q-canvas-dropdwn' className='q-dropdown'>
-                      <option disabled value={0}> Choose a Canvas </option>
-                      {this.state.qCanvasFileMatches.map((canvasFile) => {
-                        var fileNameRegex = /canvas_.*-(.*).html/;
-                        var fileNameMatches = fileNameRegex.exec(canvasFile.url);
-                        var fileName = fileNameMatches[1];
-                        return <option className='q-canvas-option' value={fileName} key={fileName}>{fileName}</option>
-                      })}
-                    </select>
-                    <button onClick={this.handleCanvasNoMatchClick} id='q-canvas-no-match-btn' className='btn q-btn'>None of the above </button>
-                    <div> Some stuff about ID's </div>
-                  </Modal>
-                </div>
+                  <CanvasSelectionModal qCanvasFileMatches={this.state.qCanvasFileMatches} abId={this.state.abId} abCanvasSelectionInProgress={this.state.abCanvasSelectionInProgress} qModalGetParentSelector={this.qModalGetParentSelector} handleCanvasModalClose={this.handleCanvasModalClose} qModalStyle={this.state.qModalStyle} handleCanvasSelect={this.handleCanvasSelect} handleCanvasNoMatchClick={this.handleCanvasNoMatchClick} />
               )
             }
             else {
@@ -693,24 +673,7 @@ class App extends React.Component {
         }
         else {
           return (
-            <div className='q-nav-item'>
-              <Modal
-                id='q-canvas-creation-modal'
-                isOpen={this.state.canvasCreationModalOpen}
-                parentSelector={this.getParentSelector}
-                onRequestClose={this.handleCanvasModalClose}
-                contentLabel="Canvas Creation Modal"
-                style={this.state.qModalStyle}
-              >
-                <form onSubmit={this.handleCanvasIdSubmit} id='q-canvas-creation-form'>
-                  <input className='q-input' type='text' placeholder='Canvas ID' />
-                  <button id='q-canvas-creation-btn' className='q-btn btn'> Submit </button>
-                </form>
-                <h1> ID's for Canvas content </h1>
-                <h3> NOTE: Please check with your manager for ID naming conventions before proceeding. </h3>
-                <div> Each template created from Canvas must be given a unique ID. Please make sure that you give this template very specific, clear name that your teammates will recognize. </div>
-              </Modal>
-            </div>
+            <CanvasCreationModal handleCanvasIdSubmit={this.handleCanvasIdSubmit} qModalStyle={this.state.qModalStyle} handleCanvasModalClose={this.handleCanvasModalClose} qModalGetParentSelector={this.qModalGetParentSelector} canvasCreationModalOpen={this.state.canvasCreationModalOpen} />
           )
         }
       }

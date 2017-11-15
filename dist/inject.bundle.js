@@ -29738,6 +29738,8 @@ module.exports = function() {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__NavBar_js__ = __webpack_require__(239);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_react_modal__ = __webpack_require__(52);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_react_modal___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9_react_modal__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__CanvasSelectionModal_js__ = __webpack_require__(297);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__CanvasCreationModal_js__ = __webpack_require__(296);
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 console.log('hi react app');
@@ -29750,6 +29752,8 @@ console.log('hi react app');
 
 
 ;
+
+
 
 
 //TODO
@@ -30464,55 +30468,7 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
             }
           } else {
             if (this.state.abCanvasSelectionInProgress) {
-              return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                'div',
-                { className: 'q-nav-item' },
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                  __WEBPACK_IMPORTED_MODULE_9_react_modal___default.a,
-                  {
-                    id: 'q-canvas-choose-modal',
-                    isOpen: !this.state.abId && this.state.abCanvasSelectionInProgress,
-                    parentSelector: this.getParentSelector,
-                    onRequestClose: this.handleCanvasModalClose,
-                    contentLabel: 'Canvas Choose Modal',
-                    style: this.state.qModalStyle
-                  },
-                  __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'h1',
-                    null,
-                    ' Choose your canvas '
-                  ),
-                  __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'select',
-                    { value: this.state.abId, onChange: this.handleCanvasSelect, id: 'q-canvas-dropdwn', className: 'q-dropdown' },
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                      'option',
-                      { disabled: true, value: 0 },
-                      ' Choose a Canvas '
-                    ),
-                    this.state.qCanvasFileMatches.map(canvasFile => {
-                      var fileNameRegex = /canvas_.*-(.*).html/;
-                      var fileNameMatches = fileNameRegex.exec(canvasFile.url);
-                      var fileName = fileNameMatches[1];
-                      return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        'option',
-                        { className: 'q-canvas-option', value: fileName, key: fileName },
-                        fileName
-                      );
-                    })
-                  ),
-                  __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'button',
-                    { onClick: this.handleCanvasNoMatchClick, id: 'q-canvas-no-match-btn', className: 'btn q-btn' },
-                    'None of the above '
-                  ),
-                  __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'div',
-                    null,
-                    ' Some stuff about ID\'s '
-                  )
-                )
-              );
+              return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_10__CanvasSelectionModal_js__["a" /* default */], { qCanvasFileMatches: this.state.qCanvasFileMatches, abId: this.state.abId, abCanvasSelectionInProgress: this.state.abCanvasSelectionInProgress, qModalGetParentSelector: this.qModalGetParentSelector, handleCanvasModalClose: this.handleCanvasModalClose, qModalStyle: this.state.qModalStyle, handleCanvasSelect: this.handleCanvasSelect, handleCanvasNoMatchClick: this.handleCanvasNoMatchClick });
             } else {
               return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 'div',
@@ -30527,46 +30483,7 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
             }
           }
         } else {
-          return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-            'div',
-            { className: 'q-nav-item' },
-            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-              __WEBPACK_IMPORTED_MODULE_9_react_modal___default.a,
-              {
-                id: 'q-canvas-creation-modal',
-                isOpen: this.state.canvasCreationModalOpen,
-                parentSelector: this.getParentSelector,
-                onRequestClose: this.handleCanvasModalClose,
-                contentLabel: 'Canvas Creation Modal',
-                style: this.state.qModalStyle
-              },
-              __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                'form',
-                { onSubmit: this.handleCanvasIdSubmit, id: 'q-canvas-creation-form' },
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { className: 'q-input', type: 'text', placeholder: 'Canvas ID' }),
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                  'button',
-                  { id: 'q-canvas-creation-btn', className: 'q-btn btn' },
-                  ' Submit '
-                )
-              ),
-              __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                'h1',
-                null,
-                ' ID\'s for Canvas content '
-              ),
-              __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                'h3',
-                null,
-                ' NOTE: Please check with your manager for ID naming conventions before proceeding. '
-              ),
-              __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                'div',
-                null,
-                ' Each template created from Canvas must be given a unique ID. Please make sure that you give this template very specific, clear name that your teammates will recognize. '
-              )
-            )
-          );
+          return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_11__CanvasCreationModal_js__["a" /* default */], { handleCanvasIdSubmit: this.handleCanvasIdSubmit, qModalStyle: this.state.qModalStyle, handleCanvasModalClose: this.handleCanvasModalClose, qModalGetParentSelector: this.qModalGetParentSelector, canvasCreationModalOpen: this.state.canvasCreationModalOpen });
         }
       } else {
         //render prompt and set state accordingly
@@ -53771,6 +53688,127 @@ function htmlspaces(str) {
     .replace(/\n/g, '<span class="whitespace newline">¬</span>')
 }
 
+
+/***/ }),
+/* 294 */,
+/* 295 */,
+/* 296 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_modal__ = __webpack_require__(52);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_modal___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react_modal__);
+
+
+
+var CanvasCreationModal = props => {
+  return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+    'div',
+    { className: 'q-nav-item' },
+    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+      __WEBPACK_IMPORTED_MODULE_1_react_modal___default.a,
+      {
+        id: 'q-canvas-creation-modal',
+        isOpen: props.canvasCreationModalOpen,
+        parentSelector: props.qModalGetParentSelector,
+        onRequestClose: props.handleCanvasModalClose,
+        contentLabel: 'Canvas Creation Modal',
+        style: props.qModalStyle
+      },
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        'form',
+        { onSubmit: props.handleCanvasIdSubmit, id: 'q-canvas-creation-form' },
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { className: 'q-input', type: 'text', placeholder: 'Canvas ID' }),
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          'button',
+          { id: 'q-canvas-creation-btn', className: 'q-btn btn' },
+          ' Submit '
+        )
+      ),
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        'h1',
+        null,
+        ' ID\'s for Canvas content '
+      ),
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        'h3',
+        null,
+        ' NOTE: Please check with your manager for ID naming conventions before proceeding. '
+      ),
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        'div',
+        null,
+        ' Each template created from Canvas must be given a unique ID. Please make sure that you give this template very specific, clear name that your teammates will recognize. '
+      )
+    )
+  );
+};
+
+/* harmony default export */ __webpack_exports__["a"] = (CanvasCreationModal);
+
+/***/ }),
+/* 297 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_modal__ = __webpack_require__(52);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_modal___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react_modal__);
+
+
+
+var CanvasSelectionModal = props => {
+  return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+    __WEBPACK_IMPORTED_MODULE_1_react_modal___default.a,
+    {
+      id: 'q-canvas-choose-modal',
+      isOpen: !props.abId && props.abCanvasSelectionInProgress,
+      parentSelector: props.qModalGetParentSelector,
+      onRequestClose: props.handleCanvasModalClose,
+      contentLabel: 'Canvas Choose Modal',
+      style: props.qModalStyle
+    },
+    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+      'h1',
+      null,
+      ' Choose your canvas '
+    ),
+    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+      'select',
+      { value: props.abId, onChange: props.handleCanvasSelect, id: 'q-canvas-dropdwn', className: 'q-dropdown' },
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        'option',
+        { disabled: true, value: 0 },
+        ' Choose a Canvas '
+      ),
+      props.qCanvasFileMatches.map(canvasFile => {
+        var fileNameRegex = /canvas_.*-(.*).html/;
+        var fileNameMatches = fileNameRegex.exec(canvasFile.url);
+        var fileName = fileNameMatches[1];
+        return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          'option',
+          { className: 'q-canvas-option', value: fileName, key: fileName },
+          fileName
+        );
+      })
+    ),
+    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+      'button',
+      { onClick: props.handleCanvasNoMatchClick, id: 'q-canvas-no-match-btn', className: 'btn q-btn' },
+      'None of the above '
+    ),
+    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+      'div',
+      null,
+      ' Some stuff about ID\'s '
+    )
+  );
+};
+
+/* harmony default export */ __webpack_exports__["a"] = (CanvasSelectionModal);
 
 /***/ })
 /******/ ]);

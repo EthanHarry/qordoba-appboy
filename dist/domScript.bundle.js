@@ -82,7 +82,7 @@ var backgroundPage = chrome.extension.getBackgroundPage();
 
 //Show Extension button if on correct page
 function checkForValidUrl(tabId, changeInfo, tab) {
-  if (tab.url.indexOf('https://dashboard.appboy.com') !== -1) {
+  if (tab.url.indexOf('braze.com') !== -1) {
     chrome.pageAction.show(tabId);
   }
 };

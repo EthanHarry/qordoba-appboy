@@ -29687,10 +29687,7 @@ console.log('hi react app');
 
 
 //TODO
-//Confirm that replacing ' ' with &nbsp fixes Postmates' problem
-//Add default behaviors for Canvas (i.e. only 0 or 1 canvas found)
-//Add canvas switcher dropdown to Nav
-//Need to actually set qSourceLocale from API call
+//Fix styling on modals
 
 //FEATURES
 //Publish as private Chrome extension
@@ -29703,7 +29700,6 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
   constructor(props) {
     super(props);
 
-    //Need to actually render from auth
     this.state = {
       qAuthToken: '',
       qAllOrgs: [],
@@ -30096,7 +30092,9 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
         url: `https://app.qordoba.com/api/organizations/${_this20.state.qOrganizationId}/projects?limit=1&offset=0&limit_to_projects=${_this20.state.qProjectId}`,
         headers: _this20.state.jsonReqHeader
       });
+      console.log('PROJECT DETAIL CALL!!!!!!!!!!!!!!', projectDetailCall);
       var qProjectLanguages = projectDetailCall.projects[0].target_languages;
+      var qSourceLocale = projectDetailCall.projects[0].source_language.code;
       var qLangs = {};
       var sourceLangObj = projectDetailCall.projects[0].source_language;
       qLangs[sourceLangObj.code] = { id: sourceLangObj.id, name: sourceLangObj.name };
@@ -30106,7 +30104,7 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
         }
         qLangs[qProjectLanguages[i].code] = { id: qProjectLanguages[i].id, name: qProjectLanguages[i].name };
       }
-      yield _this20.setState({ qProjectLanguages: qLangs, randomLangId: randomLangId });
+      yield _this20.setState({ qSourceLocale: qSourceLocale, qProjectLanguages: qLangs, randomLangId: randomLangId });
     })();
   }
 
@@ -30168,7 +30166,11 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
 
       console.log('MATCHING PROJECTS!!', matchingProjects.pages);
 
-      _this22.setState({ qCanvasFileMatches: matchingProjects.pages });
+      if (matchingProjects.pages.length === 0) {
+        _this22.setState({ qCanvasFileMatches: matchingProjects.pages, abCanvasExistInQ: false });
+      } else {
+        _this22.setState({ qCanvasFileMatches: matchingProjects.pages });
+      }
     })();
   }
 
@@ -30364,38 +30366,7 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
       if (!this.state.qLoginModalOpen) {
         if (!this.state.canvasCreationModalOpen) {
           if (this.state.abId || !this.state.abId && this.state.abCanvasSelectionInProgress && !this.state.abCanvasExistInQ) {
-            if (this.state.abFileExistsInQ) {
-              if (this.state.abFileCompletedInQ) {
-                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                  'div',
-                  { id: 'q-translation-status-container-email' },
-                  __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_8__NavBar_js__["a" /* default */], { qCanvasFileMatches: this.state.qCanvasFileMatches, handleCanvasSelect: this.handleCanvasSelect, abId: this.state.abId, abType: this.state.abType, abCanvasExistInQ: this.state.abCanvasExistInQ, abFileCompletedInQ: this.state.abFileCompletedInQ, abFileExistsInQ: this.state.abFileExistsInQ, handleLogoutClick: this.handleLogoutClick, qModalGetParentSelector: this.qModalGetParentSelector, qModalStyle: this.state.qModalStyle, qSourceContent: this.state.qSourceContent, downloadAllModalOpen: this.state.downloadAllModalOpen, abHeadContent: this.state.abHeadContent, abSourceContent: this.state.abSourceContent, abAllTargetContent: this.state.abAllTargetContent, downloadAllModalOpen: this.state.downloadAllModalOpen, handleDownloadAllClick: this.handleDownloadAllClick, handleDownloadAllClose: this.handleDownloadAllClose, qFileUpload: this.qFileUpload, sourceContentChanged: this.state.sourceContentChanged, languageDropdownValue: this.state.languageDropdownValue, qSourceLocale: this.state.qSourceLocale, handleLanguageChange: this.handleLanguageChange, qProjectLanguages: this.state.qProjectLanguages, qGetLanguages: this.qGetLanguages, init: this.init, qTranslationStatusObj: this.state.qTranslationStatusObj }),
-                  __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__TranslationPreview_js__["a" /* default */], { handleDownloadAllClose: this.handleDownloadAllClose, abLanguageCode: this.state.abLanguageCode, disabled: this.state.qLocaleTranslationStatus !== 'completed', abTranslationStatuses: this.state.abTranslationStatuses, qFileUpload: this.qFileUpload, abLocaleTargetContent: this.state.abLocaleTargetContent, handleLanguageChange: this.handleLanguageChange, qProjectLanguages: this.state.qProjectLanguages, qGetLanguages: this.qGetLanguages })
-                );
-              } else {
-                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                  'div',
-                  { className: 'q-translation-status-container' },
-                  __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_8__NavBar_js__["a" /* default */], { qCanvasFileMatches: this.state.qCanvasFileMatches, handleCanvasSelect: this.handleCanvasSelect, abId: this.state.abId, abType: this.state.abType, abCanvasExistInQ: this.state.abCanvasExistInQ, abFileCompletedInQ: this.state.abFileCompletedInQ, abFileExistsInQ: this.state.abFileExistsInQ, handleLogoutClick: this.handleLogoutClick, qModalGetParentSelector: this.qModalGetParentSelector, qModalStyle: this.state.qModalStyle, qSourceContent: this.state.qSourceContent, downloadAllModalOpen: this.state.downloadAllModalOpen, abHeadContent: this.state.abHeadContent, abSourceContent: this.state.abSourceContent, abAllTargetContent: this.state.abAllTargetContent, downloadAllModalOpen: this.state.downloadAllModalOpen, handleDownloadAllClick: this.handleDownloadAllClick, handleDownloadAllClose: this.handleDownloadAllClose, qFileUpload: this.qFileUpload, sourceContentChanged: this.state.sourceContentChanged, languageDropdownValue: this.state.languageDropdownValue, qSourceLocale: this.state.qSourceLocale, handleLanguageChange: this.handleLanguageChange, qProjectLanguages: this.state.qProjectLanguages, qGetLanguages: this.qGetLanguages, init: this.init, qTranslationStatusObj: this.state.qTranslationStatusObj }),
-                  __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'p',
-                    { className: 'helptext' },
-                    'This template is currently being translated in Qordoba. Please return when translators have finished!'
-                  )
-                );
-              }
-            } else {
-              return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                'div',
-                { className: 'q-translation-status-container' },
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_8__NavBar_js__["a" /* default */], { qCanvasFileMatches: this.state.qCanvasFileMatches, handleCanvasSelect: this.handleCanvasSelect, abId: this.state.abId, abType: this.state.abType, abCanvasExistInQ: this.state.abCanvasExistInQ, abFileCompletedInQ: this.state.abFileCompletedInQ, abFileExistsInQ: this.state.abFileExistsInQ, handleLogoutClick: this.handleLogoutClick, qModalGetParentSelector: this.qModalGetParentSelector, qModalStyle: this.state.qModalStyle, qSourceContent: this.state.qSourceContent, downloadAllModalOpen: this.state.downloadAllModalOpen, abHeadContent: this.state.abHeadContent, abSourceContent: this.state.abSourceContent, abAllTargetContent: this.state.abAllTargetContent, downloadAllModalOpen: this.state.downloadAllModalOpen, handleDownloadAllClick: this.handleDownloadAllClick, handleDownloadAllClose: this.handleDownloadAllClose, qFileUpload: this.qFileUpload, sourceContentChanged: this.state.sourceContentChanged, languageDropdownValue: this.state.languageDropdownValue, qSourceLocale: this.state.qSourceLocale, handleLanguageChange: this.handleLanguageChange, qProjectLanguages: this.state.qProjectLanguages, qGetLanguages: this.qGetLanguages, init: this.init, qTranslationStatusObj: this.state.qTranslationStatusObj }),
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                  'p',
-                  { className: 'helptext' },
-                  'This template is not yet in Qordoba. Please click the button above to start translating! '
-                )
-              );
-            }
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(EmailTemplateMainApp, { abLanguageCode: this.state.abLanguageCode, disabled: this.state.qLocaleTranslationStatus !== 'completed', abTranslationStatuses: this.state.abTranslationStatuses, abLocaleTargetContent: this.state.abLocaleTargetContent, qCanvasFileMatches: this.state.qCanvasFileMatches, handleCanvasSelect: this.handleCanvasSelect, abId: this.state.abId, abType: this.state.abType, abCanvasExistInQ: this.state.abCanvasExistInQ, abFileCompletedInQ: this.state.abFileCompletedInQ, abFileExistsInQ: this.state.abFileExistsInQ, handleLogoutClick: this.handleLogoutClick, qModalGetParentSelector: this.qModalGetParentSelector, qModalStyle: this.state.qModalStyle, qSourceContent: this.state.qSourceContent, downloadAllModalOpen: this.state.downloadAllModalOpen, abHeadContent: this.state.abHeadContent, abSourceContent: this.state.abSourceContent, abAllTargetContent: this.state.abAllTargetContent, downloadAllModalOpen: this.state.downloadAllModalOpen, handleDownloadAllClick: this.handleDownloadAllClick, handleDownloadAllClose: this.handleDownloadAllClose, qFileUpload: this.qFileUpload, sourceContentChanged: this.state.sourceContentChanged, languageDropdownValue: this.state.languageDropdownValue, qSourceLocale: this.state.qSourceLocale, handleLanguageChange: this.handleLanguageChange, qProjectLanguages: this.state.qProjectLanguages, qGetLanguages: this.qGetLanguages, init: this.init, qTranslationStatusObj: this.state.qTranslationStatusObj });
           } else {
             if (this.state.abCanvasSelectionInProgress) {
               return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_10__CanvasSelectionModal_js__["a" /* default */], { qCanvasFileMatches: this.state.qCanvasFileMatches, abId: this.state.abId, abCanvasSelectionInProgress: this.state.abCanvasSelectionInProgress, qModalGetParentSelector: this.qModalGetParentSelector, handleCanvasModalClose: this.handleCanvasModalClose, qModalStyle: this.state.qModalStyle, handleCanvasSelect: this.handleCanvasSelect, handleCanvasNoMatchClick: this.handleCanvasNoMatchClick });
@@ -40883,7 +40854,7 @@ class TranslationPreview extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.C
   }
 }
 
-/* harmony default export */ __webpack_exports__["a"] = (TranslationPreview);
+/* unused harmony default export */ var _unused_webpack_default_export = (TranslationPreview);
 //<CopyToClipboardButton textAreaQuery='textarea.q-translated-textarea' type="submit" className='q-copy-button' />
 // <textarea className='q-translated-textarea' value={this.props.abLocaleTargetContent}></textarea>
 
@@ -52881,7 +52852,11 @@ var NavBar = props => {
         )
       ),
       __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__DownloadAllButton_js__["a" /* default */], { disabled: !props.abFileCompletedInQ, qModalGetParentSelector: props.qModalGetParentSelector, qModalStyle: props.qModalStyle, qSourceContent: props.qSourceContent, downloadAllModalOpen: props.downloadAllModalOpen, abHeadContent: props.abHeadContent, abSourceContent: props.abSourceContent, abAllTargetContent: props.abAllTargetContent, downloadAllModalOpen: props.downloadAllModalOpen, handleDownloadAllClick: props.handleDownloadAllClick, handleDownloadAllClose: props.handleDownloadAllClose }),
-      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__CanvasSelectionDropdown_js__["a" /* default */], { abId: props.abId, handleCanvasSelect: props.handleCanvasSelect, qCanvasFileMatches: props.qCanvasFileMatches }),
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        'div',
+        { className: 'q-nav-item' },
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__CanvasSelectionDropdown_js__["a" /* default */], { abId: props.abId, handleCanvasSelect: props.handleCanvasSelect, qCanvasFileMatches: props.qCanvasFileMatches })
+      ),
       __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__LogoutButton_js__["a" /* default */], { handleLogoutClick: props.handleLogoutClick })
     );
   } else {

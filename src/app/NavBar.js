@@ -17,7 +17,9 @@ var NavBar = (props) => {
           <button disabled={!props.sourceContentChanged && props.abFileExistsInQ} className='q-btn btn img-btn pull-left' onClick={props.qFileUpload} type="submit" id='q-upload-button'> Upload to Qordoba </button>
         </div>
         <DownloadAllButton disabled={!props.abFileCompletedInQ} qModalGetParentSelector={props.qModalGetParentSelector} qModalStyle={props.qModalStyle} qSourceContent={props.qSourceContent} downloadAllModalOpen={props.downloadAllModalOpen} abHeadContent={props.abHeadContent} abSourceContent={props.abSourceContent} abAllTargetContent={props.abAllTargetContent} downloadAllModalOpen={props.downloadAllModalOpen} handleDownloadAllClick={props.handleDownloadAllClick} handleDownloadAllClose={props.handleDownloadAllClose} />
-        <CanvasSelectionDropdown abId={props.abId} handleCanvasSelect={props.handleCanvasSelect} qCanvasFileMatches={props.qCanvasFileMatches} />
+        <div className='q-nav-item'>
+          <CanvasSelectionDropdown abId={props.abId} handleCanvasSelect={props.handleCanvasSelect} qCanvasFileMatches={props.qCanvasFileMatches} />
+        </div>
         <LogoutButton handleLogoutClick={props.handleLogoutClick} />
       </div>
     )

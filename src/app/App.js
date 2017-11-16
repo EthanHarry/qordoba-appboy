@@ -13,10 +13,7 @@ import CanvasSelectionModal from './CanvasSelectionModal.js';
 import CanvasCreationModal from './CanvasCreationModal.js';
 
 //TODO
-  //Confirm that replacing ' ' with &nbsp fixes Postmates' problem
-  //Add default behaviors for Canvas (i.e. only 0 or 1 canvas found)
-  //Add canvas switcher dropdown to Nav
-  //Need to actually set qSourceLocale from API call
+  //Fix styling on modals
 
   //FEATURES
   //Publish as private Chrome extension
@@ -29,7 +26,6 @@ class App extends React.Component {
   constructor(props) {
     super(props);
 
-    //Need to actually render from auth
     this.state = {
       qAuthToken: '',
       qAllOrgs: [],
@@ -376,7 +372,9 @@ class App extends React.Component {
       url: `https://app.qordoba.com/api/organizations/${this.state.qOrganizationId}/projects?limit=1&offset=0&limit_to_projects=${this.state.qProjectId}`,
       headers: this.state.jsonReqHeader
     })
+    console.log('PROJECT DETAIL CALL!!!!!!!!!!!!!!', projectDetailCall)
     var qProjectLanguages = projectDetailCall.projects[0].target_languages;
+    var qSourceLocale = projectDetailCall.projects[0].source_language.code;
     var qLangs = {};
     var sourceLangObj = projectDetailCall.projects[0].source_language;
     qLangs[sourceLangObj.code] = {id: sourceLangObj.id, name: sourceLangObj.name};
@@ -386,7 +384,7 @@ class App extends React.Component {
       }
       qLangs[qProjectLanguages[i].code] = {id: qProjectLanguages[i].id, name: qProjectLanguages[i].name}
     }
-    await this.setState({qProjectLanguages: qLangs, randomLangId: randomLangId});
+    await this.setState({qSourceLocale: qSourceLocale, qProjectLanguages: qLangs, randomLangId: randomLangId});
   }
 
 
@@ -445,7 +443,13 @@ class App extends React.Component {
 
     console.log('MATCHING PROJECTS!!', matchingProjects.pages)
 
-    this.setState({qCanvasFileMatches: matchingProjects.pages});
+    if (matchingProjects.pages.length === 0) {
+      this.setState({qCanvasFileMatches: matchingProjects.pages, abCanvasExistInQ: false});
+    }
+    else {
+      this.setState({qCanvasFileMatches: matchingProjects.pages})
+    }
+
   }
 
   async qFileUpload() {
@@ -628,32 +632,7 @@ class App extends React.Component {
       if (!this.state.qLoginModalOpen) {
         if (!this.state.canvasCreationModalOpen) {
           if (this.state.abId || !this.state.abId && this.state.abCanvasSelectionInProgress && !this.state.abCanvasExistInQ) {
-            if (this.state.abFileExistsInQ) {
-              if (this.state.abFileCompletedInQ) {
-                return (
-                  <div id='q-translation-status-container-email'>
-                    <NavBar qCanvasFileMatches={this.state.qCanvasFileMatches} handleCanvasSelect={this.handleCanvasSelect} abId={this.state.abId} abType={this.state.abType} abCanvasExistInQ={this.state.abCanvasExistInQ} abFileCompletedInQ={this.state.abFileCompletedInQ} abFileExistsInQ={this.state.abFileExistsInQ} handleLogoutClick={this.handleLogoutClick} qModalGetParentSelector={this.qModalGetParentSelector} qModalStyle={this.state.qModalStyle} qSourceContent={this.state.qSourceContent} downloadAllModalOpen={this.state.downloadAllModalOpen} abHeadContent={this.state.abHeadContent} abSourceContent={this.state.abSourceContent} abAllTargetContent={this.state.abAllTargetContent} downloadAllModalOpen={this.state.downloadAllModalOpen} handleDownloadAllClick={this.handleDownloadAllClick} handleDownloadAllClose={this.handleDownloadAllClose} qFileUpload={this.qFileUpload} sourceContentChanged={this.state.sourceContentChanged} languageDropdownValue={this.state.languageDropdownValue} qSourceLocale={this.state.qSourceLocale} handleLanguageChange={this.handleLanguageChange} qProjectLanguages={this.state.qProjectLanguages} qGetLanguages={this.qGetLanguages} init={this.init} qTranslationStatusObj={this.state.qTranslationStatusObj}  />
-                    <TranslationPreview handleDownloadAllClose={this.handleDownloadAllClose} abLanguageCode={this.state.abLanguageCode} disabled={this.state.qLocaleTranslationStatus !== 'completed'} abTranslationStatuses={this.state.abTranslationStatuses} qFileUpload={this.qFileUpload} abLocaleTargetContent={this.state.abLocaleTargetContent} handleLanguageChange={this.handleLanguageChange} qProjectLanguages={this.state.qProjectLanguages} qGetLanguages={this.qGetLanguages}/>
-                  </div>
-                )
-              }
-              else {
-                return (
-                  <div className='q-translation-status-container'>
-                    <NavBar qCanvasFileMatches={this.state.qCanvasFileMatches} handleCanvasSelect={this.handleCanvasSelect} abId={this.state.abId} abType={this.state.abType} abCanvasExistInQ={this.state.abCanvasExistInQ} abFileCompletedInQ={this.state.abFileCompletedInQ} abFileExistsInQ={this.state.abFileExistsInQ} handleLogoutClick={this.handleLogoutClick} qModalGetParentSelector={this.qModalGetParentSelector} qModalStyle={this.state.qModalStyle} qSourceContent={this.state.qSourceContent} downloadAllModalOpen={this.state.downloadAllModalOpen} abHeadContent={this.state.abHeadContent} abSourceContent={this.state.abSourceContent} abAllTargetContent={this.state.abAllTargetContent} downloadAllModalOpen={this.state.downloadAllModalOpen} handleDownloadAllClick={this.handleDownloadAllClick} handleDownloadAllClose={this.handleDownloadAllClose} qFileUpload={this.qFileUpload} sourceContentChanged={this.state.sourceContentChanged} languageDropdownValue={this.state.languageDropdownValue} qSourceLocale={this.state.qSourceLocale} handleLanguageChange={this.handleLanguageChange} qProjectLanguages={this.state.qProjectLanguages} qGetLanguages={this.qGetLanguages} init={this.init} qTranslationStatusObj={this.state.qTranslationStatusObj}  />
-                    <p className='helptext'>This template is currently being translated in Qordoba. Please return when translators have finished!</p>
-                  </div>
-                )
-              }
-            }
-            else {
-              return (
-                <div className='q-translation-status-container'>
-                  <NavBar qCanvasFileMatches={this.state.qCanvasFileMatches} handleCanvasSelect={this.handleCanvasSelect} abId={this.state.abId} abType={this.state.abType} abCanvasExistInQ={this.state.abCanvasExistInQ} abFileCompletedInQ={this.state.abFileCompletedInQ} abFileExistsInQ={this.state.abFileExistsInQ} handleLogoutClick={this.handleLogoutClick} qModalGetParentSelector={this.qModalGetParentSelector} qModalStyle={this.state.qModalStyle} qSourceContent={this.state.qSourceContent} downloadAllModalOpen={this.state.downloadAllModalOpen} abHeadContent={this.state.abHeadContent} abSourceContent={this.state.abSourceContent} abAllTargetContent={this.state.abAllTargetContent} downloadAllModalOpen={this.state.downloadAllModalOpen} handleDownloadAllClick={this.handleDownloadAllClick} handleDownloadAllClose={this.handleDownloadAllClose} qFileUpload={this.qFileUpload} sourceContentChanged={this.state.sourceContentChanged} languageDropdownValue={this.state.languageDropdownValue} qSourceLocale={this.state.qSourceLocale} handleLanguageChange={this.handleLanguageChange} qProjectLanguages={this.state.qProjectLanguages} qGetLanguages={this.qGetLanguages} init={this.init} qTranslationStatusObj={this.state.qTranslationStatusObj}  />
-                  <p className='helptext'>This template is not yet in Qordoba. Please click the button above to start translating! </p>
-                </div>
-              )
-            }
+            <EmailTemplateMainApp abLanguageCode={this.state.abLanguageCode} disabled={this.state.qLocaleTranslationStatus !== 'completed'} abTranslationStatuses={this.state.abTranslationStatuses} abLocaleTargetContent={this.state.abLocaleTargetContent} qCanvasFileMatches={this.state.qCanvasFileMatches} handleCanvasSelect={this.handleCanvasSelect} abId={this.state.abId} abType={this.state.abType} abCanvasExistInQ={this.state.abCanvasExistInQ} abFileCompletedInQ={this.state.abFileCompletedInQ} abFileExistsInQ={this.state.abFileExistsInQ} handleLogoutClick={this.handleLogoutClick} qModalGetParentSelector={this.qModalGetParentSelector} qModalStyle={this.state.qModalStyle} qSourceContent={this.state.qSourceContent} downloadAllModalOpen={this.state.downloadAllModalOpen} abHeadContent={this.state.abHeadContent} abSourceContent={this.state.abSourceContent} abAllTargetContent={this.state.abAllTargetContent} downloadAllModalOpen={this.state.downloadAllModalOpen} handleDownloadAllClick={this.handleDownloadAllClick} handleDownloadAllClose={this.handleDownloadAllClose} qFileUpload={this.qFileUpload} sourceContentChanged={this.state.sourceContentChanged} languageDropdownValue={this.state.languageDropdownValue} qSourceLocale={this.state.qSourceLocale} handleLanguageChange={this.handleLanguageChange} qProjectLanguages={this.state.qProjectLanguages} qGetLanguages={this.qGetLanguages} init={this.init} qTranslationStatusObj={this.state.qTranslationStatusObj} />
           }
           else {
             if (this.state.abCanvasSelectionInProgress) {

@@ -29664,12 +29664,7 @@ module.exports = function() {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_jszip_utils___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_jszip_utils__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_react_spinkit__ = __webpack_require__(152);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_react_spinkit___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_react_spinkit__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__LoginModal_js__ = __webpack_require__(185);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__NavBar_js__ = __webpack_require__(192);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_react_modal__ = __webpack_require__(19);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_react_modal___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9_react_modal__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__CanvasSelectionModal_js__ = __webpack_require__(197);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__CanvasCreationModal_js__ = __webpack_require__(198);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__EmailTemplateMainView_js__ = __webpack_require__(201);
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 console.log('hi react app');
@@ -29678,10 +29673,6 @@ console.log('hi react app');
 
 
 
-
-
-
-;
 
 
 
@@ -30363,37 +30354,7 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
   //React UI
   render() {
     if (!this.state.loading) {
-      if (!this.state.qLoginModalOpen) {
-        if (!this.state.canvasCreationModalOpen) {
-          if (this.state.abId || !this.state.abId && this.state.abCanvasSelectionInProgress && !this.state.abCanvasExistInQ) {
-            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(EmailTemplateMainApp, { abLanguageCode: this.state.abLanguageCode, disabled: this.state.qLocaleTranslationStatus !== 'completed', abTranslationStatuses: this.state.abTranslationStatuses, abLocaleTargetContent: this.state.abLocaleTargetContent, qCanvasFileMatches: this.state.qCanvasFileMatches, handleCanvasSelect: this.handleCanvasSelect, abId: this.state.abId, abType: this.state.abType, abCanvasExistInQ: this.state.abCanvasExistInQ, abFileCompletedInQ: this.state.abFileCompletedInQ, abFileExistsInQ: this.state.abFileExistsInQ, handleLogoutClick: this.handleLogoutClick, qModalGetParentSelector: this.qModalGetParentSelector, qModalStyle: this.state.qModalStyle, qSourceContent: this.state.qSourceContent, downloadAllModalOpen: this.state.downloadAllModalOpen, abHeadContent: this.state.abHeadContent, abSourceContent: this.state.abSourceContent, abAllTargetContent: this.state.abAllTargetContent, downloadAllModalOpen: this.state.downloadAllModalOpen, handleDownloadAllClick: this.handleDownloadAllClick, handleDownloadAllClose: this.handleDownloadAllClose, qFileUpload: this.qFileUpload, sourceContentChanged: this.state.sourceContentChanged, languageDropdownValue: this.state.languageDropdownValue, qSourceLocale: this.state.qSourceLocale, handleLanguageChange: this.handleLanguageChange, qProjectLanguages: this.state.qProjectLanguages, qGetLanguages: this.qGetLanguages, init: this.init, qTranslationStatusObj: this.state.qTranslationStatusObj });
-          } else {
-            if (this.state.abCanvasSelectionInProgress) {
-              return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_10__CanvasSelectionModal_js__["a" /* default */], { qCanvasFileMatches: this.state.qCanvasFileMatches, abId: this.state.abId, abCanvasSelectionInProgress: this.state.abCanvasSelectionInProgress, qModalGetParentSelector: this.qModalGetParentSelector, handleCanvasModalClose: this.handleCanvasModalClose, qModalStyle: this.state.qModalStyle, handleCanvasSelect: this.handleCanvasSelect, handleCanvasNoMatchClick: this.handleCanvasNoMatchClick });
-            } else {
-              return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                'div',
-                { className: 'q-translation-status-container' },
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_8__NavBar_js__["a" /* default */], { qCanvasFileMatches: this.state.qCanvasFileMatches, handleCanvasSelect: this.handleCanvasSelect, abId: this.state.abId, abType: this.state.abType, abCanvasExistInQ: this.state.abCanvasExistInQ, abFileCompletedInQ: this.state.abFileCompletedInQ, abFileExistsInQ: this.state.abFileExistsInQ, handleLogoutClick: this.handleLogoutClick, qModalGetParentSelector: this.qModalGetParentSelector, qModalStyle: this.state.qModalStyle, qSourceContent: this.state.qSourceContent, downloadAllModalOpen: this.state.downloadAllModalOpen, abHeadContent: this.state.abHeadContent, abSourceContent: this.state.abSourceContent, abAllTargetContent: this.state.abAllTargetContent, downloadAllModalOpen: this.state.downloadAllModalOpen, handleDownloadAllClick: this.handleDownloadAllClick, handleDownloadAllClose: this.handleDownloadAllClose, qFileUpload: this.qFileUpload, sourceContentChanged: this.state.sourceContentChanged, languageDropdownValue: this.state.languageDropdownValue, qSourceLocale: this.state.qSourceLocale, handleLanguageChange: this.handleLanguageChange, qProjectLanguages: this.state.qProjectLanguages, qGetLanguages: this.qGetLanguages, init: this.init, qTranslationStatusObj: this.state.qTranslationStatusObj }),
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                  'p',
-                  { className: 'helptext' },
-                  'This template does not yet have a unique ID assigned to it. Please make a change to the template, save it, and refresh. '
-                )
-              );
-            }
-          }
-        } else {
-          return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_11__CanvasCreationModal_js__["a" /* default */], { handleCanvasIdSubmit: this.handleCanvasIdSubmit, qModalStyle: this.state.qModalStyle, handleCanvasModalClose: this.handleCanvasModalClose, qModalGetParentSelector: this.qModalGetParentSelector, canvasCreationModalOpen: this.state.canvasCreationModalOpen });
-        }
-      } else {
-        //render prompt and set state accordingly
-        return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-          'div',
-          { className: 'q-translation-status-container' },
-          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7__LoginModal_js__["a" /* default */], { handleLogoutClick: this.handleLogoutClick, qHandleProjectSubmit: this.qHandleProjectSubmit, qAllProjects: this.state.qAllProjects, qProjectId: this.state.qProjectId, qHandleConfigSubmit: this.qHandleConfigSubmit, qOrganizationId: this.state.qOrganizationId, qHandleOrgSubmit: this.qHandleOrgSubmit, qAllOrgs: this.state.qAllOrgs, qAuthenticated: !!this.state.qAuthToken, qHandleLoginSubmit: this.qHandleLoginSubmit, qModalGetParentSelector: this.qModalGetParentSelector, qLoginModalOpen: this.state.qLoginModalOpen, handleLoginClose: this.handleLoginClose, qModalStyle: this.state.qModalStyle })
-        );
-      }
+      return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7__EmailTemplateMainView_js__["a" /* default */], { abCanvasSelectionInProgress: true, abLanguageCode: this.state.abLanguageCode, disabled: this.state.qLocaleTranslationStatus !== 'completed', abTranslationStatuses: this.state.abTranslationStatuses, abLocaleTargetContent: this.state.abLocaleTargetContent, qCanvasFileMatches: this.state.qCanvasFileMatches, handleCanvasSelect: this.handleCanvasSelect, abId: this.state.abId, abType: this.state.abType, abCanvasExistInQ: this.state.abCanvasExistInQ, abFileCompletedInQ: this.state.abFileCompletedInQ, abFileExistsInQ: this.state.abFileExistsInQ, handleLogoutClick: this.handleLogoutClick, qModalGetParentSelector: this.qModalGetParentSelector, qModalStyle: this.state.qModalStyle, qSourceContent: this.state.qSourceContent, downloadAllModalOpen: this.state.downloadAllModalOpen, abHeadContent: this.state.abHeadContent, abSourceContent: this.state.abSourceContent, abAllTargetContent: this.state.abAllTargetContent, downloadAllModalOpen: this.state.downloadAllModalOpen, handleDownloadAllClick: this.handleDownloadAllClick, handleDownloadAllClose: this.handleDownloadAllClose, qFileUpload: this.qFileUpload, sourceContentChanged: this.state.sourceContentChanged, languageDropdownValue: this.state.languageDropdownValue, qSourceLocale: this.state.qSourceLocale, handleLanguageChange: this.handleLanguageChange, qProjectLanguages: this.state.qProjectLanguages, qGetLanguages: this.qGetLanguages, init: this.init, qTranslationStatusObj: this.state.qTranslationStatusObj });
     } else {
       return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         'div',
@@ -40854,7 +40815,7 @@ class TranslationPreview extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.C
   }
 }
 
-/* unused harmony default export */ var _unused_webpack_default_export = (TranslationPreview);
+/* harmony default export */ __webpack_exports__["a"] = (TranslationPreview);
 //<CopyToClipboardButton textAreaQuery='textarea.q-translated-textarea' type="submit" className='q-copy-button' />
 // <textarea className='q-translated-textarea' value={this.props.abLocaleTargetContent}></textarea>
 
@@ -53728,6 +53689,83 @@ var CanvasCreationModal = props => {
 };
 
 /* harmony default export */ __webpack_exports__["a"] = (CanvasCreationModal);
+
+/***/ }),
+/* 199 */,
+/* 200 */,
+/* 201 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__NavBar_js__ = __webpack_require__(192);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__TranslationPreview_js__ = __webpack_require__(98);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__CanvasSelectionModal_js__ = __webpack_require__(197);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__CanvasCreationModal_js__ = __webpack_require__(198);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__LoginModal_js__ = __webpack_require__(185);
+
+
+
+
+
+
+
+var EmailTemplateMainView = props => {
+  if (props.abId || props.abCanvasSelectionInProgress) {
+    if (props.abFileExistsInQ) {
+      if (props.abFileCompletedInQ) {
+        return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          'div',
+          { id: 'q-translation-status-container-email' },
+          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__NavBar_js__["a" /* default */], { qCanvasFileMatches: props.qCanvasFileMatches, handleCanvasSelect: props.handleCanvasSelect, abId: props.abId, abType: props.abType, abCanvasExistInQ: props.abCanvasExistInQ, abFileCompletedInQ: props.abFileCompletedInQ, abFileExistsInQ: props.abFileExistsInQ, handleLogoutClick: props.handleLogoutClick, qModalGetParentSelector: props.qModalGetParentSelector, qModalStyle: props.qModalStyle, qSourceContent: props.qSourceContent, downloadAllModalOpen: props.downloadAllModalOpen, abHeadContent: props.abHeadContent, abSourceContent: props.abSourceContent, abAllTargetContent: props.abAllTargetContent, downloadAllModalOpen: props.downloadAllModalOpen, handleDownloadAllClick: props.handleDownloadAllClick, handleDownloadAllClose: props.handleDownloadAllClose, qFileUpload: props.qFileUpload, sourceContentChanged: props.sourceContentChanged, languageDropdownValue: props.languageDropdownValue, qSourceLocale: props.qSourceLocale, handleLanguageChange: props.handleLanguageChange, qProjectLanguages: props.qProjectLanguages, qGetLanguages: props.qGetLanguages, init: props.init, qTranslationStatusObj: props.qTranslationStatusObj }),
+          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__TranslationPreview_js__["a" /* default */], { handleDownloadAllClose: props.handleDownloadAllClose, abLanguageCode: props.abLanguageCode, disabled: props.qLocaleTranslationStatus !== 'completed', abTranslationStatuses: props.abTranslationStatuses, qFileUpload: props.qFileUpload, abLocaleTargetContent: props.abLocaleTargetContent, handleLanguageChange: props.handleLanguageChange, qProjectLanguages: props.qProjectLanguages, qGetLanguages: props.qGetLanguages }),
+          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__LoginModal_js__["a" /* default */], { handleLogoutClick: props.handleLogoutClick, qHandleProjectSubmit: props.qHandleProjectSubmit, qAllProjects: props.qAllProjects, qProjectId: props.qProjectId, qHandleConfigSubmit: props.qHandleConfigSubmit, qOrganizationId: props.qOrganizationId, qHandleOrgSubmit: props.qHandleOrgSubmit, qAllOrgs: props.qAllOrgs, qAuthenticated: !!props.qAuthToken, qHandleLoginSubmit: props.qHandleLoginSubmit, qModalGetParentSelector: props.qModalGetParentSelector, qLoginModalOpen: props.qLoginModalOpen, handleLoginClose: props.handleLoginClose, qModalStyle: props.qModalStyle })
+        );
+      } else {
+        return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          'div',
+          { className: 'q-translation-status-container' },
+          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__NavBar_js__["a" /* default */], { qCanvasFileMatches: props.qCanvasFileMatches, handleCanvasSelect: props.handleCanvasSelect, abId: props.abId, abType: props.abType, abCanvasExistInQ: props.abCanvasExistInQ, abFileCompletedInQ: props.abFileCompletedInQ, abFileExistsInQ: props.abFileExistsInQ, handleLogoutClick: props.handleLogoutClick, qModalGetParentSelector: props.qModalGetParentSelector, qModalStyle: props.qModalStyle, qSourceContent: props.qSourceContent, downloadAllModalOpen: props.downloadAllModalOpen, abHeadContent: props.abHeadContent, abSourceContent: props.abSourceContent, abAllTargetContent: props.abAllTargetContent, downloadAllModalOpen: props.downloadAllModalOpen, handleDownloadAllClick: props.handleDownloadAllClick, handleDownloadAllClose: props.handleDownloadAllClose, qFileUpload: props.qFileUpload, sourceContentChanged: props.sourceContentChanged, languageDropdownValue: props.languageDropdownValue, qSourceLocale: props.qSourceLocale, handleLanguageChange: props.handleLanguageChange, qProjectLanguages: props.qProjectLanguages, qGetLanguages: props.qGetLanguages, init: props.init, qTranslationStatusObj: props.qTranslationStatusObj }),
+          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            'p',
+            { className: 'helptext' },
+            'props template is currently being translated in Qordoba. Please return when translators have finished!'
+          ),
+          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__LoginModal_js__["a" /* default */], { handleLogoutClick: props.handleLogoutClick, qHandleProjectSubmit: props.qHandleProjectSubmit, qAllProjects: props.qAllProjects, qProjectId: props.qProjectId, qHandleConfigSubmit: props.qHandleConfigSubmit, qOrganizationId: props.qOrganizationId, qHandleOrgSubmit: props.qHandleOrgSubmit, qAllOrgs: props.qAllOrgs, qAuthenticated: !!props.qAuthToken, qHandleLoginSubmit: props.qHandleLoginSubmit, qModalGetParentSelector: props.qModalGetParentSelector, qLoginModalOpen: props.qLoginModalOpen, handleLoginClose: props.handleLoginClose, qModalStyle: props.qModalStyle })
+        );
+      }
+    } else {
+      return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        'div',
+        { className: 'q-translation-status-container' },
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__NavBar_js__["a" /* default */], { qCanvasFileMatches: props.qCanvasFileMatches, handleCanvasSelect: props.handleCanvasSelect, abId: props.abId, abType: props.abType, abCanvasExistInQ: props.abCanvasExistInQ, abFileCompletedInQ: props.abFileCompletedInQ, abFileExistsInQ: props.abFileExistsInQ, handleLogoutClick: props.handleLogoutClick, qModalGetParentSelector: props.qModalGetParentSelector, qModalStyle: props.qModalStyle, qSourceContent: props.qSourceContent, downloadAllModalOpen: props.downloadAllModalOpen, abHeadContent: props.abHeadContent, abSourceContent: props.abSourceContent, abAllTargetContent: props.abAllTargetContent, downloadAllModalOpen: props.downloadAllModalOpen, handleDownloadAllClick: props.handleDownloadAllClick, handleDownloadAllClose: props.handleDownloadAllClose, qFileUpload: props.qFileUpload, sourceContentChanged: props.sourceContentChanged, languageDropdownValue: props.languageDropdownValue, qSourceLocale: props.qSourceLocale, handleLanguageChange: props.handleLanguageChange, qProjectLanguages: props.qProjectLanguages, qGetLanguages: props.qGetLanguages, init: props.init, qTranslationStatusObj: props.qTranslationStatusObj }),
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          'p',
+          { className: 'helptext' },
+          'This template is not yet in Qordoba. Please click the button above to start translating! '
+        ),
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__CanvasSelectionModal_js__["a" /* default */], { qCanvasFileMatches: props.qCanvasFileMatches, abId: props.abId, abCanvasSelectionInProgress: props.abCanvasSelectionInProgress, qModalGetParentSelector: props.qModalGetParentSelector, handleCanvasModalClose: props.handleCanvasModalClose, qModalStyle: props.qModalStyle, handleCanvasSelect: props.handleCanvasSelect, handleCanvasNoMatchClick: props.handleCanvasNoMatchClick }),
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__CanvasCreationModal_js__["a" /* default */], { handleCanvasIdSubmit: props.handleCanvasIdSubmit, qModalStyle: props.qModalStyle, handleCanvasModalClose: props.handleCanvasModalClose, qModalGetParentSelector: props.qModalGetParentSelector, canvasCreationModalOpen: props.canvasCreationModalOpen }),
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__LoginModal_js__["a" /* default */], { handleLogoutClick: props.handleLogoutClick, qHandleProjectSubmit: props.qHandleProjectSubmit, qAllProjects: props.qAllProjects, qProjectId: props.qProjectId, qHandleConfigSubmit: props.qHandleConfigSubmit, qOrganizationId: props.qOrganizationId, qHandleOrgSubmit: props.qHandleOrgSubmit, qAllOrgs: props.qAllOrgs, qAuthenticated: !!props.qAuthToken, qHandleLoginSubmit: props.qHandleLoginSubmit, qModalGetParentSelector: props.qModalGetParentSelector, qLoginModalOpen: props.qLoginModalOpen, handleLoginClose: props.handleLoginClose, qModalStyle: props.qModalStyle })
+      );
+    }
+  } else {
+    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+      'div',
+      { className: 'q-translation-status-container' },
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__NavBar_js__["a" /* default */], { qCanvasFileMatches: props.qCanvasFileMatches, handleCanvasSelect: props.handleCanvasSelect, abId: props.abId, abType: props.abType, abCanvasExistInQ: props.abCanvasExistInQ, abFileCompletedInQ: props.abFileCompletedInQ, abFileExistsInQ: props.abFileExistsInQ, handleLogoutClick: props.handleLogoutClick, qModalGetParentSelector: props.qModalGetParentSelector, qModalStyle: props.qModalStyle, qSourceContent: props.qSourceContent, downloadAllModalOpen: props.downloadAllModalOpen, abHeadContent: props.abHeadContent, abSourceContent: props.abSourceContent, abAllTargetContent: props.abAllTargetContent, downloadAllModalOpen: props.downloadAllModalOpen, handleDownloadAllClick: props.handleDownloadAllClick, handleDownloadAllClose: props.handleDownloadAllClose, qFileUpload: props.qFileUpload, sourceContentChanged: props.sourceContentChanged, languageDropdownValue: props.languageDropdownValue, qSourceLocale: props.qSourceLocale, handleLanguageChange: props.handleLanguageChange, qProjectLanguages: props.qProjectLanguages, qGetLanguages: props.qGetLanguages, init: props.init, qTranslationStatusObj: props.qTranslationStatusObj }),
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        'p',
+        { className: 'helptext' },
+        'props template does not yet have a unique ID assigned to it. Please make a change to the template, save it, and refresh. '
+      ),
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__LoginModal_js__["a" /* default */], { handleLogoutClick: props.handleLogoutClick, qHandleProjectSubmit: props.qHandleProjectSubmit, qAllProjects: props.qAllProjects, qProjectId: props.qProjectId, qHandleConfigSubmit: props.qHandleConfigSubmit, qOrganizationId: props.qOrganizationId, qHandleOrgSubmit: props.qHandleOrgSubmit, qAllOrgs: props.qAllOrgs, qAuthenticated: !!props.qAuthToken, qHandleLoginSubmit: props.qHandleLoginSubmit, qModalGetParentSelector: props.qModalGetParentSelector, qLoginModalOpen: props.qLoginModalOpen, handleLoginClose: props.handleLoginClose, qModalStyle: props.qModalStyle })
+    );
+  }
+};
+
+/* harmony default export */ __webpack_exports__["a"] = (EmailTemplateMainView);
 
 /***/ })
 /******/ ]);

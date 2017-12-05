@@ -32,6 +32,7 @@ class App extends React.Component {
       qProjectLanguages: {},
       qLocaleTranslationStatus: '',
       qSourceContent: '',
+      qCanvasFileMatches: [],
 
       abLanguageCode: '',
       abLanguageName: '',
@@ -428,7 +429,7 @@ class App extends React.Component {
 
 
   async qGetCanvasFileMatches() {
-    var qCanvasFileMatches = {};
+    var qCanvasFileMatches = [];
 
     var matchingProjects = await $.ajax({
       type: 'POST',
@@ -622,7 +623,7 @@ class App extends React.Component {
   render() {
     if (!this.state.loading) {
       return (
-        <EmailTemplateMainView abCanvasSelectionInProgress abLanguageCode={this.state.abLanguageCode} disabled={this.state.qLocaleTranslationStatus !== 'completed'} abTranslationStatuses={this.state.abTranslationStatuses} abLocaleTargetContent={this.state.abLocaleTargetContent} qCanvasFileMatches={this.state.qCanvasFileMatches} handleCanvasSelect={this.handleCanvasSelect} abId={this.state.abId} abType={this.state.abType} abCanvasExistInQ={this.state.abCanvasExistInQ} abFileCompletedInQ={this.state.abFileCompletedInQ} abFileExistsInQ={this.state.abFileExistsInQ} handleLogoutClick={this.handleLogoutClick} qModalGetParentSelector={this.qModalGetParentSelector} qModalStyle={this.state.qModalStyle} qSourceContent={this.state.qSourceContent} downloadAllModalOpen={this.state.downloadAllModalOpen} abHeadContent={this.state.abHeadContent} abSourceContent={this.state.abSourceContent} abAllTargetContent={this.state.abAllTargetContent} downloadAllModalOpen={this.state.downloadAllModalOpen} handleDownloadAllClick={this.handleDownloadAllClick} handleDownloadAllClose={this.handleDownloadAllClose} qFileUpload={this.qFileUpload} sourceContentChanged={this.state.sourceContentChanged} languageDropdownValue={this.state.languageDropdownValue} qSourceLocale={this.state.qSourceLocale} handleLanguageChange={this.handleLanguageChange} qProjectLanguages={this.state.qProjectLanguages} qGetLanguages={this.qGetLanguages} init={this.init} qTranslationStatusObj={this.state.qTranslationStatusObj} />
+        <EmailTemplateMainView qLoginModalOpen={this.state.qLoginModalOpen} abCanvasSelectionInProgress abLanguageCode={this.state.abLanguageCode} disabled={this.state.qLocaleTranslationStatus !== 'completed'} abTranslationStatuses={this.state.abTranslationStatuses} abLocaleTargetContent={this.state.abLocaleTargetContent} qCanvasFileMatches={this.state.qCanvasFileMatches} handleCanvasSelect={this.handleCanvasSelect} abId={this.state.abId} abType={this.state.abType} abCanvasExistInQ={this.state.abCanvasExistInQ} abFileCompletedInQ={this.state.abFileCompletedInQ} abFileExistsInQ={this.state.abFileExistsInQ} handleLogoutClick={this.handleLogoutClick} qModalGetParentSelector={this.qModalGetParentSelector} qModalStyle={this.state.qModalStyle} qSourceContent={this.state.qSourceContent} downloadAllModalOpen={this.state.downloadAllModalOpen} abHeadContent={this.state.abHeadContent} abSourceContent={this.state.abSourceContent} abAllTargetContent={this.state.abAllTargetContent} downloadAllModalOpen={this.state.downloadAllModalOpen} handleDownloadAllClick={this.handleDownloadAllClick} handleDownloadAllClose={this.handleDownloadAllClose} qFileUpload={this.qFileUpload} sourceContentChanged={this.state.sourceContentChanged} languageDropdownValue={this.state.languageDropdownValue} qSourceLocale={this.state.qSourceLocale} handleLanguageChange={this.handleLanguageChange} qProjectLanguages={this.state.qProjectLanguages} qGetLanguages={this.qGetLanguages} init={this.init} qTranslationStatusObj={this.state.qTranslationStatusObj} />
       )
     }
     else {

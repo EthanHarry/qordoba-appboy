@@ -6,7 +6,7 @@ var CanvasCreationModal = (props) => {
     <div className='q-nav-item'>
       <Modal
         id='q-canvas-creation-modal'
-        isOpen={props.canvasCreationModalOpen}
+        isOpen={props.canvasCreationModalOpen && !props.qLoginModalOpen}
         parentSelector={props.qModalGetParentSelector}
         onRequestClose={props.handleCanvasModalClose}
         contentLabel="Canvas Creation Modal"

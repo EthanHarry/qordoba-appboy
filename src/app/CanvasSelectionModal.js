@@ -6,7 +6,7 @@ var CanvasSelectionModal = (props) => {
   return (
     <Modal
       id='q-canvas-choose-modal'
-      isOpen={!props.abId && props.abCanvasSelectionInProgress}
+      isOpen={!props.abId && props.abCanvasSelectionInProgress && !props.qLoginModalOpen}
       parentSelector={props.qModalGetParentSelector}
       onRequestClose={props.handleCanvasModalClose}
       contentLabel="Canvas Choose Modal"

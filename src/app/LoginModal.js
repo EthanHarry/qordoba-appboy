@@ -3,13 +3,13 @@ import Modal from 'react-modal';
 import LogoutButton from './LogoutButton';
 
 var LoginModal = (props) => {
+  console.log('LOGIN MODAL PROPS', props)
   if (!props.qAuthenticated) {
     return (
       <Modal
         id='q-download-all-modal'
         isOpen={props.qLoginModalOpen}
         parentSelector={props.qModalGetParentSelector}
-        onRequestClose={props.handleLoginClose}
         contentLabel="Login Modal"
         style={props.qModalStyle}
       >

@@ -3,10 +3,11 @@ import Modal from 'react-modal';
 import CanvasSelectionDropdown from './CanvasSelectionDropdown.js';
 
 var CanvasSelectionModal = (props) => {
+  console.log('canvas selection modal props', props)
   return (
     <Modal
       id='q-canvas-choose-modal'
-      isOpen={!props.abId && props.abCanvasSelectionInProgress && !props.qLoginModalOpen}
+      isOpen={!props.abId && props.abCanvasSelectionInProgress && !props.qLoginModalOpen && props.abCanvasExistInQ}
       parentSelector={props.qModalGetParentSelector}
       onRequestClose={props.handleCanvasModalClose}
       contentLabel="Canvas Choose Modal"

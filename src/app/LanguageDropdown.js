@@ -17,7 +17,7 @@ class LanguageDropdown extends React.Component {
           {Object.keys(this.props.qProjectLanguages).map((locale) => {
             if (locale !== this.props.qSourceLocale)
             return ( 
-              <option disabled={!this.props.qTranslationStatusObj[locale].completed} className="q-language-dropdown-option" value={locale} key={locale} data-locale={locale} data-name={this.props.qProjectLanguages[locale].name} data-id={this.props.qProjectLanguages[locale].id}>
+              <option disabled={this.props.qTranslationStatusObj[locale] && !this.props.qTranslationStatusObj[locale].completed} className="q-language-dropdown-option" value={locale} key={locale} data-locale={locale} data-name={this.props.qProjectLanguages[locale].name} data-id={this.props.qProjectLanguages[locale].id}>
                 {this.props.qProjectLanguages[locale].name}
               </option>
             )

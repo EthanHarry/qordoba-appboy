@@ -53,8 +53,8 @@ class DownloadAllButton extends React.Component {
           <h1>Translated HTML</h1>
           <CopyToClipboardButton handleModalClose={this.props.handleDownloadAllClose} textAreaQuery='#q-download-all-textarea' type="submit" />
           <p className='helptext'> If you'd like to include all completed translations from Qordoba.<strong> click the "Copy to Clipboard" button </strong>and replace the contents of the template to the left with the new HTML.</p>
-          <div className='q-download-all-textarea-container'>
-            <TextArea disabled id='q-download-all-textarea' value={this.state.templateHtml} />
+          <div className='q-modal-textarea-container'>
+            <TextArea id='q-download-all-textarea' disabled className='q-modal-textarea' value={this.state.templateHtml} />
           </div>
         </Modal>
       </div>

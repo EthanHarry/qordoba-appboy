@@ -35,11 +35,11 @@ button.q-download-all {
   flex: 1;
 }
 
-#q-download-all-textarea {
+.q-modal-textarea {
   width: 100%;
 }
 
-#q-download-all-textarea-container {
+.q-modal-textarea-container {
   width: 100%;
 }
 

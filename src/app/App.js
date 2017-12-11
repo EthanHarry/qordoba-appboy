@@ -8,9 +8,17 @@ import JSZipUtils from 'jszip-utils';
 import Spinner from 'react-spinkit';
 import EmailTemplateMainView from './EmailTemplateMainView.js';
 
+
+//PICK UP HERE
+  //WE JUST CHANGED SOME OF OIUR NAMING CONVENTIONS
+  //ATTACH TO NEW PROJECT AND TEST
+  //MAKE SURE HEAD/BODY BEING PROPERLY BUILT AND REBUILT
+
+
 //TODO
-  //Fix cookie lookup problem -- cant find my projects when I return after having logged in previously
-  //
+  //Fix CSS on source content modal -- make textarea bigger in empty state
+  //See handleCanvasSelect -- need to cover all title mismatch cases
+  //Clean up "source content changed" checks -- we no longer have access to it
 
   //FEATURES
   //Fix styling on modals
@@ -55,6 +63,8 @@ class App extends React.Component {
       qSourceLocale: 'en-us', //need to actually set,
       jsonReqHeader: {},
       downloadAllModalOpen: false,
+      sourceContentModalOpen: false,
+      canvasCreationModalOpen: false,
       loading: true,
       languageDropdownValue: 0,
       sourceContentChanged: false,
@@ -66,6 +76,7 @@ class App extends React.Component {
     this.qGetLanguages = this.qGetLanguages.bind(this);
     this.handleLanguageChange = this.handleLanguageChange.bind(this);
     this.qFileUpload = this.qFileUpload.bind(this);
+    this.qHandleUploadClick = this.qHandleUploadClick.bind(this);
     this.qGetOneTranslation = this.qGetOneTranslation.bind(this);
     this.handleDownloadAllClick = this.handleDownloadAllClick.bind(this);
     this.handleDownloadAllClose = this.handleDownloadAllClose.bind(this);
@@ -78,6 +89,8 @@ class App extends React.Component {
     this.handleCanvasIdSubmit = this.handleCanvasIdSubmit.bind(this);
     this.handleCanvasNoMatchClick = this.handleCanvasNoMatchClick.bind(this);
     this.handleCanvasSelect = this.handleCanvasSelect.bind(this);
+    this.handleSourceContentClose = this.handleSourceContentClose.bind(this);
+    this.handleSourceContentChange = this.handleSourceContentChange.bind(this);
     this.init = this.init.bind(this);
   }
 
@@ -111,6 +124,29 @@ class App extends React.Component {
 
   async componentDidMount() {
     await this.init();
+  }
+
+
+  async handleSourceContentClose(e) {
+    e.preventDefault();
+    this.abGetTemplateContent();
+    if (this.state.abCanvasSelectionInProgress) {
+      await this.setState({sourceContentModalOpen: false, canvasCreationModalOpen: true});
+    }
+    else {
+      await this.setState({sourceContentModalOpen: false});
+      this.qFileUpload();
+    }
+  }
+
+
+  async handleSourceContentChange(e) {
+    await this.setState({abAllSourceContent: e.target.value})
+  }
+
+
+  qHandleUploadClick() {
+    this.setState({sourceContentModalOpen: true})
   }
 
 
@@ -168,6 +204,7 @@ class App extends React.Component {
 
   async handleCanvasSelect(e) {
     console.log('canvas selected', e.target.value)
+    var canvasId = e.target.value.replace('/', '_'); //TODO see what other changes Qordoba makes to file titles that I need to account for
     await this.setState({abId: e.target.value, abCanvasSelectionInProgress: false})
     this.init();
   }
@@ -177,6 +214,7 @@ class App extends React.Component {
   }
 
   async handleCanvasIdSubmit(e) {
+    await this.setState({loading: true})
     e.preventDefault();
     var input = e.target.querySelector('input.q-input');
     console.log('INPUT FROM CANVAS', input)
@@ -280,27 +318,23 @@ class App extends React.Component {
   }
 
   async abGetTemplateContent() {
-    var iFramesArray = document.querySelectorAll('iframe');
-    for (var i = 0; i < iFramesArray.length; i++) {
-      if (iFramesArray[i].classList.length !== 0 && iFramesArray[i].id !== 'q-preview-iframe') {
-        var sourceIframe = iFramesArray[i].contentWindow.document;
-        var iframeHtml = iFramesArray[i].contentWindow.document.documentElement.outerHTML;
-        var headRegex = /<head[\s, \S]*?>([\s,\S]*?)<\/head>/g;
-        var headRegexMatches = headRegex.exec(iframeHtml);
-        if (iframeHtml.includes('{% else %}')) {
-          var tagRegex = /{% else %}([\s,\S]*?){% endif %}/g;
-          var tagRegexMatches = tagRegex.exec(iframeHtml);
-          await this.setState({sourceIframe: sourceIframe, abSourceContent: tagRegexMatches[1], abHeadContent: headRegexMatches[1]});
-        }
-        else {
-          var bodyRegex = /<body[\s,\S]*?>([\s,\S]*?)<\/body>/g;
-          var bodyRegexMatches = bodyRegex.exec(iframeHtml);
-          var sourceContent = bodyRegexMatches[1];
-          var sourceContent = sourceContent.replace(/></g, '>\n<');
-          sourceContent = sourceContent.replace(/<script.*<\/script>/g, '');
-          await this.setState({sourceIframe: sourceIframe, abSourceContent: sourceContent, abHeadContent: headRegexMatches[1]});
-        }
-      }
+    var headRegex = /<head[\s, \S]*?>([\s,\S]*?)<\/head>/g;
+    var headRegexMatches = headRegex.exec(this.state.abAllSourceContent);
+
+    console.log('AB ALL SOURCE CONT', this.state.abAllSourceContent)
+
+    if (this.state.abAllSourceContent.includes('{% else %}')) {
+      var tagRegex = /{% else %}([\s,\S]*?){% endif %}/g;
+      var tagRegexMatches = tagRegex.exec(this.state.abAllSourceContent);
+      await this.setState({abSourceContent: tagRegexMatches[1], abHeadContent: headRegexMatches[1]});
+    }
+    else {
+      var bodyRegex = /<body[\s,\S]*?>([\s,\S]*?)<\/body>/g;
+      var bodyRegexMatches = bodyRegex.exec(this.state.abAllSourceContent);
+      var sourceContent = bodyRegexMatches[1];
+      var sourceContent = sourceContent.replace(/></g, '>\n<');
+      sourceContent = sourceContent.replace(/<script.*<\/script>/g, '');
+      await this.setState({abSourceContent: sourceContent, abHeadContent: headRegexMatches[1]});
     }
   }
 
@@ -455,59 +489,55 @@ class App extends React.Component {
   }
 
   async qFileUpload() {
-    if (this.state.abId === 0) {
-      await this.setState({canvasCreationModalOpen: true})
+    var fileToUpload = new File([this.state.abSourceContent], `${this.state.abType}--${this.state.abId}.html`, {
+      type: "text/html"
+    })
+    console.log('FILE TO UPLOAD', fileToUpload)
+    var fd = new FormData();
+    fd.append('project_id', this.state.qProjectId);
+    fd.append('file_names', `[]`);
+    fd.append('file', fileToUpload);
+
+    var qordobaSendFilesRequest = {
+      type: 'POST',
+      contentType: false,
+      processData: false,
+      data: fd,
+      headers: {'X-AUTH-TOKEN': this.state.qAuthToken},
+    }
+    if (this.state.qSourceContent) {
+      qordobaSendFilesRequest.url = `https://app.qordoba.com/api/projects/${this.state.qProjectId}/files/${this.state.qPageId}/update/upload`;
+      var qordobaSendFilesResponse = await $.ajax(qordobaSendFilesRequest);
+      var responseToFilesUpdated = await $.ajax({
+        type: 'PUT',
+        url: `https://app.qordoba.com/api/projects/${this.state.qProjectId}/files/${this.state.qPageId}/update/apply`,
+        data: JSON.stringify({
+          new_file_id: qordobaSendFilesResponse.id,
+          keep_in_project: false
+        }),
+        headers: this.state.jsonReqHeader
+      })
+      console.log('RESPONSE AFTER UPDATE', responseToFilesUpdated)
     }
     else {
-      var fileToUpload = new File([this.state.abSourceContent], `${this.state.abType}-${this.state.abId}.html`, {
-        type: "text/html"
-      })
-      console.log('FILE TO UPLOAD', fileToUpload)
-      var fd = new FormData();
-      fd.append('project_id', this.state.qProjectId);
-      fd.append('file_names', `[]`);
-      fd.append('file', fileToUpload);
-
-      var qordobaSendFilesRequest = {
+      qordobaSendFilesRequest.url = `https://app.qordoba.com/api/organizations/${this.state.qOrganizationId}/upload/uploadFile_anyType?content_type_code=stringsHtml&projectId=${this.state.qProjectId}`;
+      var qordobaSendFilesResponse = await $.ajax(qordobaSendFilesRequest);
+      var responseToFilesUploaded = await $.ajax({
         type: 'POST',
-        contentType: false,
-        processData: false,
-        data: fd,
-        headers: {'X-AUTH-TOKEN': this.state.qAuthToken},
-      }
-      if (this.state.qSourceContent) {
-        qordobaSendFilesRequest.url = `https://app.qordoba.com/api/projects/${this.state.qProjectId}/files/${this.state.qPageId}/update/upload`;
-        var qordobaSendFilesResponse = await $.ajax(qordobaSendFilesRequest);
-        var responseToFilesUpdated = await $.ajax({
-          type: 'PUT',
-          url: `https://app.qordoba.com/api/projects/${this.state.qProjectId}/files/${this.state.qPageId}/update/apply`,
-          data: JSON.stringify({
-            new_file_id: qordobaSendFilesResponse.id,
-            keep_in_project: false
-          }),
-          headers: this.state.jsonReqHeader
-        })
-        console.log('RESPONSE AFTER UPDATE', responseToFilesUpdated)
-      }
-      else {
-        qordobaSendFilesRequest.url = `https://app.qordoba.com/api/organizations/${this.state.qOrganizationId}/upload/uploadFile_anyType?content_type_code=stringsHtml&projectId=${this.state.qProjectId}`;
-        var qordobaSendFilesResponse = await $.ajax(qordobaSendFilesRequest);
-        var responseToFilesUploaded = await $.ajax({
-          type: 'POST',
-          url: `https://app.qordoba.com/api/projects/${this.state.qProjectId}/append_files`,
-          data: JSON.stringify([{
-            content_type_codes: [{name: "Html String", content_type_code: "stringsHtml", extensions: ["html"]}],
-            file_name: `${qordobaSendFilesResponse.file_name}`,
-            id: qordobaSendFilesResponse.upload_id,
-            source_columns: [],
-            version_tag: ""
-          }]),
-          headers: this.state.jsonReqHeader
-        })
-        console.log('RESPONSE AFTER APPEND', responseToFilesUploaded)
-      }
-      this.init();
+        url: `https://app.qordoba.com/api/projects/${this.state.qProjectId}/append_files`,
+        data: JSON.stringify([{
+          content_type_codes: [{name: "Html String", content_type_code: "stringsHtml", extensions: ["html"]}],
+          file_name: `${qordobaSendFilesResponse.file_name}`,
+          id: qordobaSendFilesResponse.upload_id,
+          source_columns: [],
+          version_tag: ""
+        }]),
+        headers: this.state.jsonReqHeader
+      })
+      console.log('RESPONSE AFTER APPEND', responseToFilesUploaded)
     }
+    this.init();
+
   }
 
 
@@ -542,7 +572,7 @@ class App extends React.Component {
         console.log('KEY', key)
         var locale = key.split('/')[0];
         if (!key.includes(this.state.qSourceLocale)) {
-          var myRegexp = /.*\/([a-z,_,0-9]*-[a-z,0-9,\s,A-Z]*).*.html/g;
+          var myRegexp = /.*\/([a-z,_,0-9]*-[a-z,0-9,\s,A-Z,_,-]*).*.html/g;
           var regexMatches = myRegexp.exec(key);
           var templateName = regexMatches[1];
           if (templateName === `${this.state.abType}-${this.state.abId}` && this.state.qTranslationStatusObj[locale].completed) {
@@ -599,7 +629,7 @@ class App extends React.Component {
 
       for (var key in completedZipData) {
         if (key.includes(languageCode)) {
-          var myRegexp = /.*\/([a-z,_,0-9]*-[a-z,0-9,\s,A-Z]*).*.html/g;
+          var myRegexp = /.*\/([a-z,_,0-9]*-[a-z,0-9,\s,A-Z,_,-]*).*.html/g;
           var regexMatches = myRegexp.exec(key);
           var templateName = regexMatches[1];
           console.log('FOUND SOURCE BOOL', templateName, `${this.state.abType}-${this.state.abId}`)
@@ -628,7 +658,7 @@ class App extends React.Component {
   render() {
     if (!this.state.loading) {
       return (
-        <EmailTemplateMainView handleCanvasNoMatchClick={this.handleCanvasNoMatchClick} qAuthToken={this.state.qAuthToken} qProjectId={this.state.qProjectId} qOrganizationId={this.state.qOrganizationId} qHandleProjectSubmit={this.qHandleProjectSubmit} qHandleOrgSubmit={this.qHandleOrgSubmit} qHandleLoginSubmit={this.qHandleLoginSubmit} qHandleConfigSubmit={this.qHandleConfigSubmit} qAllProjects={this.state.qAllProjects} qAllOrgs={this.state.qAllOrgs} qLoginModalOpen={this.state.qLoginModalOpen} abCanvasSelectionInProgress abLanguageCode={this.state.abLanguageCode} disabled={this.state.qLocaleTranslationStatus !== 'completed'} abTranslationStatuses={this.state.abTranslationStatuses} abLocaleTargetContent={this.state.abLocaleTargetContent} qCanvasFileMatches={this.state.qCanvasFileMatches} handleCanvasSelect={this.handleCanvasSelect} abId={this.state.abId} abType={this.state.abType} abCanvasExistInQ={this.state.abCanvasExistInQ} abFileCompletedInQ={this.state.abFileCompletedInQ} abFileExistsInQ={this.state.abFileExistsInQ} handleLogoutClick={this.handleLogoutClick} qModalGetParentSelector={this.qModalGetParentSelector} qModalStyle={this.state.qModalStyle} qSourceContent={this.state.qSourceContent} downloadAllModalOpen={this.state.downloadAllModalOpen} abHeadContent={this.state.abHeadContent} abSourceContent={this.state.abSourceContent} abAllTargetContent={this.state.abAllTargetContent} downloadAllModalOpen={this.state.downloadAllModalOpen} handleDownloadAllClick={this.handleDownloadAllClick} handleDownloadAllClose={this.handleDownloadAllClose} qFileUpload={this.qFileUpload} sourceContentChanged={this.state.sourceContentChanged} languageDropdownValue={this.state.languageDropdownValue} qSourceLocale={this.state.qSourceLocale} handleLanguageChange={this.handleLanguageChange} qProjectLanguages={this.state.qProjectLanguages} qGetLanguages={this.qGetLanguages} init={this.init} qTranslationStatusObj={this.state.qTranslationStatusObj} />
+        <EmailTemplateMainView abAllSourceContent={this.state.abAllSourceContent} handleCanvasIdSubmit={this.handleCanvasIdSubmit} canvasCreationModalOpen={this.state.canvasCreationModalOpen} handleSourceContentChange={this.handleSourceContentChange} handleSourceContentClose={this.handleSourceContentClose} qHandleUploadClick={this.qHandleUploadClick} sourceContentModalOpen={this.state.sourceContentModalOpen} handleCanvasNoMatchClick={this.handleCanvasNoMatchClick} qAuthToken={this.state.qAuthToken} qProjectId={this.state.qProjectId} qOrganizationId={this.state.qOrganizationId} qHandleProjectSubmit={this.qHandleProjectSubmit} qHandleOrgSubmit={this.qHandleOrgSubmit} qHandleLoginSubmit={this.qHandleLoginSubmit} qHandleConfigSubmit={this.qHandleConfigSubmit} qAllProjects={this.state.qAllProjects} qAllOrgs={this.state.qAllOrgs} qLoginModalOpen={this.state.qLoginModalOpen} abCanvasSelectionInProgress abLanguageCode={this.state.abLanguageCode} qLocaleTranslationStatus={this.state.qLocaleTranslationStatus} abTranslationStatuses={this.state.abTranslationStatuses} abLocaleTargetContent={this.state.abLocaleTargetContent} qCanvasFileMatches={this.state.qCanvasFileMatches} handleCanvasSelect={this.handleCanvasSelect} abId={this.state.abId} abType={this.state.abType} abCanvasExistInQ={this.state.abCanvasExistInQ} abFileCompletedInQ={this.state.abFileCompletedInQ} abFileExistsInQ={this.state.abFileExistsInQ} handleLogoutClick={this.handleLogoutClick} qModalGetParentSelector={this.qModalGetParentSelector} qModalStyle={this.state.qModalStyle} qSourceContent={this.state.qSourceContent} downloadAllModalOpen={this.state.downloadAllModalOpen} abHeadContent={this.state.abHeadContent} abSourceContent={this.state.abSourceContent} abAllTargetContent={this.state.abAllTargetContent} downloadAllModalOpen={this.state.downloadAllModalOpen} handleDownloadAllClick={this.handleDownloadAllClick} handleDownloadAllClose={this.handleDownloadAllClose} qFileUpload={this.qFileUpload} sourceContentChanged={this.state.sourceContentChanged} languageDropdownValue={this.state.languageDropdownValue} qSourceLocale={this.state.qSourceLocale} handleLanguageChange={this.handleLanguageChange} qProjectLanguages={this.state.qProjectLanguages} qGetLanguages={this.qGetLanguages} init={this.init} qTranslationStatusObj={this.state.qTranslationStatusObj} />
       )
     }
     else {

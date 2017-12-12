@@ -10,9 +10,42 @@ import EmailTemplateMainView from './EmailTemplateMainView.js';
 
 
 //PICK UP HERE
+//PICK UP HERE
+//PICK UP HERE
+//PICK UP HERE
+//PICK UP HERE
+//PICK UP HERE
+//PICK UP HERE
+//PICK UP HERE
+//PICK UP HERE
+//PICK UP HERE
+//PICK UP HERE
+//PICK UP HERE
+//PICK UP HERE
+//PICK UP HERE
+//PICK UP HERE
+//PICK UP HERE
+//PICK UP HERE
+//PICK UP HERE
+//PICK UP HERE
+//PICK UP HERE
+//PICK UP HERE
+//PICK UP HERE
+//PICK UP HERE
+//PICK UP HERE
+//PICK UP HERE
+//PICK UP HERE
+//PICK UP HERE
+//PICK UP HERE
+//PICK UP HERE
+//PICK UP HERE
+//PICK UP HERE
+//PICK UP HERE
+
   //WE JUST CHANGED SOME OF OIUR NAMING CONVENTIONS
   //ATTACH TO NEW PROJECT AND TEST
   //MAKE SURE HEAD/BODY BEING PROPERLY BUILT AND REBUILT
+  //Non-working state -- need to figure out how to handle header content. Probably have to go back to original method of sending header content up to Qordoba so we can store it there, since we can't query the iFrame for it anymore.
 
 
 //TODO

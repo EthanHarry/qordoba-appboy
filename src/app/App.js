@@ -157,7 +157,7 @@ class App extends React.Component {
     dropdownMenu.value = selectedOption.value;
     await this.setState({languageDropdownValue: e.target.value, abLanguageName: selectedOption.dataset.name, abLanguageCode: selectedOption.dataset.locale});
     await this.qGetOneTranslation(false);
-    var qFileTitle = `${this.state.abType}-${this.state.abId}`;
+    var qFileTitle = `${this.state.abType}--${this.state.abId}`;
     if (this.state.qTranslationStatusObj[this.state.abLanguageCode]) {
       if (this.state.qTranslationStatusObj[this.state.abLanguageCode].completed) {
         await this.setState({qLocaleTranslationStatus: 'completed', loading: false})
@@ -214,11 +214,11 @@ class App extends React.Component {
   }
 
   async handleCanvasIdSubmit(e) {
-    await this.setState({loading: true})
     e.preventDefault();
+    console.log('event target',e.target)
     var input = e.target.querySelector('input.q-input');
     console.log('INPUT FROM CANVAS', input)
-    await this.setState({abId: input.value, canvasCreationModalOpen: false})
+    await this.setState({loading: true, abId: input.value, canvasCreationModalOpen: false})
     // this.init();
     this.qFileUpload();
   }
@@ -438,13 +438,14 @@ class App extends React.Component {
       if (key !== this.state.qSourceLocale) {
         languageId = this.state.qProjectLanguages[key].id;
         var currentLocaleObj = {};
-        console.log('BEFORE CALLING Q FOR TRANSLATION STATUS', `${this.state.abType}-${this.state.abId}`, this.state.qProjectId)
+        console.log('BEFORE CALLING Q FOR TRANSLATION STATUS', `${this.state.abType}--${this.state.abId}`, this.state.qProjectId)
         var qordobaResponse = await $.ajax({
           type: 'POST',
           url: `https://app.qordoba.com/api/projects/${this.state.qProjectId}/languages/${languageId}/page_settings/search`, 
           headers: this.state.jsonReqHeader,
-          data: JSON.stringify({title: `${this.state.abType}-${this.state.abId}`})
+          data: JSON.stringify({title: `${this.state.abType}--${this.state.abId}`})
         })
+        console.log('repsonse from Q checking translation statuses', qordobaResponse)
         if (qordobaResponse.pages.length === 1) {
           abFileExistsInQ = true; 
           currentLocaleObj.completed = qordobaResponse.pages[0].completed;
@@ -569,13 +570,13 @@ class App extends React.Component {
       var qSourceContent = '';
 
       for (var key in completedZipData) {
-        console.log('KEY', key)
         var locale = key.split('/')[0];
         if (!key.includes(this.state.qSourceLocale)) {
           var myRegexp = /.*\/([a-z,_,0-9]*-[a-z,0-9,\s,A-Z,_,-]*).*.html/g;
           var regexMatches = myRegexp.exec(key);
           var templateName = regexMatches[1];
-          if (templateName === `${this.state.abType}-${this.state.abId}` && this.state.qTranslationStatusObj[locale].completed) {
+          console.log('TEMPLATE NAME', templateName)
+          if (templateName === `${this.state.abType}--${this.state.abId}-${locale}` && this.state.qTranslationStatusObj[locale].completed) {
             var finalizedZipData = await completedZipData[key].async('text');
             console.log('this file zip data', finalizedZipData)
             var bodyRegexp = /<body[\s, \S]*?>([\s,\S]*?)<\/body>/g;
@@ -628,20 +629,15 @@ class App extends React.Component {
       console.log('COMPLETED ZIP DATA!', completedZipData)
 
       for (var key in completedZipData) {
-        if (key.includes(languageCode)) {
+        if (key.includes(languageCode) || languageCode === this.state.qSourceLocale) {
           var myRegexp = /.*\/([a-z,_,0-9]*-[a-z,0-9,\s,A-Z,_,-]*).*.html/g;
           var regexMatches = myRegexp.exec(key);
           var templateName = regexMatches[1];
-          console.log('FOUND SOURCE BOOL', templateName, `${this.state.abType}-${this.state.abId}`)
-          if (templateName === `${this.state.abType}-${this.state.abId}`) {
+          console.log('FOUND SOURCE BOOL', templateName, `${this.state.abType}--${this.state.abId}-${languageCode}`)
+          if (templateName === `${this.state.abType}--${this.state.abId}-${languageCode}` || (templateName === `${this.state.abType}--${this.state.abId}` && languageCode === this.state.qSourceLocale)) {
             var finalizedZipData = await completedZipData[key].async('text');
             if (sourceBool) {
-              if (finalizedZipData === this.state.abSourceContent) {
-                await this.setState({sourceContentChanged: false, qSourceContent: finalizedZipData, loading: false})
-              }
-              else {
-                await this.setState({sourceContentChanged: true, qSourceContent: finalizedZipData, loading: false})
-              }
+              await this.setState({qSourceContent: finalizedZipData, loading: false});
             }
             else {
               await this.setState({abLocaleTargetContent:this.state.abHeadContent +  finalizedZipData, loading: false});

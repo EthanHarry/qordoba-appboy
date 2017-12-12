@@ -14,7 +14,7 @@ var NavBar = (props) => {
           <i className="fa fa-refresh" aria-hidden="true"></i>
         </div>
         <div className='q-nav-item'>
-          <button disabled={!props.sourceContentChanged && props.abFileExistsInQ} className='q-btn btn img-btn pull-left' onClick={props.qHandleUploadClick} type="submit" id='q-upload-button'> Upload to Qordoba </button>
+          <button className='q-btn btn img-btn pull-left' onClick={props.qHandleUploadClick} type="submit" id='q-upload-button'> Upload to Qordoba </button>
         </div>
         <DownloadAllButton disabled={!props.abFileCompletedInQ} qModalGetParentSelector={props.qModalGetParentSelector} qModalStyle={props.qModalStyle} qSourceContent={props.qSourceContent} downloadAllModalOpen={props.downloadAllModalOpen} abHeadContent={props.abHeadContent} abSourceContent={props.abSourceContent} abAllTargetContent={props.abAllTargetContent} downloadAllModalOpen={props.downloadAllModalOpen} handleDownloadAllClick={props.handleDownloadAllClick} handleDownloadAllClose={props.handleDownloadAllClose} />
         <div className='q-nav-item'>
@@ -32,7 +32,7 @@ var NavBar = (props) => {
           <i className="fa fa-refresh" aria-hidden="true"></i>
         </div>
         <div className='q-nav-item'>
-          <button disabled={!props.sourceContentChanged && props.abFileExistsInQ} className='q-btn btn img-btn pull-left' onClick={props.qHandleUploadClick} type="submit" id='q-upload-button'> Upload to Qordoba </button>
+          <button className='q-btn btn img-btn pull-left' onClick={props.qHandleUploadClick} type="submit" id='q-upload-button'> Upload to Qordoba </button>
         </div>
         <DownloadAllButton disabled={!props.abFileCompletedInQ} qModalGetParentSelector={props.qModalGetParentSelector} qModalStyle={props.qModalStyle} qSourceContent={props.qSourceContent} downloadAllModalOpen={props.downloadAllModalOpen} abHeadContent={props.abHeadContent} abSourceContent={props.abSourceContent} abAllTargetContent={props.abAllTargetContent} downloadAllModalOpen={props.downloadAllModalOpen} handleDownloadAllClick={props.handleDownloadAllClick} handleDownloadAllClose={props.handleDownloadAllClose} />
         <LogoutButton handleLogoutClick={props.handleLogoutClick} />

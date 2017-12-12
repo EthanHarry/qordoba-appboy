@@ -9,57 +9,9 @@ import Spinner from 'react-spinkit';
 import EmailTemplateMainView from './EmailTemplateMainView.js';
 
 
-//PICK UP HERE
-//PICK UP HERE
-//PICK UP HERE
-//PICK UP HERE
-//PICK UP HERE
-//PICK UP HERE
-//PICK UP HERE
-//PICK UP HERE
-//PICK UP HERE
-//PICK UP HERE
-//PICK UP HERE
-//PICK UP HERE
-//PICK UP HERE
-//PICK UP HERE
-//PICK UP HERE
-//PICK UP HERE
-//PICK UP HERE
-//PICK UP HERE
-//PICK UP HERE
-//PICK UP HERE
-//PICK UP HERE
-//PICK UP HERE
-//PICK UP HERE
-//PICK UP HERE
-//PICK UP HERE
-//PICK UP HERE
-//PICK UP HERE
-//PICK UP HERE
-//PICK UP HERE
-//PICK UP HERE
-//PICK UP HERE
-//PICK UP HERE
-
-  //WE JUST CHANGED SOME OF OIUR NAMING CONVENTIONS
-  //ATTACH TO NEW PROJECT AND TEST
-  //MAKE SURE HEAD/BODY BEING PROPERLY BUILT AND REBUILT
-  //Non-working state -- need to figure out how to handle header content. Probably have to go back to original method of sending header content up to Qordoba so we can store it there, since we can't query the iFrame for it anymore.
-
-
 //TODO
-  //Fix CSS on source content modal -- make textarea bigger in empty state
-  //See handleCanvasSelect -- need to cover all title mismatch cases
-  //Clean up "source content changed" checks -- we no longer have access to it
+  //Make refresh button better/bigger
 
-  //FEATURES
-  //Fix styling on modals
-  //Publish as private Chrome extension
-  //Loading spinner for modal
-  //Add functionality for "add ONE translation to template"
-  //Upload files by name instead of ID
-  //auth
 
 class App extends React.Component {
   constructor(props) {
@@ -100,7 +52,6 @@ class App extends React.Component {
       canvasCreationModalOpen: false,
       loading: true,
       languageDropdownValue: 0,
-      sourceContentChanged: false,
       randomLangId: '',
 
       qLoginModalOpen: false,
@@ -331,7 +282,7 @@ class App extends React.Component {
       if (urlPathArray[i] === 'email_templates') {
         abType = urlPathArray[i];
         abId = window.location.search.split('=')[1];
-        await this.setState({abType: abType, abId: abId, abTitle: articleTitleSpan.innerHTML})
+        await this.setState({abType: abType, abId: abId})
         break;
       }
       else if (urlPathArray[i] === 'canvas') {
@@ -362,12 +313,13 @@ class App extends React.Component {
       await this.setState({abSourceContent: tagRegexMatches[1], abHeadContent: headRegexMatches[1]});
     }
     else {
-      var bodyRegex = /<body[\s,\S]*?>([\s,\S]*?)<\/body>/g;
-      var bodyRegexMatches = bodyRegex.exec(this.state.abAllSourceContent);
-      var sourceContent = bodyRegexMatches[1];
-      var sourceContent = sourceContent.replace(/></g, '>\n<');
-      sourceContent = sourceContent.replace(/<script.*<\/script>/g, '');
-      await this.setState({abSourceContent: sourceContent, abHeadContent: headRegexMatches[1]});
+      // var bodyRegex = /<body[\s,\S]*?>([\s,\S]*?)<\/body>/g;
+      // var bodyRegexMatches = bodyRegex.exec(this.state.abAllSourceContent);
+      // var sourceContent = bodyRegexMatches[1];
+      // var sourceContent = sourceContent.replace(/></g, '>\n<');
+      // sourceContent = sourceContent.replace(/<script.*<\/script>/g, '');
+
+      await this.setState({abSourceContent: this.state.abAllSourceContent, abHeadContent: headRegexMatches[1]});
     }
   }
 
@@ -519,10 +471,10 @@ class App extends React.Component {
     else {
       this.setState({qCanvasFileMatches: matchingProjects.pages})
     }
-
   }
 
   async qFileUpload() {
+    console.log('uploading file', this.state)
     var fileToUpload = new File([this.state.abSourceContent], `${this.state.abType}--${this.state.abId}.html`, {
       type: "text/html"
     })
@@ -687,7 +639,7 @@ class App extends React.Component {
   render() {
     if (!this.state.loading) {
       return (
-        <EmailTemplateMainView abAllSourceContent={this.state.abAllSourceContent} handleCanvasIdSubmit={this.handleCanvasIdSubmit} canvasCreationModalOpen={this.state.canvasCreationModalOpen} handleSourceContentChange={this.handleSourceContentChange} handleSourceContentClose={this.handleSourceContentClose} qHandleUploadClick={this.qHandleUploadClick} sourceContentModalOpen={this.state.sourceContentModalOpen} handleCanvasNoMatchClick={this.handleCanvasNoMatchClick} qAuthToken={this.state.qAuthToken} qProjectId={this.state.qProjectId} qOrganizationId={this.state.qOrganizationId} qHandleProjectSubmit={this.qHandleProjectSubmit} qHandleOrgSubmit={this.qHandleOrgSubmit} qHandleLoginSubmit={this.qHandleLoginSubmit} qHandleConfigSubmit={this.qHandleConfigSubmit} qAllProjects={this.state.qAllProjects} qAllOrgs={this.state.qAllOrgs} qLoginModalOpen={this.state.qLoginModalOpen} abCanvasSelectionInProgress abLanguageCode={this.state.abLanguageCode} qLocaleTranslationStatus={this.state.qLocaleTranslationStatus} abTranslationStatuses={this.state.abTranslationStatuses} abLocaleTargetContent={this.state.abLocaleTargetContent} qCanvasFileMatches={this.state.qCanvasFileMatches} handleCanvasSelect={this.handleCanvasSelect} abId={this.state.abId} abType={this.state.abType} abCanvasExistInQ={this.state.abCanvasExistInQ} abFileCompletedInQ={this.state.abFileCompletedInQ} abFileExistsInQ={this.state.abFileExistsInQ} handleLogoutClick={this.handleLogoutClick} qModalGetParentSelector={this.qModalGetParentSelector} qModalStyle={this.state.qModalStyle} qSourceContent={this.state.qSourceContent} downloadAllModalOpen={this.state.downloadAllModalOpen} abHeadContent={this.state.abHeadContent} abSourceContent={this.state.abSourceContent} abAllTargetContent={this.state.abAllTargetContent} downloadAllModalOpen={this.state.downloadAllModalOpen} handleDownloadAllClick={this.handleDownloadAllClick} handleDownloadAllClose={this.handleDownloadAllClose} qFileUpload={this.qFileUpload} sourceContentChanged={this.state.sourceContentChanged} languageDropdownValue={this.state.languageDropdownValue} qSourceLocale={this.state.qSourceLocale} handleLanguageChange={this.handleLanguageChange} qProjectLanguages={this.state.qProjectLanguages} qGetLanguages={this.qGetLanguages} init={this.init} qTranslationStatusObj={this.state.qTranslationStatusObj} />
+        <EmailTemplateMainView abAllSourceContent={this.state.abAllSourceContent} handleCanvasIdSubmit={this.handleCanvasIdSubmit} canvasCreationModalOpen={this.state.canvasCreationModalOpen} handleSourceContentChange={this.handleSourceContentChange} handleSourceContentClose={this.handleSourceContentClose} qHandleUploadClick={this.qHandleUploadClick} sourceContentModalOpen={this.state.sourceContentModalOpen} handleCanvasNoMatchClick={this.handleCanvasNoMatchClick} qAuthToken={this.state.qAuthToken} qProjectId={this.state.qProjectId} qOrganizationId={this.state.qOrganizationId} qHandleProjectSubmit={this.qHandleProjectSubmit} qHandleOrgSubmit={this.qHandleOrgSubmit} qHandleLoginSubmit={this.qHandleLoginSubmit} qHandleConfigSubmit={this.qHandleConfigSubmit} qAllProjects={this.state.qAllProjects} qAllOrgs={this.state.qAllOrgs} qLoginModalOpen={this.state.qLoginModalOpen} abCanvasSelectionInProgress abLanguageCode={this.state.abLanguageCode} qLocaleTranslationStatus={this.state.qLocaleTranslationStatus} abTranslationStatuses={this.state.abTranslationStatuses} abLocaleTargetContent={this.state.abLocaleTargetContent} qCanvasFileMatches={this.state.qCanvasFileMatches} handleCanvasSelect={this.handleCanvasSelect} abId={this.state.abId} abType={this.state.abType} abCanvasExistInQ={this.state.abCanvasExistInQ} abFileCompletedInQ={this.state.abFileCompletedInQ} abFileExistsInQ={this.state.abFileExistsInQ} handleLogoutClick={this.handleLogoutClick} qModalGetParentSelector={this.qModalGetParentSelector} qModalStyle={this.state.qModalStyle} qSourceContent={this.state.qSourceContent} downloadAllModalOpen={this.state.downloadAllModalOpen} abHeadContent={this.state.abHeadContent} abSourceContent={this.state.abSourceContent} abAllTargetContent={this.state.abAllTargetContent} downloadAllModalOpen={this.state.downloadAllModalOpen} handleDownloadAllClick={this.handleDownloadAllClick} handleDownloadAllClose={this.handleDownloadAllClose} qFileUpload={this.qFileUpload} languageDropdownValue={this.state.languageDropdownValue} qSourceLocale={this.state.qSourceLocale} handleLanguageChange={this.handleLanguageChange} qProjectLanguages={this.state.qProjectLanguages} qGetLanguages={this.qGetLanguages} init={this.init} qTranslationStatusObj={this.state.qTranslationStatusObj} />
       )
     }
     else {

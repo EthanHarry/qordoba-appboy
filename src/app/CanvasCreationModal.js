@@ -16,9 +16,9 @@ var CanvasCreationModal = (props) => {
           <input className='q-input' type='text' placeholder='Canvas ID' />
           <button id='q-canvas-creation-btn' className='q-btn btn'> Submit </button>
         </form>
-        <h1> ID's for Canvas content </h1>
-        <h3> NOTE: Please check with your manager for ID naming conventions before proceeding. </h3>
-        <div> Each template created from Canvas must be given a unique ID. Please make sure that you give this template very specific, clear name that your teammates will recognize. </div>
+        <h1> Name this Message </h1>
+        <h3> NOTE: Please check with your manager for Message naming conventions before proceeding. </h3>
+        <div> Each Message created from Canvas must be given a unique ID. Please make sure that you give this Message very specific, clear name that your teammates will recognize. </div>
       </Modal>
     </div>
   )

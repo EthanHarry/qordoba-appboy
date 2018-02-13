@@ -83,3 +83,8 @@ button.q-download-all {
   cursor: default !important;
   outline: none !important;
 }
+
+#q-canvas-selection-info-text-1 {
+  padding-bottom: 4vh;
+  padding-top: 2vh
+}

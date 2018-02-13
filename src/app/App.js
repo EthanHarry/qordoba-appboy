@@ -11,6 +11,7 @@ import EmailTemplateMainView from './EmailTemplateMainView.js';
 
 //TODO
   //Make refresh button better/bigger
+  //Add form control for canvas naming and HTML copy/paste
 
 
 class App extends React.Component {
@@ -564,9 +565,10 @@ class App extends React.Component {
           if (templateName === `${this.state.abType}--${this.state.abId}-${locale}` && this.state.qTranslationStatusObj[locale].completed) {
             var finalizedZipData = await completedZipData[key].async('text');
             console.log('this file zip data', finalizedZipData)
-            var bodyRegexp = /<body[\s, \S]*?>([\s,\S]*?)<\/body>/g;
-            var bodyRegexMatches = bodyRegexp.exec(finalizedZipData);
-            abToBePublished[locale] = bodyRegexMatches[1];
+            // var bodyRegexp = /<body[\s, \S]*?>([\s,\S]*?)<\/body>/g;
+            // var bodyRegexMatches = bodyRegexp.exec(finalizedZipData);
+            // abToBePublished[locale] = bodyRegexMatches[1];
+            abToBePublished[locale] = finalizedZipData;
           }
         }
       }

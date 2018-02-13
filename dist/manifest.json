@@ -12,5 +12,6 @@
     "scripts": ["domScript.bundle.js", "inject.bundle.js"],
     "persistent": false
   },
-  "permissions": ["activeTab", "tabs"] //, "https://dashboard.appboy.com/*"
+  "permissions": ["activeTab", "tabs"], //, "https://dashboard.appboy.com/*"
+  "update_url": "http://0.0.0.0"
 }

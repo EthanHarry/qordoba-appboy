@@ -21,20 +21,20 @@ class DownloadAllButton extends React.Component {
 
   buildTemplateHtml(nextProps) {
     console.log('DL BUTTON NEXT PROPS', nextProps)
-    var html = `<html>\n<head>\n${this.props.abHeadContent}\n</head>\n<body>\n`;
+    var html = ``;
     var ifUsed = false;
     for (var key in nextProps.abAllTargetContent) {
       var locale = key.slice(0,2);
       if (!ifUsed) {
-        html += `{% if $\{language} == '${locale}' %}`
+        html += `{% if $\{language} == '${locale}' %}\n`
         ifUsed = true;
       }
       else {
-        html += `{% elsif $\{language} == '${locale}' %}`
+        html += `\n{% elsif $\{language} == '${locale}' %}\n`
       }
       html += nextProps.abAllTargetContent[key];
     }
-    html += `{% else %}${nextProps.qSourceContent}{% endif %}\n</body>\n</html>`
+    html += `\n{% else %}\n${nextProps.qSourceContent}\n{% endif %}`
     this.setState({templateHtml:html})
   }
 

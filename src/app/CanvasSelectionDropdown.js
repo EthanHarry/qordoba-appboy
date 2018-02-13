@@ -3,7 +3,7 @@ import React from 'react';
 var CanvasSelectionDropdown = (props) => {
   return (
     <select value={props.abId} onChange={props.handleCanvasSelect} id='q-canvas-dropdwn' className='q-dropdown'>
-      <option disabled value={0}> Choose a Canvas </option>
+      <option disabled value={0}> Choose a Message </option>
       {props.qCanvasFileMatches.map((canvasFile) => {
         var fileNameRegex = /canvas_.*--(.*).html/;
         var fileNameMatches = fileNameRegex.exec(canvasFile.url);

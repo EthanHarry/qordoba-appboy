@@ -9851,7 +9851,7 @@ var CanvasSelectionDropdown = props => {
     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
       'option',
       { disabled: true, value: 0 },
-      ' Choose a Canvas '
+      ' Choose a Message '
     ),
     props.qCanvasFileMatches.map(canvasFile => {
       var fileNameRegex = /canvas_.*--(.*).html/;
@@ -30137,6 +30137,7 @@ console.log('hi react app');
 
 //TODO
 //Make refresh button better/bigger
+//Add form control for canvas naming and HTML copy/paste
 
 
 class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
@@ -30748,9 +30749,10 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Component {
               if (templateName === `${_this26.state.abType}--${_this26.state.abId}-${locale}` && _this26.state.qTranslationStatusObj[locale].completed) {
                 var finalizedZipData = yield completedZipData[key].async('text');
                 console.log('this file zip data', finalizedZipData);
-                var bodyRegexp = /<body[\s, \S]*?>([\s,\S]*?)<\/body>/g;
-                var bodyRegexMatches = bodyRegexp.exec(finalizedZipData);
-                abToBePublished[locale] = bodyRegexMatches[1];
+                // var bodyRegexp = /<body[\s, \S]*?>([\s,\S]*?)<\/body>/g;
+                // var bodyRegexMatches = bodyRegexp.exec(finalizedZipData);
+                // abToBePublished[locale] = bodyRegexMatches[1];
+                abToBePublished[locale] = finalizedZipData;
               }
             }
           }
@@ -41146,7 +41148,7 @@ exports = module.exports = __webpack_require__(3)(undefined);
 
 
 // module
-exports.push([module.i, "/*#language-switcher {\n  color: red\n}*/\n\n#q-app-container {\n  align-self: left;\n  padding: 10px 0 0 10px;\n  display: flex;\n  width: 100%;\n  height: 100vh;\n}\n\nbutton.q-download-all {\n  display: block;\n  white-space: normal;\n}\n\n.q-close-modal {\n  float: right;\n}\n\n.q-nav-bar {\n  display: flex;\n  border-bottom: 1px solid #d0d0d0;\n}\n\n.q-nav-item {\n  padding-right: 20px;\n  padding-left: 0px;\n}\n\n#q-translation-status-container-email {\n  display: flex;\n  flex-direction: column;\n  flex: 1;\n}\n\n.q-modal-textarea {\n  width: 100%;\n}\n\n.q-modal-textarea-container {\n  width: 100%;\n}\n\n.q-copy-button {\n  margin: 0 2vw 0 .5vw;\n}\n\n#q-app-container {\n  height: 100vh;\n}\n\n#q-refresh {\n  padding-top: 1vh; /* hacky */\n}\n\n#q-logout-container {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  /*margin-left: auto*/\n}\n\n#q-submit-login-btn {\n  margin-right: 4vw;\n}\n\n.q-dropdown {\n  margin: 0 !important;\n}\n\n.q-input {\n  margin: 0 !important;\n}\n\n.q-btn {\n  background-color:  #1B1838 !important\n}\n\n.q-btn[disabled] {\n  background-color:  #ccc !important;\n  cursor: default !important;\n  outline: none !important;\n}", ""]);
+exports.push([module.i, "/*#language-switcher {\n  color: red\n}*/\n\n#q-app-container {\n  align-self: left;\n  padding: 10px 0 0 10px;\n  display: flex;\n  width: 100%;\n  height: 100vh;\n}\n\nbutton.q-download-all {\n  display: block;\n  white-space: normal;\n}\n\n.q-close-modal {\n  float: right;\n}\n\n.q-nav-bar {\n  display: flex;\n  border-bottom: 1px solid #d0d0d0;\n}\n\n.q-nav-item {\n  padding-right: 20px;\n  padding-left: 0px;\n}\n\n#q-translation-status-container-email {\n  display: flex;\n  flex-direction: column;\n  flex: 1;\n}\n\n.q-modal-textarea {\n  width: 100%;\n}\n\n.q-modal-textarea-container {\n  width: 100%;\n}\n\n.q-copy-button {\n  margin: 0 2vw 0 .5vw;\n}\n\n#q-app-container {\n  height: 100vh;\n}\n\n#q-refresh {\n  padding-top: 1vh; /* hacky */\n}\n\n#q-logout-container {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  /*margin-left: auto*/\n}\n\n#q-submit-login-btn {\n  margin-right: 4vw;\n}\n\n.q-dropdown {\n  margin: 0 !important;\n}\n\n.q-input {\n  margin: 0 !important;\n}\n\n.q-btn {\n  background-color:  #1B1838 !important\n}\n\n.q-btn[disabled] {\n  background-color:  #ccc !important;\n  cursor: default !important;\n  outline: none !important;\n}\n\n#q-canvas-selection-info-text-1 {\n  padding-bottom: 4vh;\n  padding-top: 2vh\n}", ""]);
 
 // exports
 
@@ -52450,19 +52452,19 @@ class DownloadAllButton extends __WEBPACK_IMPORTED_MODULE_0_react___default.a.Co
 
   buildTemplateHtml(nextProps) {
     console.log('DL BUTTON NEXT PROPS', nextProps);
-    var html = `<html>\n<head>\n${this.props.abHeadContent}\n</head>\n<body>\n`;
+    var html = ``;
     var ifUsed = false;
     for (var key in nextProps.abAllTargetContent) {
       var locale = key.slice(0, 2);
       if (!ifUsed) {
-        html += `{% if $\{language} == '${locale}' %}`;
+        html += `{% if $\{language} == '${locale}' %}\n`;
         ifUsed = true;
       } else {
-        html += `{% elsif $\{language} == '${locale}' %}`;
+        html += `\n{% elsif $\{language} == '${locale}' %}\n`;
       }
       html += nextProps.abAllTargetContent[key];
     }
-    html += `{% else %}${nextProps.qSourceContent}{% endif %}\n</body>\n</html>`;
+    html += `\n{% else %}\n${nextProps.qSourceContent}\n{% endif %}`;
     this.setState({ templateHtml: html });
   }
 
@@ -53606,7 +53608,7 @@ var CanvasSelectionModal = props => {
     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
       'h1',
       null,
-      ' Choose your canvas '
+      ' Select ID for this Message '
     ),
     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__CanvasSelectionDropdown_js__["a" /* default */], { abId: props.abId, handleCanvasSelect: props.handleCanvasSelect, qCanvasFileMatches: props.qCanvasFileMatches }),
     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -53616,8 +53618,13 @@ var CanvasSelectionModal = props => {
     ),
     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
       'div',
-      null,
-      ' Some stuff about ID\'s '
+      { id: 'q-canvas-selection-info-text-1', className: 'q-info-text' },
+      ' The above dropdown menu contains a list of all Messages from this Canvas that currently exist in Qordoba.'
+    ),
+    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+      'div',
+      { className: 'q-info-text' },
+      'If this Message has not been uploaded to Qordoba, please click "None of the above". You will be prompted to name the Message when you click "Upload to Qordoba".'
     )
   );
 };
@@ -53663,17 +53670,17 @@ var CanvasCreationModal = props => {
       __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         'h1',
         null,
-        ' ID\'s for Canvas content '
+        ' Name this Message '
       ),
       __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         'h3',
         null,
-        ' NOTE: Please check with your manager for ID naming conventions before proceeding. '
+        ' NOTE: Please check with your manager for Message naming conventions before proceeding. '
       ),
       __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         'div',
         null,
-        ' Each template created from Canvas must be given a unique ID. Please make sure that you give this template very specific, clear name that your teammates will recognize. '
+        ' Each Message created from Canvas must be given a unique ID. Please make sure that you give this Message very specific, clear name that your teammates will recognize. '
       )
     )
   );
